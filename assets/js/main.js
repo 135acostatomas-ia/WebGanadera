@@ -21,8 +21,11 @@ function parseCSV(text) {
   const lines = text.trim().split("\n").slice(1);
   return lines
     .map(line => {
-      const [nombre, categoria, precio] = line.split(",");
-      return { nombre: nombre?.trim(), categoria: categoria?.trim(), precio: precio?.trim() };
+      const parts = line.split(",");
+      const nombre = parts[0]?.trim();
+      const categoria = parts[1]?.trim();
+      const precio = parts[2]?.trim();
+      return { nombre, categoria, precio };
     })
     .filter(p => p.nombre && p.categoria && p.precio);
 }
@@ -38,12 +41,21 @@ function actualizarCarrito() {
   const total = document.getElementById("carrito-total");
   const badge = document.getElementById("carrito-badge");
   const empty = document.getElementById("carrito-empty");
+  const floatBadge = document.getElementById("float-carrito-badge");
 
   if (!cont) return;
 
   const totalUnidades = carrito.reduce((s, i) => s + i.cantidad, 0);
+
+  // badge header
   badge.textContent = totalUnidades;
   badge.style.display = totalUnidades > 0 ? "flex" : "none";
+
+  // badge flotante
+  if (floatBadge) {
+    floatBadge.textContent = totalUnidades;
+    floatBadge.style.display = totalUnidades > 0 ? "flex" : "none";
+  }
 
   if (carrito.length === 0) {
     empty.style.display = "block";
@@ -73,14 +85,75 @@ function actualizarCarrito() {
   total.textContent = "$ " + totalNum.toLocaleString("es-AR");
 }
 
-function agregarAlCarrito(nombre, categoria, precio) {
+function agregarAlCarrito(btn, nombre, categoria, precio) {
   const existente = carrito.find(i => i.nombre === nombre);
   if (existente) {
-    existente.cantidad += 0.5;
+    existente.cantidad = Math.round((existente.cantidad + 0.5) * 10) / 10;
   } else {
     carrito.push({ nombre, categoria, precio: Number(precio), cantidad: 0.5 });
   }
   actualizarCarrito();
+  animarBadge();
+  actualizarControlTarjeta(nombre, categoria, precio);
+}
+
+function actualizarControlTarjeta(nombre, categoria, precio) {
+  const id = "prod-" + nombre.replace(/[^a-zA-Z0-9]/g, "-");
+  const cont = document.getElementById(id);
+  if (!cont) return;
+  const item = carrito.find(i => i.nombre === nombre);
+  const nombreEscapado = nombre.replace(/'/g, "\\'");
+  if (!item) {
+    cont.innerHTML = `<button class="btn-agregar" onclick="agregarAlCarrito(this, '${nombreEscapado}', '${categoria}', '${precio}')">+ Agregar al carrito</button>`;
+    return;
+  }
+  cont.innerHTML = `
+    <div class="prod-controles">
+      <button onclick="restarEnTarjeta('${nombreEscapado}', '${categoria}', '${precio}')">−</button>
+      <span>${item.cantidad} kg</span>
+      <button onclick="sumarEnTarjeta('${nombreEscapado}', '${categoria}', '${precio}')">+</button>
+    </div>`;
+}
+
+function sumarEnTarjeta(nombre, categoria, precio) {
+  const existente = carrito.find(i => i.nombre === nombre);
+  if (existente) {
+    existente.cantidad = Math.round((existente.cantidad + 0.5) * 10) / 10;
+  } else {
+    carrito.push({ nombre, categoria, precio: Number(precio), cantidad: 0.5 });
+  }
+  actualizarCarrito();
+  animarBadge();
+  actualizarControlTarjeta(nombre, categoria, precio);
+}
+
+function restarEnTarjeta(nombre, categoria, precio) {
+  const idx = carrito.findIndex(i => i.nombre === nombre);
+  if (idx === -1) return;
+  carrito[idx].cantidad = Math.round((carrito[idx].cantidad - 0.5) * 10) / 10;
+  if (carrito[idx].cantidad <= 0) carrito.splice(idx, 1);
+  actualizarCarrito();
+  actualizarControlTarjeta(nombre, categoria, precio);
+}
+
+function feedbackBoton(btn) {
+  if (!btn) return;
+  const original = btn.innerHTML;
+  btn.innerHTML = "✓ Agregado";
+  btn.disabled = true;
+  btn.style.background = "#2a7a2a";
+  setTimeout(() => {
+    btn.innerHTML = original;
+    btn.disabled = false;
+    btn.style.background = "";
+  }, 1200);
+}
+
+function animarBadge() {
+  const badge = document.getElementById("carrito-badge");
+  badge.classList.remove("badge-bump");
+  void badge.offsetWidth;
+  badge.classList.add("badge-bump");
 }
 
 function cambiarCantidad(idx, delta) {
@@ -116,6 +189,8 @@ function finalizarPedido() {
 
 function tarjetaProducto(p) {
   const img = IMG_CAT[p.categoria] || "assets/img/cat-vacuno.png";
+  const nombreEscapado = p.nombre.replace(/'/g, "\\'");
+  const id = "prod-" + p.nombre.replace(/[^a-zA-Z0-9]/g, "-");
   return `
   <div class="prod-card">
     <div class="prod-thumb"><img src="${img}" alt="${p.nombre}"></div>
@@ -123,9 +198,11 @@ function tarjetaProducto(p) {
       <div class="cat">${p.categoria}</div>
       <h4>${p.nombre}</h4>
       <div class="prod-price"><span class="now">$ ${formatPrecio(p.precio)}</span><span class="kg">/ kg</span></div>
-      <button class="btn-agregar" onclick="agregarAlCarrito('${p.nombre.replace(/'/g, "\\'")}', '${p.categoria}', '${p.precio}')">
-        + Agregar al carrito
-      </button>
+      <div class="prod-cantidad" id="${id}">
+        <button class="btn-agregar" onclick="agregarAlCarrito(this, '${nombreEscapado}', '${p.categoria}', '${p.precio}')">
+          + Agregar al carrito
+        </button>
+      </div>
     </div>
   </div>`;
 }
@@ -155,13 +232,15 @@ async function renderProductos() {
   cont.innerHTML = `<p style="padding:20px;color:#929292">Cargando productos...</p>`;
   try {
     const res = await fetch(CSV_URL);
+    if (!res.ok) throw new Error("HTTP " + res.status);
     const text = await res.text();
     todosLosProductos = parseCSV(text);
     const categorias = [...new Set(todosLosProductos.map(p => p.categoria))];
     renderFiltros(categorias, todosLosProductos);
     cont.innerHTML = todosLosProductos.map(tarjetaProducto).join("");
   } catch (e) {
-    cont.innerHTML = `<p style="padding:20px;color:#e34b00">Error al cargar productos.</p>`;
+    cont.innerHTML = `<p style="padding:20px;color:#e34b00">Error al cargar productos. Intentá recargar la página.</p>`;
+    console.error("Error cargando CSV:", e);
   }
 }
 
@@ -190,9 +269,3 @@ document.addEventListener("DOMContentLoaded", () => {
   initHeroDots();
   document.getElementById("carrito-overlay").addEventListener("click", cerrarCarrito);
 });
-function animarBadge() {
-  const badge = document.getElementById("carrito-badge");
-  badge.classList.remove("badge-bump");
-  void badge.offsetWidth; // fuerza reflow para reiniciar la animación
-  badge.classList.add("badge-bump");
-}
