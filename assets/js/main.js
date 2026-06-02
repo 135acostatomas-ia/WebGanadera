@@ -4,7 +4,7 @@
 
 const WHATSAPP_NUMERO = "5491100000000";
 
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vROVeMldIsOVsSeIQx_yBV7JFz_GaSDnlK1JuOTVnAmxtTHSBPN4Q4oiFbelaHSQ_8dnynHz8yUo0PG1/pub?gid=1110466768&single=true&output=csv";
+const CSV_URL = "https://api.allorigins.win/raw?url=https://docs.google.com/spreadsheets/d/e/2PACX-1vROVeMldIsOVsSeIQx_yBV7JFz_GaSDnlK1JuOTVnAmxtTHSBN4Q4oiFbelaHSQ_8dnynHz8yUo0PG1/pub?gid=1110466768%26single=true%26output=csv";
 
 const CAT_IMGS = {
   "Vacuno":     "assets/img/cat-vacuno.png",
@@ -95,14 +95,15 @@ function renderTabs() {
   cont.innerHTML = cats.map(c =>
     `<button class="cat-tab${c === categoriaActiva ? " active" : ""}" data-cat="${c}">${c}</button>`
   ).join("");
-  cont.querySelectorAll(".cat-tab").forEach(btn => {
-    btn.addEventListener("click", () => {
-      categoriaActiva = btn.dataset.cat;
-      cont.querySelectorAll(".cat-tab").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      renderProductos();
-    });
-  });
+  // Delegación de eventos: un solo listener en el contenedor, siempre activo
+  cont.onclick = (e) => {
+    const btn = e.target.closest(".cat-tab");
+    if (!btn) return;
+    categoriaActiva = btn.dataset.cat;
+    cont.querySelectorAll(".cat-tab").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderProductos();
+  };
 }
 
 /* ---- Grid de productos ---- */
@@ -131,37 +132,41 @@ function setFloatWhatsApp() {
 /* ---- Carrusel de cortes ---- */
 function initCorteCarousel() {
   const track = document.querySelector(".cortes");
+  const viewport = document.querySelector(".cortes-viewport");
   const prevBtn = document.querySelector(".cortes-prev");
   const nextBtn = document.querySelector(".cortes-next");
-  if (!track || !prevBtn || !nextBtn) return;
+  if (!track || !viewport || !prevBtn || !nextBtn) return;
 
-  const cards = track.querySelectorAll(".corte-card");
-  let pos = 0;
+  const CARD_W = 260;
+  const GAP = 20;
+  const STEP = CARD_W + GAP;
+  let offset = 0;
 
-  function visibleCount() {
-    return window.innerWidth <= 560 ? 1 : window.innerWidth <= 980 ? 2 : 4;
+  function maxOffset() {
+    const cards = track.querySelectorAll(".corte-card");
+    const totalW = cards.length * STEP - GAP;
+    return Math.max(0, totalW - viewport.clientWidth);
   }
 
   function update() {
-    const vis = visibleCount();
-    const max = Math.max(0, cards.length - vis);
-    pos = Math.max(0, Math.min(pos, max));
-    track.style.transform = `translateX(-${(100 / vis) * pos}%)`;
-    prevBtn.style.opacity = pos === 0 ? "0.3" : "1";
-    prevBtn.style.pointerEvents = pos === 0 ? "none" : "auto";
-    nextBtn.style.opacity = pos >= max ? "0.3" : "1";
-    nextBtn.style.pointerEvents = pos >= max ? "none" : "auto";
+    const max = maxOffset();
+    offset = Math.max(0, Math.min(offset, max));
+    track.style.transform = `translateX(-${offset}px)`;
+    prevBtn.style.opacity = offset <= 0 ? "0.3" : "1";
+    prevBtn.style.pointerEvents = offset <= 0 ? "none" : "auto";
+    nextBtn.style.opacity = offset >= max ? "0.3" : "1";
+    nextBtn.style.pointerEvents = offset >= max ? "none" : "auto";
   }
 
-  prevBtn.addEventListener("click", () => { pos--; update(); });
-  nextBtn.addEventListener("click", () => { pos++; update(); });
-  window.addEventListener("resize", update);
+  prevBtn.addEventListener("click", () => { offset -= STEP; update(); });
+  nextBtn.addEventListener("click", () => { offset += STEP; update(); });
+  window.addEventListener("resize", () => { offset = 0; update(); });
 
   let startX = 0;
   track.addEventListener("touchstart", e => { startX = e.touches[0].clientX; }, { passive: true });
   track.addEventListener("touchend", e => {
     const diff = startX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 40) { pos += diff > 0 ? 1 : -1; update(); }
+    if (Math.abs(diff) > 40) { offset += diff > 0 ? STEP : -STEP; update(); }
   });
 
   update();
