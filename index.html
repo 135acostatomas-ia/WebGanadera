@@ -93,18 +93,22 @@
   </div>
 </section>
 
-<!-- ===== PRODUCTOS ===== -->
-<section class="section productos" id="productos">
-  <div class="container">
-    <div class="sec-title">
-      <h2>Nuestro catálogo</h2>
-      <p>Los cortes más pedidos por nuestros clientes</p>
+<!-- ===== CATÁLOGO COLAPSABLE ===== -->
+<section class="catalogo-section" id="productos">
+  <button class="catalogo-toggle" id="catalogo-toggle" onclick="toggleCatalogo()">
+    <span class="catalogo-toggle-left">
+      <span class="hamburger">&#9776;</span>
+      CATÁLOGO
+    </span>
+    <span class="catalogo-arrow" id="catalogo-arrow">&#9660;</span>
+  </button>
+  <div class="catalogo-body" id="catalogo-body">
+    <div class="container">
+      <div class="filtros-wrap">
+        <div id="filtros-cat"></div>
+      </div>
+      <div class="prod-grid" id="prod-grid"></div>
     </div>
-    <!-- Filtros scrolleables -->
-    <div class="filtros-wrap">
-      <div id="filtros-cat"></div>
-    </div>
-    <div class="prod-grid" id="prod-grid"></div>
   </div>
 </section>
 

@@ -165,6 +165,17 @@ a{text-decoration:none;color:inherit}
 /* fix botón carrito header */
 .cart{background:none;border:none;cursor:pointer;position:relative;font-size:22px;color:var(--color-store)}
 
+/* ---- CATÁLOGO COLAPSABLE ---- */
+.catalogo-section{width:100%;background:#fff;border-top:3px solid var(--color-store)}
+.catalogo-toggle{width:100%;background:var(--color-store);color:#fff;border:none;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:var(--font-base);font-size:16px;font-weight:900;text-transform:uppercase;letter-spacing:2px}
+.catalogo-toggle:hover{filter:brightness(1.1)}
+.catalogo-toggle-left{display:flex;align-items:center;gap:14px}
+.hamburger{font-size:22px;line-height:1}
+.catalogo-arrow{font-size:14px;transition:transform .3s ease}
+.catalogo-arrow.open{transform:rotate(180deg)}
+.catalogo-body{display:none;padding:32px 0 48px}
+.catalogo-body.open{display:block}
+
 /* ---- RESPONSIVE ---- */
 @media(max-width:980px){
   .cortes,.prod-grid{grid-template-columns:repeat(2,1fr)}
@@ -177,6 +188,10 @@ a{text-decoration:none;color:inherit}
   .footer-cols{grid-template-columns:1fr}
   .carrito-float{right:16px;bottom:16px}
   .wsp-float{right:16px;bottom:86px}
+  body{overflow-x:hidden}
+  .container{padding:0 12px}
+  .catalogo-toggle{font-size:14px;padding:16px 16px}
+  .prod-card{width:100%;max-width:100%}
 }
 .prod-controles{display:flex;align-items:center;justify-content:space-between;margin-top:12px;border:2px solid var(--color-store);border-radius:3px;overflow:hidden}
 .prod-controles button{background:var(--color-store);color:#fff;border:none;width:44px;height:40px;font-size:20px;cursor:pointer;transition:filter .2s}

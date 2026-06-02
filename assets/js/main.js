@@ -244,6 +244,13 @@ async function renderProductos() {
   }
 }
 
+function toggleCatalogo() {
+  const body = document.getElementById("catalogo-body");
+  const arrow = document.getElementById("catalogo-arrow");
+  body.classList.toggle("open");
+  arrow.classList.toggle("open");
+}
+
 function setFloatWhatsApp() {
   const f = document.getElementById("wsp-float");
   if (f) {
