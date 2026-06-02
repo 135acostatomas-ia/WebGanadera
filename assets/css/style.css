@@ -138,3 +138,7 @@ a{text-decoration:none;color:inherit}
   .cortes,.prod-grid{grid-template-columns:1fr}
   .footer-cols{grid-template-columns:1fr}
 }
+#cat-tabs { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:24px; }
+.cat-tab { background:#fff; border:2px solid var(--grey-300); color:var(--grey); padding:8px 18px; border-radius:3px; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:1px; cursor:pointer; transition:all .2s; }
+.cat-tab.active, .cat-tab:hover { background:var(--color-store); color:#fff; border-color:var(--color-store); }
+.consultar { color:var(--grey-100); font-size:13px; font-style:italic; display:block; margin:12px 0; }

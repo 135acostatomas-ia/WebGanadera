@@ -2,37 +2,45 @@
    Ganadera Panamericana — lógica de catálogo + WhatsApp
    ========================================================= */
 
-/* 👉 NÚMERO DE WHATSAPP del negocio (formato internacional, sin + ni espacios)
-   Ej: Argentina 11 5555-4444  ->  5491155554444  */
 const WHATSAPP_NUMERO = "5491100000000";
 
-/* 👉 PRODUCTOS (placeholder).
-   Cuando tengamos la base de datos real, se reemplazan estos por los verdaderos.
-   Cada producto: categoría, nombre, unidad, precio, etiqueta (opcional), imagen */
-const PRODUCTOS = [
-  { cat:"Vacuno",  nombre:"Bife de Chorizo", unidad:"Corte premium · x kg", precio:"8.990", tag:"OFERTA", img:"assets/img/cat-vacuno.png" },
-  { cat:"Vacuno",  nombre:"Asado de Tira",   unidad:"Tradicional · x kg",   precio:"6.490", tag:"",       img:"assets/img/cat-vacuno.png" },
-  { cat:"Cerdo",   nombre:"Bondiola",        unidad:"Ideal parrilla · x kg",precio:"5.290", tag:"",       img:"assets/img/cat-cerdo.png" },
-  { cat:"Pollo",   nombre:"Pechuga",         unidad:"Sin hueso · x kg",     precio:"4.190", tag:"NUEVO",  img:"assets/img/cat-pollo.png" },
-];
+const SHEETS_URL = "https://api.allorigins.win/raw?url=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2Fe%2F2PACX-1vROVeMldIsOVsSeIQx_yBV7JFz_GaSDnlK1JuOTVnAmxtTHSBN4Q4oiFbelaHSQ_8dnynHz8yUo0PG1%2Fpub%3Fgid%3D1110466768%26single%3Dtrue%26output%3Dcsv";
 
-/* Arma el link de WhatsApp con mensaje pre-cargado */
-function linkWhatsApp(producto){
+async function fetchProductos() {
+  const res = await fetch(SHEETS_URL);
+  const csv = await res.text();
+  const filas = csv.trim().split("\n").slice(1);
+  return filas
+    .map(fila => {
+      const partes = fila.split(",");
+      return {
+        nombre: partes[0]?.trim(),
+        cat: partes[1]?.trim(),
+        precio: partes[2]?.trim()
+      };
+    })
+    .filter(p => p.nombre && p.cat);
+}
+
+function linkWhatsApp(producto) {
   const texto = `Hola! Quiero hacer un pedido:\n• ${producto.nombre} (${producto.cat})`;
   return `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(texto)}`;
 }
 
-/* Genera el HTML de una tarjeta de producto */
-function tarjetaProducto(p){
-  const tag = p.tag ? `<span class="prod-tag">${p.tag}</span>` : "";
+function formatPrecio(precio) {
+  if (!precio) return `<span class="consultar">Consultar precio</span>`;
+  const num = parseInt(precio);
+  return `<div class="prod-price"><span class="now">$ ${num.toLocaleString("es-AR")}</span><span class="kg">/ kg</span></div>`;
+}
+
+function tarjetaProducto(p) {
   return `
   <div class="prod-card">
-    <div class="prod-thumb">${tag}<img src="${p.img}" alt="${p.nombre}"></div>
+    <div class="prod-thumb"><img src="assets/img/cat-vacuno.png" alt="${p.nombre}"></div>
     <div class="prod-info">
       <div class="cat">${p.cat}</div>
       <h4>${p.nombre}</h4>
-      <div class="unit">${p.unidad}</div>
-      <div class="prod-price"><span class="now">$ ${p.precio}</span><span class="kg">/ kg</span></div>
+      ${formatPrecio(p.precio)}
       <a href="${linkWhatsApp(p)}" target="_blank" class="btn-wsp">
         <img src="assets/img/whatsapp.png" alt=""> Pedir por WhatsApp
       </a>
@@ -40,35 +48,57 @@ function tarjetaProducto(p){
   </div>`;
 }
 
-/* Pinta los productos en el contenedor */
-function renderProductos(){
-  const cont = document.getElementById("prod-grid");
-  if(!cont) return;
-  cont.innerHTML = PRODUCTOS.map(tarjetaProducto).join("");
+function renderTabs(categorias, activa, productos) {
+  const cont = document.getElementById("cat-tabs");
+  if (!cont) return;
+  cont.innerHTML = ["Todos", ...categorias].map(cat =>
+    `<button class="cat-tab${cat === activa ? " active" : ""}" data-cat="${cat}">${cat}</button>`
+  ).join("");
+  cont.querySelectorAll(".cat-tab").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const sel = btn.dataset.cat;
+      const filtrados = sel === "Todos" ? productos : productos.filter(p => p.cat === sel);
+      document.getElementById("prod-grid").innerHTML = filtrados.map(tarjetaProducto).join("");
+      cont.querySelectorAll(".cat-tab").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    });
+  });
 }
 
-/* Botón flotante de WhatsApp general */
-function setFloatWhatsApp(){
+async function renderProductos() {
+  const cont = document.getElementById("prod-grid");
+  if (!cont) return;
+  cont.innerHTML = `<p style="padding:20px;color:#999">Cargando productos...</p>`;
+  try {
+    const productos = await fetchProductos();
+    const categorias = [...new Set(productos.map(p => p.cat))];
+    renderTabs(categorias, "Todos", productos);
+    cont.innerHTML = productos.map(tarjetaProducto).join("");
+  } catch (e) {
+    cont.innerHTML = `<p style="padding:20px;color:#e34b00">Error al cargar productos. Intentá de nuevo.</p>`;
+  }
+}
+
+function setFloatWhatsApp() {
   const f = document.getElementById("wsp-float");
-  if(f){
+  if (f) {
     const texto = "Hola! Quiero hacer una consulta sobre los productos.";
     f.href = `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(texto)}`;
   }
 }
 
-/* Slider de la home (rotación simple de los puntos, demo) */
-function initHeroDots(){
+function initHeroDots() {
   const dots = document.querySelectorAll(".hero-dots span");
-  if(!dots.length) return;
+  if (!dots.length) return;
   let i = 0;
-  setInterval(()=>{
-    dots.forEach(d=>d.classList.remove("active"));
-    i = (i+1) % dots.length;
+  setInterval(() => {
+    dots.forEach(d => d.classList.remove("active"));
+    i = (i + 1) % dots.length;
     dots[i].classList.add("active");
   }, 3000);
 }
 
-document.addEventListener("DOMContentLoaded", ()=>{
+document.addEventListener("DOMContentLoaded", () => {
   renderProductos();
   setFloatWhatsApp();
   initHeroDots();
