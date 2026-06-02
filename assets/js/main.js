@@ -7,10 +7,10 @@ const WHATSAPP_NUMERO = "5491100000000";
 const CSV_URL = "https://api.allorigins.win/raw?url=https://docs.google.com/spreadsheets/d/e/2PACX-1vROVeMldIsOVsSeIQx_yBV7JFz_GaSDnlK1JuOTVnAmxtTHSBN4Q4oiFbelaHSQ_8dnynHz8yUo0PG1/pub?gid=1110466768%26single=true%26output=csv";
 
 const CAT_IMGS = {
-  "Vacuno":     "assets/img/cat-vacuno.png",
-  "Cerdo":      "assets/img/cat-cerdo.png",
-  "Pollo":      "assets/img/cat-pollo.png",
-  "Achuras":    "assets/img/cat-achuras.png",
+  "Vacuno":    "assets/img/cat-vacuno.png",
+  "Cerdo":     "assets/img/cat-cerdo.png",
+  "Pollo":     "assets/img/cat-pollo.png",
+  "Achuras":   "assets/img/cat-achuras.png",
 };
 const IMG_DEFAULT = "assets/img/cat-vacuno.png";
 
@@ -24,7 +24,6 @@ function parseCSV(text) {
   const lines = text.trim().split(/\r?\n/);
   const headers = lines[0].split(",").map(h => h.trim().toLowerCase().replace(/["""]/g, ""));
   return lines.slice(1).map(line => {
-    // soporte básico para campos con comas dentro de comillas
     const cols = [];
     let cur = "", inQ = false;
     for (const ch of line) {
@@ -40,15 +39,21 @@ function parseCSV(text) {
 }
 
 async function cargarProductos() {
+  const grid = document.getElementById("prod-grid");
+  if (grid) grid.innerHTML = '<p class="cargando">Cargando catálogo…</p>';
+
   try {
     const resp = await fetch(CSV_URL);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const text = await resp.text();
     todosLosProductos = parseCSV(text);
+    if (todosLosProductos.length === 0) throw new Error("CSV vacío o sin datos");
     renderTabs();
     renderProductos();
   } catch (e) {
+    console.error("Error cargando catálogo:", e);
     const cont = document.getElementById("prod-grid");
-    if (cont) cont.innerHTML = '<p style="text-align:center;color:#999;padding:40px 0">No se pudo cargar el catálogo. Intentá más tarde.</p>';
+    if (cont) cont.innerHTML = '<p class="cargando">No se pudo cargar el catálogo. Intentá más tarde.</p>';
   }
 }
 
@@ -95,7 +100,6 @@ function renderTabs() {
   cont.innerHTML = cats.map(c =>
     `<button class="cat-tab${c === categoriaActiva ? " active" : ""}" data-cat="${c}">${c}</button>`
   ).join("");
-  // Delegación de eventos: un solo listener en el contenedor, siempre activo
   cont.onclick = (e) => {
     const btn = e.target.closest(".cat-tab");
     if (!btn) return;
@@ -114,7 +118,7 @@ function renderProductos() {
     ? todosLosProductos
     : todosLosProductos.filter(p => p.categoria === categoriaActiva);
   if (filtrados.length === 0) {
-    cont.innerHTML = '<p style="text-align:center;color:#999;padding:40px 0">No hay productos en esta categoría.</p>';
+    cont.innerHTML = '<p class="cargando">No hay productos en esta categoría.</p>';
     return;
   }
   cont.innerHTML = filtrados.map(tarjetaProducto).join("");
@@ -131,45 +135,32 @@ function setFloatWhatsApp() {
 
 /* ---- Carrusel de cortes ---- */
 function initCorteCarousel() {
-  const track = document.querySelector(".cortes");
   const viewport = document.querySelector(".cortes-viewport");
-  const prevBtn = document.querySelector(".cortes-prev");
-  const nextBtn = document.querySelector(".cortes-next");
-  if (!track || !viewport || !prevBtn || !nextBtn) return;
+  const prevBtn  = document.querySelector(".cortes-prev");
+  const nextBtn  = document.querySelector(".cortes-next");
+  if (!viewport || !prevBtn || !nextBtn) return;
 
-  const CARD_W = 260;
-  const GAP = 20;
-  const STEP = CARD_W + GAP;
-  let offset = 0;
+  const STEP = 280; // 260px card + 20px gap
 
-  function maxOffset() {
-    const cards = track.querySelectorAll(".corte-card");
-    const totalW = cards.length * STEP - GAP;
-    return Math.max(0, totalW - viewport.clientWidth);
+  /* Avanza / retrocede con scroll nativo */
+  prevBtn.addEventListener("click", () => viewport.scrollBy({ left: -STEP, behavior: "smooth" }));
+  nextBtn.addEventListener("click", () => viewport.scrollBy({ left:  STEP, behavior: "smooth" }));
+
+  /* Sincroniza opacidad de botones con la posición de scroll */
+  function syncBtns() {
+    const sl    = Math.round(viewport.scrollLeft);
+    const maxSl = viewport.scrollWidth - viewport.clientWidth;
+    const atStart = sl <= 0;
+    const atEnd   = sl >= maxSl - 1 || maxSl <= 0;
+    prevBtn.style.opacity       = atStart ? "0.35" : "1";
+    prevBtn.style.pointerEvents = atStart ? "none"  : "auto";
+    nextBtn.style.opacity       = atEnd   ? "0.35" : "1";
+    nextBtn.style.pointerEvents = atEnd   ? "none"  : "auto";
   }
 
-  function update() {
-    const max = maxOffset();
-    offset = Math.max(0, Math.min(offset, max));
-    track.style.transform = `translateX(-${offset}px)`;
-    prevBtn.style.opacity = offset <= 0 ? "0.3" : "1";
-    prevBtn.style.pointerEvents = offset <= 0 ? "none" : "auto";
-    nextBtn.style.opacity = offset >= max ? "0.3" : "1";
-    nextBtn.style.pointerEvents = offset >= max ? "none" : "auto";
-  }
-
-  prevBtn.addEventListener("click", () => { offset -= STEP; update(); });
-  nextBtn.addEventListener("click", () => { offset += STEP; update(); });
-  window.addEventListener("resize", () => { offset = 0; update(); });
-
-  let startX = 0;
-  track.addEventListener("touchstart", e => { startX = e.touches[0].clientX; }, { passive: true });
-  track.addEventListener("touchend", e => {
-    const diff = startX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 40) { offset += diff > 0 ? STEP : -STEP; update(); }
-  });
-
-  update();
+  viewport.addEventListener("scroll", syncBtns, { passive: true });
+  window.addEventListener("resize", syncBtns);
+  syncBtns();
 }
 
 /* ---- Hero dots ---- */

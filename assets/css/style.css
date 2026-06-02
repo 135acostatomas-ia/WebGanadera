@@ -70,8 +70,10 @@ a{text-decoration:none;color:inherit}
 .cortes-carousel{position:relative;display:flex;align-items:center;gap:12px}
 .cortes-prev,.cortes-next{flex-shrink:0;background:var(--color-store);color:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:28px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;transition:background .2s,opacity .2s;box-shadow:0 3px 10px rgba(3,19,67,.2)}
 .cortes-prev:hover,.cortes-next:hover{background:var(--header-wrapper)}
-.cortes-viewport{flex:1;overflow:hidden}
-.cortes{display:flex;gap:20px;transition:transform .35s ease;will-change:transform}
+/* overflow-x:scroll + scrollbar oculta: el scroll nativo maneja touch/swipe */
+.cortes-viewport{flex:1;overflow-x:scroll;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none}
+.cortes-viewport::-webkit-scrollbar{display:none}
+.cortes{display:flex;gap:20px;padding:6px 2px}
 .corte-card{flex:0 0 260px;width:260px;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 4px 14px rgba(3,19,67,.07);transition:transform .2s,box-shadow .2s;cursor:pointer}
 .corte-card:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(3,19,67,.16)}
 .corte-card img{width:100%;height:150px;object-fit:cover}
@@ -85,6 +87,9 @@ a{text-decoration:none;color:inherit}
 .envios img{width:70px;height:auto;filter:brightness(0) invert(1)}
 .envios .env-txt h3{font-family:var(--font-title);font-size:26px;font-weight:700}
 .envios .env-txt p{font-size:15px;opacity:.85;margin-top:4px}
+
+/* ---- ESTADO DE CARGA ---- */
+.cargando{text-align:center;color:var(--grey-100);padding:40px 0;font-size:15px;width:100%}
 
 /* ---- CATEGORY TABS ---- */
 .cat-tabs{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px;justify-content:center}
