@@ -31,7 +31,10 @@
     </div>
     <div class="header-actions">
       <a href="#" class="ha"><span>&#128100;</span> Ingresar</a>
-      <a href="#" class="cart"><span>&#128722;</span><span class="badge">0</span></a>
+      <button class="cart" onclick="abrirCarrito()">
+        <span>🛒</span>
+        <span class="badge" id="carrito-badge" style="display:none">0</span>
+      </button>
     </div>
   </div>
 </header>
@@ -97,7 +100,7 @@
       <h2>Destacados de la semana</h2>
       <p>Los cortes más pedidos por nuestros clientes</p>
     </div>
-    <div id="cat-tabs"></div>
+    <div id="filtros-cat" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px;"></div>
     <div class="prod-grid" id="prod-grid"><!-- JS inserta las tarjetas aquí --></div>
   </div>
 </section>
@@ -135,5 +138,26 @@
 <a href="#" id="wsp-float" class="wsp-float" target="_blank"><img src="assets/img/whatsapp.png" alt="WhatsApp"></a>
 
 <script src="assets/js/main.js"></script>
+<!-- OVERLAY -->
+<div id="carrito-overlay" class="carrito-overlay"></div>
+
+<!-- DRAWER CARRITO -->
+<div id="carrito-drawer" class="carrito-drawer">
+  <div class="carrito-header">
+    <h3>Tu pedido</h3>
+    <button onclick="cerrarCarrito()">✕</button>
+  </div>
+  <div id="carrito-empty" class="carrito-empty">Todavía no agregaste productos.</div>
+  <div id="carrito-items" class="carrito-items"></div>
+  <div class="carrito-footer">
+    <div class="carrito-total-row">
+      <span>Total estimado</span>
+      <span id="carrito-total">$ 0</span>
+    </div>
+    <button class="btn-finalizar" onclick="finalizarPedido()">
+      <img src="assets/img/whatsapp.png" alt=""> Finalizar pedido por WhatsApp
+    </button>
+  </div>
+</div>
 </body>
 </html>
