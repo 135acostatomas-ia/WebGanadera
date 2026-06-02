@@ -70,11 +70,17 @@
       <h2>Comprá por tipo de corte</h2>
       <p>Elegí tu categoría y descubrí toda la selección</p>
     </div>
-    <div class="cortes">
-      <div class="corte-card"><img src="assets/img/cat-vacuno.png" alt="Vacuno"><div class="corte-body"><h3>Vacuno</h3><span>Ver cortes &rarr;</span></div></div>
-      <div class="corte-card"><img src="assets/img/cat-cerdo.png" alt="Cerdo"><div class="corte-body"><h3>Cerdo</h3><span>Ver cortes &rarr;</span></div></div>
-      <div class="corte-card"><img src="assets/img/cat-pollo.png" alt="Pollo"><div class="corte-body"><h3>Pollo</h3><span>Ver cortes &rarr;</span></div></div>
-      <div class="corte-card"><img src="assets/img/cat-achuras.png" alt="Achuras"><div class="corte-body"><h3>Achuras</h3><span>Ver cortes &rarr;</span></div></div>
+    <div class="cortes-carousel">
+      <button class="cortes-prev" aria-label="Anterior">&#8249;</button>
+      <div class="cortes-viewport">
+        <div class="cortes">
+          <div class="corte-card"><img src="assets/img/cat-vacuno.png" alt="Vacuno"><div class="corte-body"><h3>Vacuno</h3><span>Ver cortes &rarr;</span></div></div>
+          <div class="corte-card"><img src="assets/img/cat-cerdo.png" alt="Cerdo"><div class="corte-body"><h3>Cerdo</h3><span>Ver cortes &rarr;</span></div></div>
+          <div class="corte-card"><img src="assets/img/cat-pollo.png" alt="Pollo"><div class="corte-body"><h3>Pollo</h3><span>Ver cortes &rarr;</span></div></div>
+          <div class="corte-card"><img src="assets/img/cat-achuras.png" alt="Achuras"><div class="corte-body"><h3>Achuras</h3><span>Ver cortes &rarr;</span></div></div>
+        </div>
+      </div>
+      <button class="cortes-next" aria-label="Siguiente">&#8250;</button>
     </div>
   </div>
 </section>
@@ -97,6 +103,7 @@
       <h2>Destacados de la semana</h2>
       <p>Los cortes más pedidos por nuestros clientes</p>
     </div>
+    <div class="cat-tabs" id="cat-tabs"></div>
     <div class="prod-grid" id="prod-grid"><!-- JS inserta las tarjetas aquí --></div>
   </div>
 </section>
