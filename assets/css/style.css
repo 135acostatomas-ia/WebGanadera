@@ -197,3 +197,60 @@ a{text-decoration:none;color:inherit}
 .prod-controles button{background:var(--color-store);color:#fff;border:none;width:44px;height:40px;font-size:20px;cursor:pointer;transition:filter .2s}
 .prod-controles button:hover{filter:brightness(1.2)}
 .prod-controles span{flex:1;text-align:center;font-weight:900;font-size:15px;color:var(--color-store-font)}
+/* ---- NAV ACTIVE ---- */
+.main-nav li > a.nav-active {
+  background: var(--header-wrapper);
+  border-bottom: 3px solid var(--red);
+}
+
+/* ---- CATALOGO: BOTÓN CENTRADO ---- */
+.catalogo-toggle-wrap {
+  display: flex;
+  justify-content: center;
+  background: #fff;
+  padding: 32px 20px 0;
+}
+.catalogo-toggle-center {
+  background: var(--color-store);
+  color: #fff;
+  border: none;
+  padding: 16px 48px;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  font-family: var(--font-base);
+  font-size: 16px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-radius: 4px;
+  transition: filter .2s;
+}
+.catalogo-toggle-center:hover { filter: brightness(1.1); }
+.catalogo-toggle-center .catalogo-arrow { font-size: 13px; transition: transform .3s ease; }
+.catalogo-toggle-center .catalogo-arrow.open { transform: rotate(180deg); }
+
+/* ---- CATÁLOGO: TEXTO INFORMATIVO ---- */
+.catalogo-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #eef2ff;
+  border-left: 4px solid var(--color-store);
+  border-radius: 0 4px 4px 0;
+  padding: 14px 18px;
+  margin-bottom: 24px;
+  font-size: 14px;
+  color: var(--grey);
+  line-height: 1.6;
+}
+.catalogo-info-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.catalogo-info p { margin: 0; }
+.catalogo-info strong { color: var(--color-store-font); }
+
+/* ---- CORTE-CARD como enlace ---- */
+a.corte-card { color: inherit; }
+
+/* ---- CATALOGO BODY cuando está abierto en página propia ---- */
+.catalogo-body { background: #fff; padding: 32px 0 48px; }

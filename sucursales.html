@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ganadera Panamericana — Carnes</title>
+<title>Sucursales — Ganadera Panamericana</title>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Libre+Franklin:wght@400;700&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -34,57 +34,21 @@
       <li><a href="catalogo.html">Catálogo</a></li>
       <li><a href="ofertas.html">Ofertas</a></li>
       <li><a href="mayorista.html">Mayorista</a></li>
-      <li><a href="sucursales.html">Sucursales</a></li>
+      <li><a href="sucursales.html" class="nav-active">Sucursales</a></li>
     </ul>
   </div>
 </nav>
 
-<!-- ===== HERO ===== -->
-<section class="hero">
-  <img src="assets/img/banner-home.png" alt="Hacienda">
-  <div class="hero-caption">
-    <h1>La mejor carne,<br>directo a tu casa</h1>
-    <p>Cortes premium seleccionados, frescos y al vacío. Calidad de campo argentino.</p>
-    <a href="catalogo.html" class="btn-cta">Ver catálogo</a>
-  </div>
-  <div class="hero-dots"><span class="active"></span><span></span><span></span></div>
-</section>
-
-<!-- ===== CORTES POR TIPO ===== -->
+<!-- ===== CONTENIDO ===== -->
 <section class="section">
   <div class="container">
     <div class="sec-title">
-      <h2>Comprá por tipo de corte</h2>
-      <p>Elegí tu categoría y descubrí toda la selección</p>
+      <h2>Sucursales</h2>
+      <p>Encontranos cerca tuyo</p>
     </div>
-    <div class="cortes">
-      <a href="catalogo.html?cat=Vacuno" class="corte-card"><img src="assets/img/cat-vacuno.png" alt="Vacuno"><div class="corte-body"><h3>Vacuno</h3><span>Ver cortes &rarr;</span></div></a>
-      <a href="catalogo.html?cat=Cerdo" class="corte-card"><img src="assets/img/cat-cerdo.png" alt="Cerdo"><div class="corte-body"><h3>Cerdo</h3><span>Ver cortes &rarr;</span></div></a>
-      <a href="catalogo.html?cat=Pollo" class="corte-card"><img src="assets/img/cat-pollo.png" alt="Pollo"><div class="corte-body"><h3>Pollo</h3><span>Ver cortes &rarr;</span></div></a>
-      <a href="catalogo.html?cat=Achuras" class="corte-card"><img src="assets/img/cat-achuras.png" alt="Achuras"><div class="corte-body"><h3>Achuras</h3><span>Ver cortes &rarr;</span></div></a>
-    </div>
+    <!-- Acá van las sucursales con mapa, dirección, horarios -->
+    <p style="text-align:center;color:#929292;padding:60px 0">Completar con información de sucursales.</p>
   </div>
-</section>
-
-<!-- ===== ENVIOS ===== -->
-<section class="envios">
-  <div class="container">
-    <img src="assets/img/truck.png" alt="Envíos">
-    <div class="env-txt">
-      <h3>Envío refrigerado a tu domicilio</h3>
-      <p>Mantenemos la cadena de frío hasta tu puerta · Consultá zonas y horarios</p>
-    </div>
-  </div>
-</section>
-
-<!-- ===== NEWSLETTER ===== -->
-<section class="newsletter">
-  <strong>Sumate a Ganadera</strong>
-  <p>Recibí ofertas exclusivas y novedades antes que nadie</p>
-  <form class="news-form" onsubmit="return false">
-    <input type="email" placeholder="Tu correo electrónico">
-    <button>Suscribirme</button>
-  </form>
 </section>
 
 <!-- ===== FOOTER ===== -->
@@ -106,36 +70,18 @@
   </div>
 </footer>
 
-<!-- ===== WHATSAPP FLOTANTE ===== -->
 <a href="#" id="wsp-float" class="wsp-float" target="_blank"><img src="assets/img/whatsapp.png" alt="WhatsApp"></a>
-
-<!-- ===== CARRITO FLOTANTE ===== -->
-<button class="carrito-float" onclick="abrirCarrito()">
-  🛒
-  <span class="float-badge" id="float-carrito-badge" style="display:none">0</span>
-</button>
+<button class="carrito-float" onclick="abrirCarrito()">🛒<span class="float-badge" id="float-carrito-badge" style="display:none">0</span></button>
 
 <script src="assets/js/main.js"></script>
-
-<!-- OVERLAY -->
 <div id="carrito-overlay" class="carrito-overlay"></div>
-
-<!-- DRAWER CARRITO -->
 <div id="carrito-drawer" class="carrito-drawer">
-  <div class="carrito-header">
-    <h3>Tu pedido</h3>
-    <button onclick="cerrarCarrito()">✕</button>
-  </div>
+  <div class="carrito-header"><h3>Tu pedido</h3><button onclick="cerrarCarrito()">✕</button></div>
   <div id="carrito-empty" class="carrito-empty">Todavía no agregaste productos.</div>
   <div id="carrito-items" class="carrito-items"></div>
   <div class="carrito-footer">
-    <div class="carrito-total-row">
-      <span>Total estimado</span>
-      <span id="carrito-total">$ 0</span>
-    </div>
-    <button class="btn-finalizar" onclick="finalizarPedido()">
-      <img src="assets/img/whatsapp.png" alt=""> Finalizar pedido por WhatsApp
-    </button>
+    <div class="carrito-total-row"><span>Total estimado</span><span id="carrito-total">$ 0</span></div>
+    <button class="btn-finalizar" onclick="finalizarPedido()"><img src="assets/img/whatsapp.png" alt=""> Finalizar pedido por WhatsApp</button>
   </div>
 </div>
 

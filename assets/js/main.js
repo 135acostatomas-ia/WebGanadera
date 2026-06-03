@@ -210,17 +210,25 @@ function tarjetaProducto(p) {
 function renderFiltros(categorias, todos) {
   const cont = document.getElementById("filtros-cat");
   if (!cont) return;
-  const cats = ["Todos", ...categorias];
-  cont.innerHTML = cats.map(c => `
-    <button class="filtro-btn ${c === "Todos" ? "active" : ""}" data-cat="${c}">${c}</button>
+
+  // Lee ?cat=X de la URL para preseleccionar categoría
+  const urlCat = new URLSearchParams(window.location.search).get("cat");
+  const catInicial = (urlCat && categorias.includes(urlCat)) ? urlCat : categorias[0];
+
+  cont.innerHTML = categorias.map(c => `
+    <button class="filtro-btn ${c === catInicial ? "active" : ""}" data-cat="${c}">${c}</button>
   `).join("");
+
+  // Mostrar productos de la categoría inicial
+  const filtradosIniciales = todos.filter(p => p.categoria === catInicial);
+  document.getElementById("prod-grid").innerHTML = filtradosIniciales.map(tarjetaProducto).join("");
 
   cont.querySelectorAll(".filtro-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       cont.querySelectorAll(".filtro-btn").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       const cat = btn.dataset.cat;
-      const filtrados = cat === "Todos" ? todos : todos.filter(p => p.categoria === cat);
+      const filtrados = todos.filter(p => p.categoria === cat);
       document.getElementById("prod-grid").innerHTML = filtrados.map(tarjetaProducto).join("");
     });
   });
@@ -244,13 +252,6 @@ async function renderProductos() {
   }
 }
 
-function toggleCatalogo() {
-  const body = document.getElementById("catalogo-body");
-  const arrow = document.getElementById("catalogo-arrow");
-  body.classList.toggle("open");
-  arrow.classList.toggle("open");
-}
-
 function setFloatWhatsApp() {
   const f = document.getElementById("wsp-float");
   if (f) {
@@ -270,8 +271,24 @@ function initHeroDots() {
   }, 3000);
 }
 
+function toggleCatalogo() {
+  const body = document.getElementById("catalogo-body");
+  const arrow = document.getElementById("catalogo-arrow");
+  if (body) body.classList.toggle("open");
+  if (arrow) arrow.classList.toggle("open");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  renderProductos();
+  // En catalogo.html el catálogo arranca abierto
+  if (window.location.pathname.includes("catalogo")) {
+    const body = document.getElementById("catalogo-body");
+    const arrow = document.getElementById("catalogo-arrow");
+    if (body) body.classList.add("open");
+    if (arrow) arrow.classList.add("open");
+    renderProductos();
+  } else {
+    renderProductos();
+  }
   setFloatWhatsApp();
   initHeroDots();
   document.getElementById("carrito-overlay").addEventListener("click", cerrarCarrito);
