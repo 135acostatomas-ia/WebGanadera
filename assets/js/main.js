@@ -16,6 +16,7 @@ const IMG_CAT = {
 
 let carrito = JSON.parse(localStorage.getItem("carrito") || "[]");
 let todosLosProductos = [];
+let vistaActual = localStorage.getItem("vista-catalogo") || null; // null = no eligió todavía
 
 function parseCSV(text) {
   const lines = text.trim().split("\n").slice(1);
@@ -48,11 +49,9 @@ function actualizarCarrito() {
 
   const totalUnidades = carrito.reduce((s, i) => s + i.cantidad, 0);
 
-  // badge header
   badge.textContent = totalUnidades;
   badge.style.display = totalUnidades > 0 ? "flex" : "none";
 
-  // badge flotante
   if (floatBadge) {
     floatBadge.textContent = totalUnidades;
     floatBadge.style.display = totalUnidades > 0 ? "flex" : "none";
@@ -62,6 +61,7 @@ function actualizarCarrito() {
     empty.style.display = "block";
     cont.innerHTML = "";
     total.textContent = "$ 0";
+    localStorage.setItem("carrito", JSON.stringify(carrito));
     return;
   }
 
@@ -138,19 +138,6 @@ function restarEnTarjeta(nombre, categoria, precio) {
   actualizarControlTarjeta(nombre, categoria, precio);
 }
 
-function feedbackBoton(btn) {
-  if (!btn) return;
-  const original = btn.innerHTML;
-  btn.innerHTML = "✓ Agregado";
-  btn.disabled = true;
-  btn.style.background = "#2a7a2a";
-  setTimeout(() => {
-    btn.innerHTML = original;
-    btn.disabled = false;
-    btn.style.background = "";
-  }, 1200);
-}
-
 function animarBadge() {
   const badge = document.getElementById("carrito-badge");
   badge.classList.remove("badge-bump");
@@ -189,6 +176,40 @@ function finalizarPedido() {
   window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(texto)}`, "_blank");
 }
 
+// ---- VISTA GRID / LIST ----
+
+function elegirVista(v) {
+  vistaActual = v;
+  localStorage.setItem("vista-catalogo", v);
+  const selector = document.getElementById("vista-selector");
+  if (selector) selector.style.display = "none";
+  aplicarVista(v);
+  renderGridConVista();
+}
+
+function setVista(v) {
+  vistaActual = v;
+  localStorage.setItem("vista-catalogo", v);
+  aplicarVista(v);
+  renderGridConVista();
+}
+
+function aplicarVista(v) {
+  const grid = document.getElementById("prod-grid");
+  if (!grid) return;
+  grid.classList.toggle("prod-grid-list", v === "list");
+  document.getElementById("btn-vista-grid")?.classList.toggle("active", v === "grid");
+  document.getElementById("btn-vista-list")?.classList.toggle("active", v === "list");
+}
+
+function renderGridConVista() {
+  const cat = document.querySelector(".filtro-btn.active")?.dataset.cat;
+  if (!cat || !todosLosProductos.length) return;
+  const filtrados = todosLosProductos.filter(p => p.categoria === cat);
+  document.getElementById("prod-grid").innerHTML = filtrados.map(tarjetaProducto).join("");
+  carrito.forEach(item => actualizarControlTarjeta(item.nombre, item.categoria, item.precio));
+}
+
 // ---- PRODUCTOS ----
 
 function tarjetaProducto(p) {
@@ -223,14 +244,28 @@ function renderFiltros(categorias, todos) {
     <button class="filtro-btn ${c === catInicial ? "active" : ""}" data-cat="${c}">${c}</button>
   `).join("");
 
-  const filtradosIniciales = todos.filter(p => p.categoria === catInicial);
-  document.getElementById("prod-grid").innerHTML = filtradosIniciales.map(tarjetaProducto).join("");
-  carrito.forEach(item => actualizarControlTarjeta(item.nombre, item.categoria, item.precio));
+  // Mostrar u ocultar selector de vista
+  const selector = document.getElementById("vista-selector");
+  const grid = document.getElementById("prod-grid");
+
+  if (vistaActual) {
+    // Ya eligió antes — mostrar productos directamente
+    if (selector) selector.style.display = "none";
+    const filtradosIniciales = todos.filter(p => p.categoria === catInicial);
+    grid.innerHTML = filtradosIniciales.map(tarjetaProducto).join("");
+    aplicarVista(vistaActual);
+    carrito.forEach(item => actualizarControlTarjeta(item.nombre, item.categoria, item.precio));
+  } else {
+    // Primera vez — mostrar selector, ocultar grid
+    if (selector) selector.style.display = "flex";
+    grid.innerHTML = "";
+  }
 
   cont.querySelectorAll(".filtro-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       cont.querySelectorAll(".filtro-btn").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
+      if (!vistaActual) return; // si no eligió vista todavía, no renderizar
       const cat = btn.dataset.cat;
       const filtrados = todos.filter(p => p.categoria === cat);
       document.getElementById("prod-grid").innerHTML = filtrados.map(tarjetaProducto).join("");
@@ -257,7 +292,7 @@ function renderCarrusel(productos) {
     const carpeta = p.categoria.toLowerCase().replace(/[^a-z]/g, "");
     const img = p.imagen ? `assets/img/${carpeta}/${p.imagen}` : (IMG_CAT[p.categoria] || "assets/img/cat-vacuno.png");
     return `
-      <div class="carrusel-card" onclick="location.href='catalogo.html?cat=${encodeURIComponent(p.categoria)}'">
+      <div class="carrusel-card" onclick="abrirCategoria('${encodeURIComponent(p.categoria)}')">
         <img class="carrusel-card-img" src="${img}" alt="${p.nombre}">
         <div class="carrusel-card-body">
           <div class="carrusel-card-cat">${p.categoria}</div>
@@ -266,25 +301,36 @@ function renderCarrusel(productos) {
       </div>`;
   }).join("");
 
-  // Fade in suave
   const section = track.closest(".carrusel-section");
   if (section) section.classList.add("loaded");
 }
 
+function abrirCategoria(cat) {
+  const body = document.getElementById("catalogo-body");
+  const arrow = document.getElementById("catalogo-arrow");
+  if (body && !body.classList.contains("open")) {
+    body.classList.add("open");
+    if (arrow) arrow.classList.add("open");
+  }
+  const decoded = decodeURIComponent(cat);
+  const btn = document.querySelector(`.filtro-btn[data-cat="${decoded}"]`);
+  if (btn) btn.click();
+  document.getElementById("productos")?.scrollIntoView({ behavior: "smooth" });
+}
+
 async function renderProductos() {
-  const cont = document.getElementById("prod-grid");
-  if (!cont) return;
-  cont.innerHTML = `<p style="padding:20px;color:#929292">Cargando productos...</p>`;
   try {
     const res = await fetch(CSV_URL);
     if (!res.ok) throw new Error("HTTP " + res.status);
     const text = await res.text();
     todosLosProductos = parseCSV(text);
     const categorias = [...new Set(todosLosProductos.map(p => p.categoria))];
-    renderFiltros(categorias, todosLosProductos);
+    const cont = document.getElementById("prod-grid");
+    if (cont) renderFiltros(categorias, todosLosProductos);
     renderCarrusel(todosLosProductos);
   } catch (e) {
-    cont.innerHTML = `<p style="padding:20px;color:#e34b00">Error al cargar productos. Intentá recargar la página.</p>`;
+    const cont = document.getElementById("prod-grid");
+    if (cont) cont.innerHTML = `<p style="padding:20px;color:#e34b00">Error al cargar productos. Intentá recargar la página.</p>`;
     console.error("Error cargando CSV:", e);
   }
 }

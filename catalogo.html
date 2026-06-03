@@ -39,7 +39,18 @@
   </div>
 </nav>
 
-<!-- ===== BOTÓN CATÁLOGO ===== -->
+<!-- ===== CARRUSEL ===== -->
+<section class="carrusel-section">
+  <div class="carrusel-header">
+    <h2>Descubrí nuestra selección</h2>
+    <p>Cortes premium del campo argentino</p>
+  </div>
+  <div class="carrusel-track-wrap">
+    <div class="carrusel-track" id="carrusel-track"></div>
+  </div>
+</section>
+
+<!-- ===== BOTÓN CATÁLOGO (debajo del carrusel) ===== -->
 <section class="catalogo-section" id="productos">
   <div class="catalogo-toggle-wrap">
     <button class="catalogo-toggle-center" id="catalogo-toggle" onclick="toggleCatalogo()">
@@ -58,23 +69,34 @@
           También podrás indicar cómo preferís recibir cada corte.
         </p>
       </div>
-      <div class="filtros-wrap">
-        <div id="filtros-cat"></div>
-      </div>
-      <div class="prod-grid" id="prod-grid"></div>
-    </div>
-  </div>
-</section>
 
-<!-- ===== CARRUSEL ===== -->
-<section class="carrusel-section">
-  <div class="carrusel-header">
-    <h2>Descubrí nuestra selección</h2>
-    <p>Cortes premium del campo argentino</p>
-  </div>
-  <div class="carrusel-track-wrap">
-    <div class="carrusel-track" id="carrusel-track">
-      <!-- Se llena con JS -->
+      <!-- Filtros + toggle de vista -->
+      <div class="filtros-y-vista">
+        <div class="filtros-wrap">
+          <div id="filtros-cat"></div>
+        </div>
+        <div class="vista-toggle">
+          <button id="btn-vista-grid" class="vista-btn active" onclick="setVista('grid')" title="Vista cuadrícula">⊞</button>
+          <button id="btn-vista-list" class="vista-btn" onclick="setVista('list')" title="Vista lista">☰</button>
+        </div>
+      </div>
+
+      <!-- Selector de vista inicial (se oculta después de elegir) -->
+      <div id="vista-selector" class="vista-selector">
+        <p>¿Cómo querés ver el catálogo?</p>
+        <div class="vista-selector-btns">
+          <button onclick="elegirVista('grid')">
+            <span>⊞</span>
+            Tarjetas
+          </button>
+          <button onclick="elegirVista('list')">
+            <span>☰</span>
+            Lista
+          </button>
+        </div>
+      </div>
+
+      <div class="prod-grid" id="prod-grid"></div>
     </div>
   </div>
 </section>
