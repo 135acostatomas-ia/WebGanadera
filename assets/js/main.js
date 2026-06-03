@@ -25,7 +25,8 @@ function parseCSV(text) {
       const nombre = parts[0]?.trim();
       const categoria = parts[1]?.trim();
       const precio = parts[2]?.trim();
-      return { nombre, categoria, precio };
+      const imagen = parts[3]?.trim() || "";
+      return { nombre, categoria, precio, imagen };
     })
     .filter(p => p.nombre && p.categoria && p.precio);
 }
@@ -188,12 +189,13 @@ function finalizarPedido() {
 // ---- PRODUCTOS ----
 
 function tarjetaProducto(p) {
-  const img = IMG_CAT[p.categoria] || "assets/img/cat-vacuno.png";
+  const carpeta = p.categoria.toLowerCase().replace(/[^a-z]/g, "");
+  const imgProducto = p.imagen ? `assets/img/${carpeta}/${p.imagen}` : (IMG_CAT[p.categoria] || "assets/img/cat-vacuno.png");
   const nombreEscapado = p.nombre.replace(/'/g, "\\'");
   const id = "prod-" + p.nombre.replace(/[^a-zA-Z0-9]/g, "-");
   return `
   <div class="prod-card">
-    <div class="prod-thumb"><img src="${img}" alt="${p.nombre}"></div>
+    <div class="prod-thumb"><img src="${imgProducto}" alt="${p.nombre}"></div>
     <div class="prod-info">
       <div class="cat">${p.categoria}</div>
       <h4>${p.nombre}</h4>
@@ -245,7 +247,6 @@ async function renderProductos() {
     todosLosProductos = parseCSV(text);
     const categorias = [...new Set(todosLosProductos.map(p => p.categoria))];
     renderFiltros(categorias, todosLosProductos);
-    cont.innerHTML = todosLosProductos.map(tarjetaProducto).join("");
   } catch (e) {
     cont.innerHTML = `<p style="padding:20px;color:#e34b00">Error al cargar productos. Intentá recargar la página.</p>`;
     console.error("Error cargando CSV:", e);
