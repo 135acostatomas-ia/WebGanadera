@@ -309,16 +309,7 @@ function toggleCatalogo() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // En catalogo.html el catálogo arranca abierto
-  if (window.location.pathname.includes("catalogo")) {
-    const body = document.getElementById("catalogo-body");
-    const arrow = document.getElementById("catalogo-arrow");
-    if (body) body.classList.add("open");
-    if (arrow) arrow.classList.add("open");
-    renderProductos();
-  } else {
-    renderProductos();
-  }
+  renderProductos();
   setFloatWhatsApp();
   initHeroDots();
   document.getElementById("carrito-overlay").addEventListener("click", cerrarCarrito);
