@@ -254,3 +254,85 @@ a.corte-card { color: inherit; }
 
 /* ---- CATALOGO BODY cuando está abierto en página propia ---- */
 .catalogo-body { background: #fff; padding: 32px 0 48px; }
+
+/* ---- CARRUSEL ---- */
+.carrusel-section {
+  background: var(--color-store);
+  padding: 52px 0 44px;
+  overflow: hidden;
+}
+.carrusel-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.carrusel-header h2 {
+  font-family: var(--font-title);
+  color: #fff;
+  font-size: 30px;
+  font-weight: 900;
+}
+.carrusel-header p {
+  color: rgba(255,255,255,.65);
+  font-size: 14px;
+  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.carrusel-track-wrap {
+  overflow: hidden;
+  width: 100%;
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+.carrusel-track {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  animation: carrusel-scroll 40s linear infinite;
+}
+.carrusel-track:hover {
+  animation-play-state: paused;
+}
+@keyframes carrusel-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.carrusel-card {
+  width: 200px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  cursor: pointer;
+  transition: transform .2s, background .2s;
+}
+.carrusel-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  background: rgba(255,255,255,.14);
+}
+.carrusel-card-img {
+  width: 200px;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+  background: rgba(255,255,255,.05);
+}
+.carrusel-card-body {
+  padding: 14px 14px 16px;
+}
+.carrusel-card-cat {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--red);
+  font-weight: 700;
+}
+.carrusel-card-nombre {
+  font-family: var(--font-libre);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 4px;
+  line-height: 1.3;
+}

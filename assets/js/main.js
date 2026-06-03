@@ -236,6 +236,34 @@ function renderFiltros(categorias, todos) {
   });
 }
 
+function renderCarrusel(productos) {
+  const track = document.getElementById("carrusel-track");
+  if (!track) return;
+  const categorias = [...new Set(productos.map(p => p.categoria))];
+  let seleccionados = [];
+  categorias.forEach(cat => {
+    const conImg = productos.filter(p => p.categoria === cat && p.imagen);
+    const sinImg = productos.filter(p => p.categoria === cat && !p.imagen);
+    const pool = conImg.length > 0 ? conImg : sinImg;
+    const shuffled = pool.sort(() => Math.random() - 0.5).slice(0, 3);
+    seleccionados = seleccionados.concat(shuffled);
+  });
+  seleccionados = seleccionados.sort(() => Math.random() - 0.5);
+  const items = [...seleccionados, ...seleccionados];
+  track.innerHTML = items.map(p => {
+    const carpeta = p.categoria.toLowerCase().replace(/[^a-z]/g, "");
+    const img = p.imagen ? `assets/img/${carpeta}/${p.imagen}` : (IMG_CAT[p.categoria] || "assets/img/cat-vacuno.png");
+    return `
+      <div class="carrusel-card" onclick="location.href='catalogo.html?cat=${encodeURIComponent(p.categoria)}'">
+        <img class="carrusel-card-img" src="${img}" alt="${p.nombre}">
+        <div class="carrusel-card-body">
+          <div class="carrusel-card-cat">${p.categoria}</div>
+          <div class="carrusel-card-nombre">${p.nombre}</div>
+        </div>
+      </div>`;
+  }).join("");
+}
+
 async function renderProductos() {
   const cont = document.getElementById("prod-grid");
   if (!cont) return;
@@ -247,6 +275,7 @@ async function renderProductos() {
     todosLosProductos = parseCSV(text);
     const categorias = [...new Set(todosLosProductos.map(p => p.categoria))];
     renderFiltros(categorias, todosLosProductos);
+    renderCarrusel(todosLosProductos);
   } catch (e) {
     cont.innerHTML = `<p style="padding:20px;color:#e34b00">Error al cargar productos. Intentá recargar la página.</p>`;
     console.error("Error cargando CSV:", e);
