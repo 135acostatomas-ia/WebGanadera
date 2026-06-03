@@ -14,7 +14,7 @@ const IMG_CAT = {
   "Fiambrería": "assets/img/cat-vacuno.png",
 };
 
-let carrito = [];
+let carrito = JSON.parse(localStorage.getItem("carrito") || "[]");
 let todosLosProductos = [];
 
 function parseCSV(text) {
@@ -84,6 +84,7 @@ function actualizarCarrito() {
 
   const totalNum = carrito.reduce((s, i) => s + i.precio * i.cantidad, 0);
   total.textContent = "$ " + totalNum.toLocaleString("es-AR");
+  localStorage.setItem("carrito", JSON.stringify(carrito));
 }
 
 function agregarAlCarrito(btn, nombre, categoria, precio) {
@@ -164,8 +165,10 @@ function cambiarCantidad(idx, delta) {
 }
 
 function eliminarItem(idx) {
+  const item = carrito[idx];
   carrito.splice(idx, 1);
   actualizarCarrito();
+  if (item) actualizarControlTarjeta(item.nombre, item.categoria, item.precio);
 }
 
 function abrirCarrito() {
@@ -213,7 +216,6 @@ function renderFiltros(categorias, todos) {
   const cont = document.getElementById("filtros-cat");
   if (!cont) return;
 
-  // Lee ?cat=X de la URL para preseleccionar categoría
   const urlCat = new URLSearchParams(window.location.search).get("cat");
   const catInicial = (urlCat && categorias.includes(urlCat)) ? urlCat : categorias[0];
 
@@ -221,9 +223,9 @@ function renderFiltros(categorias, todos) {
     <button class="filtro-btn ${c === catInicial ? "active" : ""}" data-cat="${c}">${c}</button>
   `).join("");
 
-  // Mostrar productos de la categoría inicial
   const filtradosIniciales = todos.filter(p => p.categoria === catInicial);
   document.getElementById("prod-grid").innerHTML = filtradosIniciales.map(tarjetaProducto).join("");
+  carrito.forEach(item => actualizarControlTarjeta(item.nombre, item.categoria, item.precio));
 
   cont.querySelectorAll(".filtro-btn").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -232,6 +234,7 @@ function renderFiltros(categorias, todos) {
       const cat = btn.dataset.cat;
       const filtrados = todos.filter(p => p.categoria === cat);
       document.getElementById("prod-grid").innerHTML = filtrados.map(tarjetaProducto).join("");
+      carrito.forEach(item => actualizarControlTarjeta(item.nombre, item.categoria, item.precio));
     });
   });
 }
@@ -313,6 +316,7 @@ function toggleCatalogo() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  actualizarCarrito();
   renderProductos();
   setFloatWhatsApp();
   initHeroDots();
