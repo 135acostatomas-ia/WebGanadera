@@ -262,6 +262,10 @@ function renderCarrusel(productos) {
         </div>
       </div>`;
   }).join("");
+
+  // Fade in suave
+  const section = track.closest(".carrusel-section");
+  if (section) section.classList.add("loaded");
 }
 
 async function renderProductos() {

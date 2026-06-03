@@ -173,8 +173,8 @@ a{text-decoration:none;color:inherit}
 .hamburger{font-size:22px;line-height:1}
 .catalogo-arrow{font-size:14px;transition:transform .3s ease}
 .catalogo-arrow.open{transform:rotate(180deg)}
-.catalogo-body{display:none;padding:32px 0 48px}
-.catalogo-body.open{display:block}
+.catalogo-body{max-height:0;overflow:hidden;opacity:0;transition:max-height .5s ease,opacity .4s ease;padding:0;background:#fff}
+.catalogo-body.open{max-height:4000px;opacity:1;padding:32px 0 48px}
 
 /* ---- RESPONSIVE ---- */
 @media(max-width:980px){
@@ -260,6 +260,11 @@ a.corte-card { color: inherit; }
   background: var(--color-store);
   padding: 52px 0 44px;
   overflow: hidden;
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+.carrusel-section.loaded {
+  opacity: 1;
 }
 .carrusel-header {
   text-align: center;
