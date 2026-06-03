@@ -303,6 +303,30 @@ function renderCarrusel(productos) {
 
   const section = track.closest(".carrusel-section");
   if (section) section.classList.add("loaded");
+
+  // ---- DRAG TÁCTIL ----
+  const wrap = track.parentElement;
+  let startX = 0;
+  let scrollLeft = 0;
+  let isDragging = false;
+
+  wrap.addEventListener("touchstart", e => {
+    isDragging = true;
+    startX = e.touches[0].clientX;
+    scrollLeft = wrap.scrollLeft;
+    track.style.animationPlayState = "paused";
+  }, { passive: true });
+
+  wrap.addEventListener("touchmove", e => {
+    if (!isDragging) return;
+    const dx = startX - e.touches[0].clientX;
+    wrap.scrollLeft = scrollLeft + dx;
+  }, { passive: true });
+
+  wrap.addEventListener("touchend", () => {
+    isDragging = false;
+    setTimeout(() => { track.style.animationPlayState = "running"; }, 2000);
+  });
 }
 
 function abrirCategoria(cat) {
