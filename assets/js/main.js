@@ -392,3 +392,21 @@ document.addEventListener("DOMContentLoaded", () => {
   initHeroDots();
   document.getElementById("carrito-overlay").addEventListener("click", cerrarCarrito);
 });
+(function initSteps(){
+  const steps = [0,1,2,3].map(i => document.getElementById('env-step-'+i));
+  if(!steps[0]) return;
+  const bar = document.createElement('div');
+  bar.style.cssText = 'position:absolute;top:38px;left:12.5%;height:2px;width:0;background:#e34b00;transition:width .6s ease;z-index:1';
+  document.getElementById('steps-grid').parentElement.appendChild(bar);
+  let cur = 0;
+  function activate(i){
+    steps.forEach((s,j)=>{
+      s.classList.remove('active','done');
+      if(j<i) s.classList.add('done');
+      if(j===i) s.classList.add('active');
+    });
+    bar.style.width = (i===0?'0':(i/(steps.length-1)*75)+'%');
+  }
+  activate(0);
+  setInterval(()=>{ cur=(cur+1)%steps.length; activate(cur); },2200);
+})();

@@ -217,7 +217,7 @@ a.corte-card{color:inherit}
 .carrusel-header h2{font-family:var(--font-title);color:#fff;font-size:30px;font-weight:900}
 .carrusel-header p{color:rgba(255,255,255,.65);font-size:14px;margin-top:6px;text-transform:uppercase;letter-spacing:2px}
 .carrusel-track-wrap{overflow:hidden;width:100%;mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%)}
-.carrusel-track{display:flex;gap:20px;width:max-content;animation:carrusel-scroll 40s linear infinite}
+.carrusel-track{display:flex;gap:20px;width:max-content;animation:carrusel-scroll 70s linear infinite}
 .carrusel-track:hover{animation-play-state:paused}
 @keyframes carrusel-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .carrusel-card{width:260px;flex-shrink:0;border-radius:10px;overflow:hidden;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);cursor:pointer;transition:transform .2s,background .2s}
@@ -246,4 +246,21 @@ a.corte-card{color:inherit}
   .prod-grid-list .prod-info{gap:8px;padding:8px 12px}
   .prod-grid-list .prod-cantidad{min-width:120px}
   .vista-selector-btns button{padding:20px 32px}
+}
+.envios-steps{background:var(--color-store);padding:72px 0}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.step-line{position:absolute;top:38px;left:12.5%;width:75%;height:2px;background:rgba(255,255,255,.15)}
+.step-progress{position:absolute;top:38px;left:12.5%;height:2px;width:0;background:var(--red);transition:width .6s ease}
+.env-step{text-align:center;padding:0 12px;position:relative;z-index:2}
+.env-circle{width:76px;height:76px;border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05);font-size:28px;transition:all .5s ease;position:relative}
+.env-step.active .env-circle{background:var(--red);border-color:var(--red);box-shadow:0 0 0 8px rgba(227,75,0,.2);transform:scale(1.1)}
+.env-step.done .env-circle{background:rgba(227,75,0,.25);border-color:rgba(227,75,0,.5)}
+.env-num{position:absolute;top:-6px;right:-6px;width:22px;height:22px;background:rgba(255,255,255,.15);border-radius:50%;font-size:10px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center}
+.env-step.active .env-num{background:#fff;color:var(--color-store)}
+.env-step h4{color:rgba(255,255,255,.4);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;transition:color .5s}
+.env-step.active h4,.env-step.done h4{color:#fff}
+.env-step p{color:rgba(255,255,255,.3);font-size:12px;line-height:1.6;transition:color .5s}
+.env-step.active p{color:rgba(255,255,255,.7)}
+.env-step.done p{color:rgba(255,255,255,.4)}
+@media(max-width:640px){.steps-grid{grid-template-columns:1fr 1fr;gap:32px}.step-line{display:none}
 }
