@@ -90,7 +90,7 @@
         </p>
 
         <button class="btn-mayorista" onclick="enviarMayorista()">
-          <img src="assets/img/whatsapp.png" alt=""> Enviar consulta por WhatsApp
+        Enviar consulta
         </button>
       </div>
     </div>
@@ -121,6 +121,8 @@
 
 <script src="assets/js/main.js"></script>
 <script>
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzSAq1rG-P0xz_pxe0WgkiUXMC8z3wLyiZAOaLOxf3y4uj7EUpUScp-Lgmfv7oFIUY/exec";
+
 function enviarMayorista() {
   const nombre    = document.getElementById("m-nombre").value.trim();
   const localidad = document.getElementById("m-localidad").value.trim();
@@ -134,17 +136,25 @@ function enviarMayorista() {
     return;
   }
 
-  const texto =
-    `*Consulta Mayorista — Ganadera Panamericana*\n\n` +
-    `👤 *Nombre:* ${nombre}\n` +
-    `📍 *Localidad:* ${localidad}\n` +
-    `📱 *WhatsApp:* ${telefono}\n` +
-    (mail ? `📧 *Email:* ${mail}\n` : "") +
-    `\n🥩 *Productos de interés:*\n${productos}\n` +
-    (info ? `\n📝 *Info adicional:*\n${info}` : "");
-
-  window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(texto)}`, "_blank");
+  fetch(APPS_SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify({ nombre, localidad, telefono, mail, productos, info }),
+  }).then(() => {
+    document.querySelector(".mayorista-form").innerHTML = `
+      <div style="text-align:center;padding:40px 20px;display:flex;flex-direction:column;align-items:center;gap:16px">
+        <div style="font-size:56px">✅</div>
+        <h3 style="font-family:var(--font-title);color:var(--color-store-font);font-size:26px;font-weight:900">¡Consulta enviada!</h3>
+        <p style="color:var(--grey);font-size:15px;line-height:1.7;max-width:380px">
+          Recibimos tu consulta, <strong>${nombre}</strong>.<br>
+          Nos vamos a comunicar con vos dentro de las <strong>24 horas hábiles</strong>.
+        </p>
+      </div>`;
+  }).catch(() => {
+    alert("Hubo un error al enviar. Intentá de nuevo.");
+  });
 }
+</script>
 </script>
 
 <div id="carrito-overlay" class="carrito-overlay"></div>
