@@ -44,10 +44,56 @@
   <div class="container">
     <div class="sec-title">
       <h2>Mayorista</h2>
-      <p>Precios y condiciones especiales para revendedores</p>
+      <p>Precios especiales para revendedores y volumen</p>
     </div>
-    <!-- Acá va el contenido de mayorista -->
-    <p style="text-align:center;color:#929292;padding:60px 0">Completar con información mayorista.</p>
+
+    <div class="mayorista-wrap">
+      <div class="mayorista-intro">
+        <strong>¿Comprás en volumen o revendés?</strong><br>
+        Completá el formulario y te contactamos dentro de las <strong>24 horas</strong> con precios y condiciones especiales adaptadas a tu necesidad.
+      </div>
+
+      <div class="mayorista-form">
+        <div class="form-field">
+          <label for="m-nombre">Nombre y apellido *</label>
+          <input type="text" id="m-nombre" placeholder="Ej: Juan García" maxlength="80">
+        </div>
+
+        <div class="form-field">
+          <label for="m-localidad">Localidad *</label>
+          <input type="text" id="m-localidad" placeholder="Ej: Palermo, Buenos Aires" maxlength="80">
+        </div>
+
+        <div class="form-field">
+          <label for="m-telefono">WhatsApp *</label>
+          <input type="tel" id="m-telefono" placeholder="Ej: 1155554444" maxlength="20">
+        </div>
+
+        <div class="form-field">
+          <label for="m-mail">Email</label>
+          <input type="email" id="m-mail" placeholder="tu@email.com" maxlength="100">
+        </div>
+
+        <div class="form-field">
+          <label for="m-productos">¿Qué productos te interesan? *</label>
+          <textarea id="m-productos" placeholder="Ej: Vacuno en general, especialmente asado y tira. También pollo por cantidad."></textarea>
+        </div>
+
+        <div class="form-field">
+          <label for="m-info">Información adicional</label>
+          <textarea id="m-info" placeholder="Ej: Soy carnicero, necesito pedidos semanales de aprox. 50kg" style="min-height:80px"></textarea>
+        </div>
+
+        <p class="mayorista-aviso">
+          Al enviar, se abre tu WhatsApp con el mensaje listo para mandar.<br>
+          <strong>Te respondemos dentro de las 24 horas hábiles.</strong>
+        </p>
+
+        <button class="btn-mayorista" onclick="enviarMayorista()">
+          <img src="assets/img/whatsapp.png" alt=""> Enviar consulta por WhatsApp
+        </button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -74,6 +120,33 @@
 <button class="carrito-float" onclick="abrirCarrito()">🛒<span class="float-badge" id="float-carrito-badge" style="display:none">0</span></button>
 
 <script src="assets/js/main.js"></script>
+<script>
+function enviarMayorista() {
+  const nombre    = document.getElementById("m-nombre").value.trim();
+  const localidad = document.getElementById("m-localidad").value.trim();
+  const telefono  = document.getElementById("m-telefono").value.trim();
+  const mail      = document.getElementById("m-mail").value.trim();
+  const productos = document.getElementById("m-productos").value.trim();
+  const info      = document.getElementById("m-info").value.trim();
+
+  if (!nombre || !localidad || !telefono || !productos) {
+    alert("Por favor completá los campos obligatorios (*).");
+    return;
+  }
+
+  const texto =
+    `*Consulta Mayorista — Ganadera Panamericana*\n\n` +
+    `👤 *Nombre:* ${nombre}\n` +
+    `📍 *Localidad:* ${localidad}\n` +
+    `📱 *WhatsApp:* ${telefono}\n` +
+    (mail ? `📧 *Email:* ${mail}\n` : "") +
+    `\n🥩 *Productos de interés:*\n${productos}\n` +
+    (info ? `\n📝 *Info adicional:*\n${info}` : "");
+
+  window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(texto)}`, "_blank");
+}
+</script>
+
 <div id="carrito-overlay" class="carrito-overlay"></div>
 <div id="carrito-drawer" class="carrito-drawer">
   <div class="carrito-header"><h3>Tu pedido</h3><button onclick="cerrarCarrito()">✕</button></div>

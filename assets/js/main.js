@@ -66,23 +66,35 @@ function actualizarCarrito() {
   }
 
   empty.style.display = "none";
-  cont.innerHTML = carrito.map((item, idx) => `
+  cont.innerHTML = carrito.map((item, idx) => {
+    const esOferta = item.categoria === "⭐ OFERTA";
+    const step = esOferta ? kgDesdeNombre(item.nombre) : 0.5;
+    const catLabel = esOferta
+      ? `<span class="ci-cat" style="color:var(--red);font-weight:700">⭐ OFERTA</span>`
+      : `<span class="ci-cat">${item.categoria}</span>`;
+    return `
     <div class="carrito-item">
       <div class="ci-info">
         <span class="ci-nombre">${item.nombre}</span>
-        <span class="ci-cat">${item.categoria}</span>
+        ${catLabel}
       </div>
       <div class="ci-controles">
-        <button onclick="cambiarCantidad(${idx}, -0.5)">−</button>
+        <button onclick="cambiarCantidad(${idx}, -${step})">−</button>
         <span>${item.cantidad} kg</span>
-        <button onclick="cambiarCantidad(${idx}, 0.5)">+</button>
+        <button onclick="cambiarCantidad(${idx}, ${step})">+</button>
       </div>
-      <div class="ci-precio">$ ${formatPrecio(item.precio * item.cantidad)}</div>
+      <div class="ci-precio">$ ${formatPrecio(item.precio * (esOferta ? 1 : item.cantidad))}</div>
       <button class="ci-borrar" onclick="eliminarItem(${idx})">✕</button>
-    </div>
-  `).join("");
+    </div>`;
+  }).join("");
 
-  const totalNum = carrito.reduce((s, i) => s + i.precio * i.cantidad, 0);
+  const totalNum = carrito.reduce((s, i) => {
+    if (i.categoria === "⭐ OFERTA") {
+      const kg = kgDesdeNombre(i.nombre);
+      return s + i.precio * Math.round(i.cantidad / kg);
+    }
+    return s + i.precio * i.cantidad;
+  }, 0);
   total.textContent = "$ " + totalNum.toLocaleString("es-AR");
   localStorage.setItem("carrito", JSON.stringify(carrito));
 }
@@ -170,8 +182,21 @@ function cerrarCarrito() {
 
 function finalizarPedido() {
   if (carrito.length === 0) return;
-  const lineas = carrito.map(i => `• ${i.nombre}: ${i.cantidad} kg — $${formatPrecio(i.precio * i.cantidad)}`).join("\n");
-  const totalNum = carrito.reduce((s, i) => s + i.precio * i.cantidad, 0);
+  const lineas = carrito.map(i => {
+    if (i.categoria === "⭐ OFERTA") {
+      const kg = kgDesdeNombre(i.nombre);
+      const packs = Math.round(i.cantidad / kg);
+      return `• [OFERTA] ${i.nombre} x${packs} — $${formatPrecio(i.precio * packs)}`;
+    }
+    return `• ${i.nombre}: ${i.cantidad} kg — $${formatPrecio(i.precio * i.cantidad)}`;
+  }).join("\n");
+  const totalNum = carrito.reduce((s, i) => {
+    if (i.categoria === "⭐ OFERTA") {
+      const kg = kgDesdeNombre(i.nombre);
+      return s + i.precio * Math.round(i.cantidad / kg);
+    }
+    return s + i.precio * i.cantidad;
+  }, 0);
   const texto = `Hola! Quiero hacer el siguiente pedido:\n\n${lineas}\n\nTOTAL: $${totalNum.toLocaleString("es-AR")}`;
   window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(texto)}`, "_blank");
 }
@@ -342,16 +367,138 @@ function abrirCategoria(cat) {
   document.getElementById("productos")?.scrollIntoView({ behavior: "smooth" });
 }
 
+// ---- OFERTAS (combos por columna de categoría origen) ----
+
+// Mapa: nombre de combo → categoría a la que pertenece para agrupar en columnas
+// Detecta por palabras clave en el nombre del producto
+function categoriaCombo(nombre) {
+  const n = nombre.toLowerCase();
+  if (n.includes("pollo") || n.includes("pata") || n.includes("muslo") || n.includes("suprema") || n.includes("alita")) return "Pollo";
+  if (n.includes("cerdo") || n.includes("carre") || n.includes("bondiola") || n.includes("matambrito")) return "Cerdo";
+  if (n.includes("milanesa") || n.includes("rebozada") || n.includes("hamburguesa") || n.includes("nugget")) return "Elaborados";
+  return "Vacuno"; // default: vacuno
+}
+
+// Extrae el gramaje del nombre (ej "3kg", "2kg", "1kg") → devuelve número
+function kgDesdeNombre(nombre) {
+  const match = nombre.match(/(\d+(?:[.,]\d+)?)\s*kg/i);
+  return match ? parseFloat(match[1].replace(",", ".")) : 1;
+}
+
+function tarjetaOferta(p) {
+  const kg = kgDesdeNombre(p.nombre);
+  const nombreEscapado = p.nombre.replace(/'/g, "\\'");
+  const id = "oferta-" + p.nombre.replace(/[^a-zA-Z0-9]/g, "-");
+  const item = carrito.find(i => i.nombre === p.nombre);
+
+  const btnHtml = item
+    ? `<div class="oferta-controles" id="${id}">
+        <button onclick="restarOferta('${nombreEscapado}', '${p.precio}', ${kg})">−</button>
+        <span>${item.cantidad} kg</span>
+        <button onclick="sumarOferta('${nombreEscapado}', '${p.precio}', ${kg})">+</button>
+       </div>`
+    : `<button class="btn-oferta" id="${id}" onclick="agregarOferta('${nombreEscapado}', '${p.precio}', ${kg})">+ Agregar al carrito</button>`;
+
+  return `
+  <div class="oferta-item">
+    <span class="oferta-badge">🔥 OFERTA</span>
+    <div class="oferta-nombre">${p.nombre}</div>
+    <div class="oferta-detalle">Pack de ${kg} kg</div>
+    <div class="oferta-precio">$ ${formatPrecio(p.precio)} <span>/ pack</span></div>
+    ${btnHtml}
+  </div>`;
+}
+
+function agregarOferta(nombre, precio, kg) {
+  const existente = carrito.find(i => i.nombre === nombre);
+  if (existente) {
+    existente.cantidad = Math.round((existente.cantidad + kg) * 10) / 10;
+  } else {
+    carrito.push({ nombre, categoria: "⭐ OFERTA", precio: Number(precio), cantidad: kg });
+  }
+  actualizarCarrito();
+  animarBadge();
+  actualizarControlOferta(nombre, precio, kg);
+}
+
+function sumarOferta(nombre, precio, kg) { agregarOferta(nombre, precio, kg); }
+
+function restarOferta(nombre, precio, kg) {
+  const idx = carrito.findIndex(i => i.nombre === nombre);
+  if (idx === -1) return;
+  carrito[idx].cantidad = Math.round((carrito[idx].cantidad - kg) * 10) / 10;
+  if (carrito[idx].cantidad <= 0) carrito.splice(idx, 1);
+  actualizarCarrito();
+  actualizarControlOferta(nombre, precio, kg);
+}
+
+function actualizarControlOferta(nombre, precio, kg) {
+  const id = "oferta-" + nombre.replace(/[^a-zA-Z0-9]/g, "-");
+  const cont = document.getElementById(id);
+  if (!cont) return;
+  const nombreEscapado = nombre.replace(/'/g, "\\'");
+  const item = carrito.find(i => i.nombre === nombre);
+  if (!item) {
+    cont.outerHTML = `<button class="btn-oferta" id="${id}" onclick="agregarOferta('${nombreEscapado}', '${precio}', ${kg})">+ Agregar al carrito</button>`;
+  } else {
+    cont.outerHTML = `<div class="oferta-controles" id="${id}">
+      <button onclick="restarOferta('${nombreEscapado}', '${precio}', ${kg})">−</button>
+      <span>${item.cantidad} kg</span>
+      <button onclick="sumarOferta('${nombreEscapado}', '${precio}', ${kg})">+</button>
+    </div>`;
+  }
+}
+
+function renderOfertas(combos) {
+  const cont = document.getElementById("ofertas-cols");
+  if (!cont) return;
+
+  const grupos = {};
+  combos.forEach(p => {
+    const cat = categoriaCombo(p.nombre);
+    if (!grupos[cat]) grupos[cat] = [];
+    grupos[cat].push(p);
+  });
+
+  const orden = ["Vacuno", "Pollo", "Cerdo", "Elaborados"];
+  const cats = orden.filter(c => grupos[c]);
+  Object.keys(grupos).forEach(c => { if (!cats.includes(c)) cats.push(c); });
+
+  cont.innerHTML = cats.map(cat => `
+    <div>
+      <div class="oferta-col-titulo" onclick="toggleOfertaCol(this)">
+        ${cat}
+        <span class="acord-arrow">▼</span>
+      </div>
+      <div class="oferta-col-body">
+        ${grupos[cat].map(tarjetaOferta).join("")}
+      </div>
+    </div>
+  `).join("");
+}
+
+function toggleOfertaCol(titulo) {
+  titulo.classList.toggle("open");
+  titulo.nextElementSibling.classList.toggle("open");
+}
+
 async function renderProductos() {
   try {
     const res = await fetch(CSV_URL);
     if (!res.ok) throw new Error("HTTP " + res.status);
     const text = await res.text();
     todosLosProductos = parseCSV(text);
-    const categorias = [...new Set(todosLosProductos.map(p => p.categoria))];
+
+    // Separo combos (van a ofertas) del resto (van al catálogo)
+    const combos = todosLosProductos.filter(p => p.categoria === "Combos");
+    const sinCombos = todosLosProductos.filter(p => p.categoria !== "Combos");
+
+    const categorias = [...new Set(sinCombos.map(p => p.categoria))];
     const cont = document.getElementById("prod-grid");
-    if (cont) renderFiltros(categorias, todosLosProductos);
-    renderCarrusel(todosLosProductos);
+    if (cont) renderFiltros(categorias, sinCombos);
+
+    renderCarrusel(sinCombos);
+    renderOfertas(combos);
   } catch (e) {
     const cont = document.getElementById("prod-grid");
     if (cont) cont.innerHTML = `<p style="padding:20px;color:#e34b00">Error al cargar productos. Intentá recargar la página.</p>`;

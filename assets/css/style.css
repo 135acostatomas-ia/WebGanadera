@@ -201,8 +201,8 @@ a.corte-card{color:inherit}
 .catalogo-toggle-center .catalogo-arrow{font-size:13px;transition:transform .3s ease}
 .catalogo-toggle-center .catalogo-arrow.open{transform:rotate(180deg)}
 .hamburger{font-size:22px;line-height:1}
-.catalogo-body{max-height:0;overflow:hidden;opacity:0;transition:max-height .5s ease,opacity .4s ease;padding:0;background:#fff}
-.catalogo-body.open{max-height:4000px;opacity:1;padding:32px 0 48px}
+.catalogo-body{max-height:0;overflow:hidden;opacity:0;transition:opacity .4s ease;padding:0;background:#fff}
+.catalogo-body.open{max-height:none;overflow:visible;opacity:1;padding:32px 0 48px}
 
 /* ---- CATÁLOGO: TEXTO INFORMATIVO ---- */
 .catalogo-info{display:flex;align-items:flex-start;gap:12px;background:#eef2ff;border-left:4px solid var(--color-store);border-radius:0 4px 4px 0;padding:14px 18px;margin-bottom:24px;font-size:14px;color:var(--grey);line-height:1.6}
@@ -264,3 +264,46 @@ a.corte-card{color:inherit}
 .env-step.done p{color:rgba(255,255,255,.4)}
 @media(max-width:640px){.steps-grid{grid-template-columns:1fr 1fr;gap:32px}.step-line{display:none}
 }
+/* ---- OFERTAS ---- */
+.ofertas-intro{background:#fff;border-left:4px solid var(--red);border-radius:0 4px 4px 0;padding:14px 18px;margin-bottom:36px;font-size:14px;color:var(--grey);line-height:1.6;display:flex;gap:12px;align-items:flex-start}
+.ofertas-cols-wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;align-items:start}
+
+/* Acordeón de columna */
+.oferta-col-titulo{font-family:var(--font-title);color:var(--color-store-font);font-size:16px;font-weight:900;padding:12px 16px;background:#fff;border:1px solid var(--grey-300);border-radius:6px;margin-bottom:0;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .2s}
+.oferta-col-titulo:hover{background:var(--grey-500)}
+.oferta-col-titulo.open{border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom:none;background:var(--color-store);color:#fff}
+.oferta-col-titulo .acord-arrow{font-size:12px;transition:transform .3s}
+.oferta-col-titulo.open .acord-arrow{transform:rotate(180deg)}
+.oferta-col-body{border:1px solid var(--grey-300);border-top:none;border-radius:0 0 6px 6px;overflow:hidden;max-height:0;transition:max-height .4s ease}
+.oferta-col-body.open{max-height:2000px}
+
+.oferta-item{background:#fff;padding:14px 16px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid var(--grey-300)}
+.oferta-item:last-child{border-bottom:none}
+.oferta-badge{display:inline-block;background:var(--red);color:#fff;font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border-radius:2px;align-self:flex-start}
+.oferta-nombre{font-family:var(--font-libre);color:var(--color-store-font);font-size:14px;font-weight:700;line-height:1.3}
+.oferta-detalle{font-size:11px;color:var(--grey-100)}
+.oferta-precio{font-size:20px;font-weight:900;color:var(--color-store-font)}
+.oferta-precio span{font-size:12px;font-weight:400;color:var(--grey-100)}
+.btn-oferta{width:100%;background:var(--color-store);color:#fff;border:none;padding:10px;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;border-radius:3px;margin-top:4px;transition:filter .2s}
+.btn-oferta:hover{filter:brightness(1.1)}
+.oferta-controles{display:flex;align-items:center;justify-content:space-between;margin-top:4px;border:2px solid var(--color-store);border-radius:3px;overflow:hidden}
+.oferta-controles button{background:var(--color-store);color:#fff;border:none;width:40px;height:36px;font-size:18px;cursor:pointer}
+.oferta-controles span{flex:1;text-align:center;font-weight:900;font-size:13px;color:var(--color-store-font)}
+@media(max-width:980px){.ofertas-cols-wrap{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.ofertas-cols-wrap{grid-template-columns:1fr}}
+
+/* ---- MAYORISTA FORM ---- */
+.mayorista-wrap{max-width:640px;margin:0 auto}
+.mayorista-intro{background:#eef2ff;border-left:4px solid var(--color-store);border-radius:0 4px 4px 0;padding:16px 20px;margin-bottom:36px;font-size:14px;color:var(--grey);line-height:1.7}
+.mayorista-intro strong{color:var(--color-store-font)}
+.mayorista-form{background:#fff;border:1px solid var(--grey-300);border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:20px}
+.form-field{display:flex;flex-direction:column;gap:6px}
+.form-field label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--color-store-font)}
+.form-field input,.form-field textarea,.form-field select{border:1px solid var(--grey-300);border-radius:3px;padding:12px 14px;font-family:var(--font-base);font-size:14px;color:var(--grey);transition:border-color .2s;background:#fff}
+.form-field input:focus,.form-field textarea:focus{outline:none;border-color:var(--color-store)}
+.form-field textarea{resize:vertical;min-height:100px}
+.mayorista-aviso{font-size:12px;color:var(--grey-100);text-align:center;line-height:1.6}
+.mayorista-aviso strong{color:var(--grey)}
+.btn-mayorista{width:100%;background:#25D366;color:#fff;border:none;padding:16px;font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:14px;cursor:pointer;border-radius:3px;display:flex;align-items:center;justify-content:center;gap:10px;transition:filter .2s}
+.btn-mayorista:hover{filter:brightness(.95)}
+.btn-mayorista img{width:22px;height:22px}

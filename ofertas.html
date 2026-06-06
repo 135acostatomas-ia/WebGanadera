@@ -43,11 +43,18 @@
 <section class="section">
   <div class="container">
     <div class="sec-title">
-      <h2>Ofertas</h2>
-      <p>Las mejores promociones de la semana</p>
+      <h2>Ofertas de la semana</h2>
+      <p>Combos por volumen al mejor precio</p>
     </div>
-    <!-- Acá van las ofertas cuando estén listas -->
-    <p style="text-align:center;color:#929292;padding:60px 0">Próximamente las ofertas de la semana.</p>
+
+    <div class="ofertas-intro">
+      <span style="font-size:18px;flex-shrink:0">🔥</span>
+      <p>Cada oferta se suma al carrito de <strong>una sola vez</strong> con el pack completo. En el carrito aparece identificada como <strong>OFERTA</strong>.</p>
+    </div>
+
+    <div class="ofertas-cols-wrap" id="ofertas-cols">
+      <!-- Se genera por JS -->
+    </div>
   </div>
 </section>
 
@@ -70,10 +77,7 @@
   </div>
 </footer>
 
-<!-- ===== WHATSAPP FLOTANTE ===== -->
 <a href="#" id="wsp-float" class="wsp-float" target="_blank"><img src="assets/img/whatsapp.png" alt="WhatsApp"></a>
-
-<!-- ===== CARRITO FLOTANTE ===== -->
 <button class="carrito-float" onclick="abrirCarrito()">
   🛒
   <span class="float-badge" id="float-carrito-badge" style="display:none">0</span>
