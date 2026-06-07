@@ -532,12 +532,46 @@ function toggleCatalogo() {
   if (arrow) arrow.classList.toggle("open");
 }
 
+// ---- BANNER SLIDER ----
+const bannerState = {};
+
+function initBanner(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  bannerState[id] = { current: 0, total: el.querySelectorAll('.banner-slide').length };
+  let startX = 0;
+  el.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+  el.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 40) moverBanner(id, dx < 0 ? 1 : -1);
+  });
+  setInterval(() => moverBanner(id, 1), 4500);
+}
+
+function moverBanner(id, dir) {
+  const s = bannerState[id];
+  if (!s) return;
+  s.current = (s.current + dir + s.total) % s.total;
+  irASlide(id, s.current);
+}
+
+function irASlide(id, idx) {
+  const s = bannerState[id];
+  if (!s) return;
+  s.current = idx;
+  document.getElementById(id + '-track').style.transform = `translateX(-${idx * 100}%)`;
+  document.querySelectorAll('#' + id + '-dots span').forEach((d, i) => {
+    d.classList.toggle('active', i === idx);
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   actualizarCarrito();
   renderProductos();
   setFloatWhatsApp();
   initHeroDots();
   document.getElementById("carrito-overlay").addEventListener("click", cerrarCarrito);
+  ['banner-home','banner-catalogo','banner-ofertas','banner-mayorista'].forEach(initBanner);
 });
 (function initSteps(){
   const steps = [0,1,2,3].map(i => document.getElementById('env-step-'+i));

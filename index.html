@@ -41,15 +41,44 @@ raw
   </div>
 </nav>
  
-<!-- ===== HERO ===== -->
-<section class="hero">
-  <img src="assets/img/banner-home.png" alt="Hacienda">
-  <div class="hero-caption">
-    <h1>La mejor carne,<br>directo a tu casa</h1>
-    <p>Cortes premium seleccionados y frescos. Calidad de campo argentino.</p>
-    <a href="catalogo.html" class="btn-cta">Ver catálogo</a>
+<!-- ===== BANNER SLIDER HOME ===== -->
+<section class="banner-slider" id="banner-home">
+  <div class="banner-track" id="banner-home-track">
+    <div class="banner-slide">
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#0a1f5c,#1a3a6e);display:flex;align-items:center;justify-content:center">
+        <div class="banner-caption">
+          <h2>La mejor carne,<br>directo a tu casa</h2>
+          <p>Cortes premium seleccionados y frescos. Calidad de campo argentino.</p>
+          <a href="catalogo.html" class="btn-cta">Ver catálogo</a>
+        </div>
+      </div>
+    </div>
+    <div class="banner-slide">
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#3d0f0f,#6b1a1a);display:flex;align-items:center;justify-content:center">
+        <div class="banner-caption">
+          <h2>Ofertas de la semana</h2>
+          <p>Combos por volumen al mejor precio. Frescos y listos para entregar.</p>
+          <a href="ofertas.html" class="btn-cta">Ver ofertas</a>
+        </div>
+      </div>
+    </div>
+    <div class="banner-slide">
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a3a1a,#2d5a2d);display:flex;align-items:center;justify-content:center">
+        <div class="banner-caption">
+          <h2>Pedí por WhatsApp</h2>
+          <p>Simple, rápido y sin vueltas. Armá tu pedido y lo recibís en tu puerta.</p>
+          <a href="catalogo.html" class="btn-cta">Armar pedido</a>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="hero-dots"><span class="active"></span><span></span><span></span></div>
+  <button class="banner-prev" onclick="moverBanner('banner-home',-1)">&#8249;</button>
+  <button class="banner-next" onclick="moverBanner('banner-home',1)">&#8250;</button>
+  <div class="banner-dots" id="banner-home-dots">
+    <span class="active" onclick="irASlide('banner-home',0)"></span>
+    <span onclick="irASlide('banner-home',1)"></span>
+    <span onclick="irASlide('banner-home',2)"></span>
+  </div>
 </section>
  
 <!-- ===== CORTES POR TIPO ===== -->

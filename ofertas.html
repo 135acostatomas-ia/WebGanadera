@@ -39,17 +39,40 @@
   </div>
 </nav>
 
+<!-- ===== BANNER SLIDER OFERTAS ===== -->
+<section class="banner-slider" id="banner-ofertas">
+  <div class="banner-track" id="banner-ofertas-track">
+    <div class="banner-slide">
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#3d0f0f,#6b1a1a);display:flex;align-items:center;justify-content:center">
+        <div class="banner-caption"><h2>🔥 Ofertas de la semana</h2><p>Combos armados para que ahorres sin sacrificar calidad.</p></div>
+      </div>
+    </div>
+    <div class="banner-slide">
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#0a1f5c,#1a3a6e);display:flex;align-items:center;justify-content:center">
+        <div class="banner-caption"><h2>Más kg, mejor precio</h2><p>Packs pensados para la familia o el asado del fin de semana.</p></div>
+      </div>
+    </div>
+    <div class="banner-slide">
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a3a1a,#2d5a2d);display:flex;align-items:center;justify-content:center">
+        <div class="banner-caption"><h2>Frescos y refrigerados</h2><p>Llegan el mismo día que los pedís, directo a tu puerta.</p></div>
+      </div>
+    </div>
+  </div>
+  <button class="banner-prev" onclick="moverBanner('banner-ofertas',-1)">&#8249;</button>
+  <button class="banner-next" onclick="moverBanner('banner-ofertas',1)">&#8250;</button>
+  <div class="banner-dots" id="banner-ofertas-dots">
+    <span class="active" onclick="irASlide('banner-ofertas',0)"></span>
+    <span onclick="irASlide('banner-ofertas',1)"></span>
+    <span onclick="irASlide('banner-ofertas',2)"></span>
+  </div>
+</section>
+
 <!-- ===== CONTENIDO ===== -->
 <section class="section">
   <div class="container">
     <div class="sec-title">
-      <h2>Ofertas de la semana</h2>
+      <h2>Ofertas del mes</h2>
       <p>Combos por volumen al mejor precio</p>
-    </div>
-
-    <div class="ofertas-intro">
-      <span style="font-size:18px;flex-shrink:0">🔥</span>
-      <p>Cada oferta se suma al carrito de <strong>una sola vez</strong> con el pack completo. En el carrito aparece identificada como <strong>OFERTA</strong>.</p>
     </div>
 
     <div class="ofertas-cols-wrap" id="ofertas-cols">

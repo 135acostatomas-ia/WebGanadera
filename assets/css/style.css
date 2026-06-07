@@ -304,6 +304,49 @@ a.corte-card{color:inherit}
 .form-field textarea{resize:vertical;min-height:100px}
 .mayorista-aviso{font-size:12px;color:var(--grey-100);text-align:center;line-height:1.6}
 .mayorista-aviso strong{color:var(--grey)}
-.btn-mayorista{width:100%;background:#25D366;color:#fff;border:none;padding:16px;font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:14px;cursor:pointer;border-radius:3px;display:flex;align-items:center;justify-content:center;gap:10px;transition:filter .2s}
+.btn-mayorista{width:100%;background:var(--color-store);color:#fff;border:none;padding:16px;font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:14px;cursor:pointer;border-radius:3px;display:flex;align-items:center;justify-content:center;gap:10px;transition:filter .2s}
 .btn-mayorista:hover{filter:brightness(.95)}
 .btn-mayorista img{width:22px;height:22px}
+/* ---- BANNER SLIDESHOW ---- */
+.banner-slider{position:relative;width:100%;overflow:hidden;background:var(--color-store);touch-action:pan-y}
+.banner-track{display:flex;transition:transform .5s ease}
+.banner-slide{min-width:100%;height:560px;position:relative;flex-shrink:0;overflow:hidden}
+.banner-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.banner-slide .banner-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(3,19,67,.7) 0%,rgba(3,19,67,.2) 60%,transparent 100%)}
+.banner-caption{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 8%;max-width:640px}
+.banner-caption h2{font-family:var(--font-title);color:#fff;font-size:48px;font-weight:900;line-height:1.05;text-shadow:0 2px 20px rgba(0,0,0,.4)}
+.banner-caption p{color:rgba(255,255,255,.85);font-size:17px;margin-top:14px;line-height:1.6;max-width:440px}
+.banner-caption .btn-cta{margin-top:24px;align-self:flex-start}
+.banner-dots{position:absolute;bottom:20px;left:0;right:0;display:flex;gap:10px;justify-content:center;z-index:10}
+.banner-dots span{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:background .3s,transform .3s}
+.banner-dots span.active{background:#fff;transform:scale(1.3)}
+.banner-prev,.banner-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.15);border:none;color:#fff;width:44px;height:44px;border-radius:50%;font-size:20px;cursor:pointer;z-index:10;backdrop-filter:blur(4px);transition:background .2s}
+.banner-prev{left:16px}
+.banner-next{right:16px}
+.banner-prev:hover,.banner-next:hover{background:rgba(255,255,255,.3)}
+@media(max-width:560px){
+  .banner-slide{height:240px}
+  .banner-caption h2{font-size:26px}
+  .banner-caption p{font-size:13px;margin-top:8px}
+  .banner-caption{padding:0 5%}
+  .banner-caption .btn-cta{font-size:12px;padding:11px 24px;margin-top:16px}
+  .banner-prev,.banner-next{display:none}
+}
+/* ---- SUCURSALES ---- */
+.sucursales-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:8px}
+.suc-card{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 4px 20px rgba(3,19,67,.08);transition:transform .2s,box-shadow .2s}
+.suc-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(3,19,67,.14)}
+.suc-card-header{background:var(--color-store);padding:24px 20px 20px;position:relative}
+.suc-card-header::after{content:"";position:absolute;bottom:-1px;left:0;right:0;height:4px;background:var(--red)}
+.suc-nombre{font-family:var(--font-title);color:#fff;font-size:22px;font-weight:900;text-transform:uppercase;letter-spacing:.5px}
+.suc-direccion{color:rgba(255,255,255,.75);font-size:13px;margin-top:6px;display:flex;align-items:center;gap:6px}
+.suc-card-body{padding:20px}
+.suc-horario-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--grey-100);margin-bottom:10px}
+.suc-horario-fila{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--grey-300);font-size:13px}
+.suc-horario-fila:last-child{border-bottom:none}
+.suc-horario-fila .dia{color:var(--grey);font-weight:600}
+.suc-horario-fila .hora{color:var(--color-store-font);font-weight:700}
+.btn-maps{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:16px;background:var(--color-store);color:#fff;border:none;padding:12px;border-radius:6px;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;text-decoration:none;transition:filter .2s}
+.btn-maps:hover{filter:brightness(1.1)}
+@media(max-width:980px){.sucursales-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.sucursales-grid{grid-template-columns:1fr}}
