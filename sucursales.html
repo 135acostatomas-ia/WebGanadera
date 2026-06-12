@@ -18,20 +18,21 @@
       <button>&#128269;</button>
     </div>
     <div class="header-actions">
-      <a href="#" class="ha"><span>&#128100;</span> Ingresar</a>
-      <button class="cart" onclick="abrirCarrito()">
-        <span>🛒</span>
-        <span class="badge" id="carrito-badge" style="display:none">0</span>
-      </button>
+      <button class="menu-hamburger" onclick="toggleMenu()">&#9776;</button>
     </div>
   </div>
 </header>
 
 <!-- ===== NAV ===== -->
-<nav class="main-nav">
+<nav class="main-nav" id="main-nav">
   <div class="container">
     <ul>
-      <li><a href="catalogo.html">Catálogo</a></li>
+      <li><a href="catalogo.html?cat=Vacuno">Vacuno</a></li>
+      <li><a href="catalogo.html?cat=Cerdo">Cerdo</a></li>
+      <li><a href="catalogo.html?cat=Pollo">Pollo</a></li>
+      <li><a href="catalogo.html?cat=Elaborados">Elaborados</a></li>
+      <li><a href="catalogo.html?cat=EmbutidosAchuras">Embutidos y Achuras</a></li>
+      <li><a href="catalogo.html?cat=FiambreriaAlmacen">Fiambrería y Almacén</a></li>
       <li><a href="ofertas.html">Ofertas</a></li>
       <li><a href="mayorista.html">Mayorista</a></li>
       <li><a href="sucursales.html" class="nav-active">Sucursales</a></li>
@@ -140,7 +141,7 @@
         <p>Ganadera Panamericana. Carne de calidad, seleccionada del campo argentino y entregada fresca en tu domicilio.</p>
         <div class="footer-pay">Realizá tu pedido por WhatsApp de forma simple y rápida.</div>
       </div>
-      <div><h5>Comprar</h5><ul><li><a href="catalogo.html?cat=Vacuno">Vacuno</a></li><li><a href="catalogo.html?cat=Cerdo">Cerdo</a></li><li><a href="catalogo.html?cat=Pollo">Pollo</a></li><li><a href="catalogo.html?cat=Achuras">Achuras</a></li><li><a href="ofertas.html">Ofertas</a></li></ul></div>
+      <div><h5>Comprar</h5><ul><li><a href="catalogo.html?cat=Vacuno">Vacuno</a></li><li><a href="catalogo.html?cat=Cerdo">Cerdo</a></li><li><a href="catalogo.html?cat=Pollo">Pollo</a></li><li><a href="catalogo.html?cat=EmbutidosAchuras">Embutidos y Achuras</a></li><li><a href="ofertas.html">Ofertas</a></li></ul></div>
       <div><h5>Ayuda</h5><ul><li><a href="#">Cómo comprar</a></li><li><a href="#">Zonas de envío</a></li><li><a href="#">Preguntas frecuentes</a></li></ul></div>
       <div><h5>Contacto</h5><ul><li>WhatsApp: 11 0000-0000</li><li>info@ganaderapanamericana.com</li><li>Lun a Sáb · 9 a 19hs</li></ul></div>
     </div>

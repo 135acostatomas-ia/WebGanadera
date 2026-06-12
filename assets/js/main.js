@@ -14,6 +14,13 @@ const IMG_CAT = {
   "Fiambrería": "assets/img/cat-vacuno.png",
 };
 
+
+// Agrupa categorías del Sheet bajo los botones unificados del nav
+const GRUPOS = {
+  "EmbutidosAchuras": ["Embutidos", "Achuras"],
+  "FiambreriaAlmacen": ["Fiambrería", "Almacén"]
+};
+
 let carrito = JSON.parse(localStorage.getItem("carrito") || "[]");
 let todosLosProductos = [];
 let vistaActual = localStorage.getItem("vista-catalogo") || null; // null = no eligió todavía
@@ -41,16 +48,12 @@ function formatPrecio(precio) {
 function actualizarCarrito() {
   const cont = document.getElementById("carrito-items");
   const total = document.getElementById("carrito-total");
-  const badge = document.getElementById("carrito-badge");
   const empty = document.getElementById("carrito-empty");
   const floatBadge = document.getElementById("float-carrito-badge");
 
   if (!cont) return;
 
   const totalUnidades = carrito.reduce((s, i) => s + i.cantidad, 0);
-
-  badge.textContent = totalUnidades;
-  badge.style.display = totalUnidades > 0 ? "flex" : "none";
 
   if (floatBadge) {
     floatBadge.textContent = totalUnidades;
@@ -151,7 +154,8 @@ function restarEnTarjeta(nombre, categoria, precio) {
 }
 
 function animarBadge() {
-  const badge = document.getElementById("carrito-badge");
+  const badge = document.getElementById("float-carrito-badge");
+  if (!badge) return;
   badge.classList.remove("badge-bump");
   void badge.offsetWidth;
   badge.classList.add("badge-bump");
@@ -228,9 +232,11 @@ function aplicarVista(v) {
 }
 
 function renderGridConVista() {
-  const cat = document.querySelector(".filtro-btn.active")?.dataset.cat;
-  if (!cat || !todosLosProductos.length) return;
-  const filtrados = todosLosProductos.filter(p => p.categoria === cat);
+  if (!todosLosProductos.length) return;
+  const categorias = [...new Set(todosLosProductos.map(p => p.categoriaFiltro))];
+  const urlCat = new URLSearchParams(window.location.search).get("cat");
+  const cat = (urlCat && categorias.includes(urlCat)) ? urlCat : categorias[0];
+  const filtrados = todosLosProductos.filter(p => p.categoriaFiltro === cat);
   document.getElementById("prod-grid").innerHTML = filtrados.map(tarjetaProducto).join("");
   carrito.forEach(item => actualizarControlTarjeta(item.nombre, item.categoria, item.precio));
 }
@@ -259,25 +265,19 @@ function tarjetaProducto(p) {
 }
 
 function renderFiltros(categorias, todos) {
-  const cont = document.getElementById("filtros-cat");
-  if (!cont) return;
+  const grid = document.getElementById("prod-grid");
+  if (!grid) return;
 
   const urlCat = new URLSearchParams(window.location.search).get("cat");
-  const catInicial = (urlCat && categorias.includes(urlCat)) ? urlCat : categorias[0];
+  const catActual = (urlCat && categorias.includes(urlCat)) ? urlCat : categorias[0];
 
-  cont.innerHTML = categorias.map(c => `
-    <button class="filtro-btn ${c === catInicial ? "active" : ""}" data-cat="${c}">${c}</button>
-  `).join("");
-
-  // Mostrar u ocultar selector de vista
   const selector = document.getElementById("vista-selector");
-  const grid = document.getElementById("prod-grid");
 
   if (vistaActual) {
     // Ya eligió antes — mostrar productos directamente
     if (selector) selector.style.display = "none";
-    const filtradosIniciales = todos.filter(p => p.categoria === catInicial);
-    grid.innerHTML = filtradosIniciales.map(tarjetaProducto).join("");
+    const filtrados = todos.filter(p => p.categoriaFiltro === catActual);
+    grid.innerHTML = filtrados.map(tarjetaProducto).join("");
     aplicarVista(vistaActual);
     carrito.forEach(item => actualizarControlTarjeta(item.nombre, item.categoria, item.precio));
   } else {
@@ -285,18 +285,6 @@ function renderFiltros(categorias, todos) {
     if (selector) selector.style.display = "flex";
     grid.innerHTML = "";
   }
-
-  cont.querySelectorAll(".filtro-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      cont.querySelectorAll(".filtro-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      if (!vistaActual) return; // si no eligió vista todavía, no renderizar
-      const cat = btn.dataset.cat;
-      const filtrados = todos.filter(p => p.categoria === cat);
-      document.getElementById("prod-grid").innerHTML = filtrados.map(tarjetaProducto).join("");
-      carrito.forEach(item => actualizarControlTarjeta(item.nombre, item.categoria, item.precio));
-    });
-  });
 }
 
 function renderCarrusel(productos) {
@@ -312,16 +300,34 @@ function renderCarrusel(productos) {
     seleccionados = seleccionados.concat(shuffled);
   });
   seleccionados = seleccionados.sort(() => Math.random() - 0.5);
-  const items = [...seleccionados, ...seleccionados];
+
+  pintarCarrusel(track, seleccionados, p => `abrirCategoria('${encodeURIComponent(p.categoriaFiltro)}')`);
+}
+
+function renderCarruselOfertas(combos) {
+  const track = document.getElementById("carrusel-ofertas-track");
+  if (!track) return;
+  const seleccionados = [...combos].sort(() => Math.random() - 0.5);
+
+  pintarCarrusel(track, seleccionados, () => `abrirOfertas()`, true);
+}
+
+// Pinta un carrusel infinito a partir de una lista de productos.
+// onclickFn(p) debe devolver el string del atributo onclick para cada tarjeta.
+// esOferta=true muestra badge "OFERTA" y precio del pack en vez de categoría.
+function pintarCarrusel(track, productos, onclickFn, esOferta) {
+  const items = [...productos, ...productos];
   track.innerHTML = items.map(p => {
     const carpeta = p.categoria.toLowerCase().replace(/[^a-z]/g, "");
     const img = p.imagen ? `assets/img/${carpeta}/${p.imagen}` : (IMG_CAT[p.categoria] || "assets/img/cat-vacuno.png");
+    const catLabel = esOferta ? `<span class="carrusel-badge-oferta">🔥 OFERTA</span>` : `<div class="carrusel-card-cat">${p.categoria}</div>`;
     return `
-      <div class="carrusel-card" onclick="abrirCategoria('${encodeURIComponent(p.categoria)}')">
+      <div class="carrusel-card" onclick="${onclickFn(p)}">
         <img class="carrusel-card-img" src="${img}" alt="${p.nombre}">
         <div class="carrusel-card-body">
-          <div class="carrusel-card-cat">${p.categoria}</div>
+          ${catLabel}
           <div class="carrusel-card-nombre">${p.nombre}</div>
+          ${esOferta ? `<div class="carrusel-card-precio">$ ${formatPrecio(p.precio)}</div>` : ""}
         </div>
       </div>`;
   }).join("");
@@ -354,17 +360,18 @@ function renderCarrusel(productos) {
   });
 }
 
+function abrirOfertas() {
+  document.getElementById("ofertas-cols")?.scrollIntoView({ behavior: "smooth" });
+}
+
 function abrirCategoria(cat) {
-  const body = document.getElementById("catalogo-body");
-  const arrow = document.getElementById("catalogo-arrow");
-  if (body && !body.classList.contains("open")) {
-    body.classList.add("open");
-    if (arrow) arrow.classList.add("open");
-  }
   const decoded = decodeURIComponent(cat);
-  const btn = document.querySelector(`.filtro-btn[data-cat="${decoded}"]`);
-  if (btn) btn.click();
-  document.getElementById("productos")?.scrollIntoView({ behavior: "smooth" });
+  const urlCat = new URLSearchParams(window.location.search).get("cat");
+  if (urlCat === decoded) {
+    document.getElementById("productos")?.scrollIntoView({ behavior: "smooth" });
+  } else {
+    window.location.href = `catalogo.html?cat=${encodeURIComponent(decoded)}#productos`;
+  }
 }
 
 // ---- OFERTAS (combos por columna de categoría origen) ----
@@ -493,11 +500,28 @@ async function renderProductos() {
     const combos = todosLosProductos.filter(p => p.categoria === "Combos");
     const sinCombos = todosLosProductos.filter(p => p.categoria !== "Combos");
 
-    const categorias = [...new Set(sinCombos.map(p => p.categoria))];
+    // Calculo a qué botón de filtro (categoriaFiltro) pertenece cada producto,
+    // agrupando según GRUPOS donde corresponda
+    sinCombos.forEach(p => {
+      let filtro = p.categoria;
+      for (const [grupo, miembros] of Object.entries(GRUPOS)) {
+        if (miembros.includes(p.categoria)) { filtro = grupo; break; }
+      }
+      p.categoriaFiltro = filtro;
+    });
+
+    // Orden fijo del nav para los botones de filtro
+    const ORDEN_CATS = ["Vacuno", "Cerdo", "Pollo", "Elaborados", "EmbutidosAchuras", "FiambreriaAlmacen"];
+    const presentes = new Set(sinCombos.map(p => p.categoriaFiltro));
+    const categorias = ORDEN_CATS.filter(c => presentes.has(c));
+    // Por si aparece alguna categoría nueva no contemplada en ORDEN_CATS
+    presentes.forEach(c => { if (!categorias.includes(c)) categorias.push(c); });
+
     const cont = document.getElementById("prod-grid");
     if (cont) renderFiltros(categorias, sinCombos);
 
     renderCarrusel(sinCombos);
+    renderCarruselOfertas(combos);
     renderOfertas(combos);
   } catch (e) {
     const cont = document.getElementById("prod-grid");
@@ -525,11 +549,10 @@ function initHeroDots() {
   }, 3000);
 }
 
-function toggleCatalogo() {
-  const body = document.getElementById("catalogo-body");
-  const arrow = document.getElementById("catalogo-arrow");
-  if (body) body.classList.toggle("open");
-  if (arrow) arrow.classList.toggle("open");
+
+function toggleMenu() {
+  const nav = document.getElementById("main-nav");
+  if (nav) nav.classList.toggle("nav-open");
 }
 
 // ---- BANNER SLIDER ----
@@ -571,7 +594,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setFloatWhatsApp();
   initHeroDots();
   document.getElementById("carrito-overlay").addEventListener("click", cerrarCarrito);
-  ['banner-home','banner-catalogo','banner-ofertas','banner-mayorista'].forEach(initBanner);
+  ['banner-home','banner-mayorista'].forEach(initBanner);
 });
 (function initSteps(){
   const steps = [0,1,2,3].map(i => document.getElementById('env-step-'+i));

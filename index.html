@@ -1,5 +1,3 @@
-
-raw
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -20,20 +18,21 @@ raw
       <button>&#128269;</button>
     </div>
     <div class="header-actions">
-      <a href="#" class="ha"><span>&#128100;</span> Ingresar</a>
-      <button class="cart" onclick="abrirCarrito()">
-        <span>🛒</span>
-        <span class="badge" id="carrito-badge" style="display:none">0</span>
-      </button>
+      <button class="menu-hamburger" onclick="toggleMenu()">&#9776;</button>
     </div>
   </div>
 </header>
  
 <!-- ===== NAV ===== -->
-<nav class="main-nav">
+<nav class="main-nav" id="main-nav">
   <div class="container">
     <ul>
-      <li><a href="catalogo.html">Catálogo</a></li>
+      <li><a href="catalogo.html?cat=Vacuno">Vacuno</a></li>
+      <li><a href="catalogo.html?cat=Cerdo">Cerdo</a></li>
+      <li><a href="catalogo.html?cat=Pollo">Pollo</a></li>
+      <li><a href="catalogo.html?cat=Elaborados">Elaborados</a></li>
+      <li><a href="catalogo.html?cat=EmbutidosAchuras">Embutidos y Achuras</a></li>
+      <li><a href="catalogo.html?cat=FiambreriaAlmacen">Fiambrería y Almacén</a></li>
       <li><a href="ofertas.html">Ofertas</a></li>
       <li><a href="mayorista.html">Mayorista</a></li>
       <li><a href="sucursales.html">Sucursales</a></li>
@@ -56,7 +55,7 @@ raw
     <div class="banner-slide">
       <div style="width:100%;height:100%;background:linear-gradient(135deg,#3d0f0f,#6b1a1a);display:flex;align-items:center;justify-content:center">
         <div class="banner-caption">
-          <h2>Ofertas de la semana</h2>
+          <h2>Ofertas del mes</h2>
           <p>Combos por volumen al mejor precio. Frescos y listos para entregar.</p>
           <a href="ofertas.html" class="btn-cta">Ver ofertas</a>
         </div>
@@ -93,11 +92,11 @@ raw
         <div style="height:150px;background:linear-gradient(135deg,#1a0a0a,#3d0f0f);display:flex;align-items:center;justify-content:center;font-size:56px">🥩</div>
         <div class="corte-body"><h3>Carnicería</h3><span>Ver cortes →</span></div>
       </a>
-      <a href="catalogo.html?cat=Fiambrería" class="corte-card">
+      <a href="catalogo.html?cat=FiambreriaAlmacen" class="corte-card">
         <div style="height:150px;overflow:hidden"><img src="assets/img/banners/fiambreria/banner-fiabre.png" alt="Fiambrería" style="width:100%;height:100%;object-fit:cover"></div>
         <div class="corte-body"><h3>Fiambrería</h3><span>Ver productos →</span></div>
       </a>
-      <a href="catalogo.html?cat=Almacén" class="corte-card">
+      <a href="catalogo.html?cat=FiambreriaAlmacen" class="corte-card">
         <div style="height:150px;background:linear-gradient(135deg,#1a3a1a,#2d5a2d);display:flex;align-items:center;justify-content:center;font-size:56px">🛒</div>
         <div class="corte-body"><h3>Almacén</h3><span>Ver almacén →</span></div>
       </a>
@@ -144,9 +143,17 @@ raw
 <section class="newsletter">
   <strong>Sumate a Ganadera</strong>
   <p>Recibí ofertas exclusivas y novedades por nuestro grupo de Whatsapp</p>
-  <form class="news-form" onsubmit="return false">
-    <input type="Contacto" placeholder="Numero de Whatsapp">
-    <button>Sumate</button>
+  <form class="news-form" id="sumate-form" onsubmit="return false">
+    <div class="form-field">
+      <input type="text" id="s-nombre" placeholder="Nombre y apellido" maxlength="80">
+    </div>
+    <div class="form-field">
+      <input type="tel" id="s-whatsapp" placeholder="Número de WhatsApp" maxlength="20">
+    </div>
+    <div class="form-field">
+      <input type="email" id="s-mail" placeholder="Email">
+    </div>
+    <button type="button" onclick="enviarSumate()">Sumate</button>
   </form>
 </section>
  
@@ -159,7 +166,7 @@ raw
         <p>Ganadera Panamericana. Carne de calidad, seleccionada del campo argentino y entregada fresca en tu domicilio.</p>
         <div class="footer-pay">Realizá tu pedido por WhatsApp de forma simple y rápida.</div>
       </div>
-      <div><h5>Comprar</h5><ul><li><a href="catalogo.html?cat=Vacuno">Vacuno</a></li><li><a href="catalogo.html?cat=Cerdo">Cerdo</a></li><li><a href="catalogo.html?cat=Pollo">Pollo</a></li><li><a href="catalogo.html?cat=Achuras">Achuras</a></li><li><a href="ofertas.html">Ofertas</a></li></ul></div>
+      <div><h5>Comprar</h5><ul><li><a href="catalogo.html?cat=Vacuno">Vacuno</a></li><li><a href="catalogo.html?cat=Cerdo">Cerdo</a></li><li><a href="catalogo.html?cat=Pollo">Pollo</a></li><li><a href="catalogo.html?cat=EmbutidosAchuras">Embutidos y Achuras</a></li><li><a href="ofertas.html">Ofertas</a></li></ul></div>
       <div><h5>Ayuda</h5><ul><li><a href="#">Cómo comprar</a></li><li><a href="#">Zonas de envío</a></li><li><a href="#">Preguntas frecuentes</a></li></ul></div>
       <div><h5>Contacto</h5><ul><li>WhatsApp: 11 0000-0000</li><li>info@ganaderapanamericana.com</li><li>Lun a Sáb · 9 a 19hs</li></ul></div>
     </div>
@@ -179,6 +186,33 @@ raw
 </button>
  
 <script src="assets/js/main.js"></script>
+<script>
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzSAq1rG-P0xz_pxe0WgkiUXMC8z3wLyiZAOaLOxf3y4uj7EUpUScp-Lgmfv7oFIUY/exec";
+
+function enviarSumate() {
+  const nombre   = document.getElementById("s-nombre").value.trim();
+  const telefono = document.getElementById("s-whatsapp").value.trim();
+  const mail     = document.getElementById("s-mail").value.trim();
+
+  if (!nombre || !telefono) {
+    alert("Por favor completá nombre y WhatsApp.");
+    return;
+  }
+
+  fetch(APPS_SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify({ nombre, localidad: "", telefono, mail, productos: "Newsletter / grupo de WhatsApp", info: "" }),
+  }).then(() => {
+    document.getElementById("sumate-form").innerHTML = `
+      <p style="color:#fff;font-size:15px;line-height:1.7;text-align:center">
+        ¡Gracias, ${nombre}! Te vamos a contactar pronto.
+      </p>`;
+  }).catch(() => {
+    alert("Hubo un error al enviar. Intentá de nuevo.");
+  });
+}
+</script>
  
 <!-- OVERLAY -->
 <div id="carrito-overlay" class="carrito-overlay"></div>

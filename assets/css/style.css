@@ -80,17 +80,8 @@ a.corte-card{color:inherit}
 .envios .env-txt h3{font-family:var(--font-title);font-size:26px;font-weight:700}
 .envios .env-txt p{font-size:15px;opacity:.85;margin-top:4px}
 
-/* ---- FILTROS ---- */
-.filtros-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
-.filtros-wrap::-webkit-scrollbar{height:4px}
-.filtros-wrap::-webkit-scrollbar-thumb{background:var(--grey-300);border-radius:2px}
-#filtros-cat{display:flex;gap:10px;flex-wrap:nowrap;min-width:max-content}
-.filtro-btn{background:#fff;border:2px solid var(--color-store);color:var(--color-store);padding:8px 18px;border-radius:3px;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:all .2s;white-space:nowrap}
-.filtro-btn.active,.filtro-btn:hover{background:var(--color-store);color:#fff}
-
-/* ---- FILTROS + TOGGLE VISTA ---- */
-.filtros-y-vista{display:flex;align-items:center;gap:12px;margin-bottom:24px}
-.filtros-y-vista .filtros-wrap{flex:1;margin-bottom:0}
+/* ---- TOGGLE VISTA ---- */
+.filtros-y-vista{display:flex;justify-content:flex-end;margin-bottom:24px}
 .vista-toggle{display:flex;gap:6px;flex-shrink:0}
 .vista-btn{width:38px;height:38px;border:2px solid var(--color-store);background:#fff;color:var(--color-store);border-radius:3px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .vista-btn.active{background:var(--color-store);color:#fff}
@@ -152,7 +143,7 @@ a.corte-card{color:inherit}
 .wsp-float img{width:32px;height:32px}
 
 /* ---- CARRITO FLOTANTE ---- */
-.carrito-float{position:fixed;right:30px;bottom:30px;z-index:999;width:56px;height:56px;border-radius:50%;background:var(--color-store);color:#fff;font-size:24px;border:none;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.3);transition:transform .2s;display:flex;align-items:center;justify-content:center}
+.carrito-float{position:fixed;right:30px;bottom:30px;z-index:999;width:56px;height:56px;border-radius:50%;background:#fff;color:var(--color-store);font-size:24px;border:2px solid var(--grey-300);cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.3);transition:transform .2s;display:flex;align-items:center;justify-content:center}
 .carrito-float:hover{transform:scale(1.1)}
 .float-badge{position:absolute;top:-4px;right:-4px;background:var(--red);color:#fff;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center}
 
@@ -193,16 +184,9 @@ a.corte-card{color:inherit}
 .badge-bump{animation:bump .3s ease}
 .cart{background:none;border:none;cursor:pointer;position:relative;font-size:22px;color:var(--color-store)}
 
-/* ---- CATÁLOGO COLAPSABLE ---- */
+/* ---- CATÁLOGO ---- */
 .catalogo-section{width:100%;background:#fff;border-top:60px solid #fff}
-.catalogo-toggle-wrap{display:flex;justify-content:center;background:#fff;padding:0 20px 60px}
-.catalogo-toggle-center{background:var(--color-store);color:#fff;border:none;padding:16px 48px;display:inline-flex;align-items:center;gap:14px;cursor:pointer;font-family:var(--font-base);font-size:16px;font-weight:900;text-transform:uppercase;letter-spacing:2px;border-radius:4px;transition:filter .2s}
-.catalogo-toggle-center:hover{filter:brightness(1.1)}
-.catalogo-toggle-center .catalogo-arrow{font-size:13px;transition:transform .3s ease}
-.catalogo-toggle-center .catalogo-arrow.open{transform:rotate(180deg)}
-.hamburger{font-size:22px;line-height:1}
-.catalogo-body{max-height:0;overflow:hidden;opacity:0;transition:opacity .4s ease;padding:0;background:#fff}
-.catalogo-body.open{max-height:none;overflow:visible;opacity:1;padding:32px 0 48px}
+.catalogo-body{background:#fff;padding:32px 0 48px}
 
 /* ---- CATÁLOGO: TEXTO INFORMATIVO ---- */
 .catalogo-info{display:flex;align-items:flex-start;gap:12px;background:#eef2ff;border-left:4px solid var(--color-store);border-radius:0 4px 4px 0;padding:14px 18px;margin-bottom:24px;font-size:14px;color:var(--grey);line-height:1.6}
@@ -226,6 +210,8 @@ a.corte-card{color:inherit}
 .carrusel-card-body{padding:14px 14px 16px}
 .carrusel-card-cat{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--red);font-weight:700}
 .carrusel-card-nombre{font-family:var(--font-libre);color:#fff;font-size:14px;font-weight:700;margin-top:4px;line-height:1.3}
+.carrusel-badge-oferta{display:inline-block;background:var(--red);color:#fff;font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border-radius:2px}
+.carrusel-card-precio{color:#fff;font-size:18px;font-weight:900;margin-top:6px}
 
 /* ---- RESPONSIVE ---- */
 @media(max-width:980px){
@@ -350,3 +336,14 @@ a.corte-card{color:inherit}
 .btn-maps:hover{filter:brightness(1.1)}
 @media(max-width:980px){.sucursales-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.sucursales-grid{grid-template-columns:1fr}}
+
+/* ---- MENU HAMBURGUESA / NAV MOBILE ---- */
+.menu-hamburger{display:none;background:none;border:none;font-size:26px;cursor:pointer;color:var(--color-store-font);line-height:1;padding:4px 8px;border-radius:3px;transition:background .2s}
+.menu-hamburger:hover{background:var(--grey-500)}
+@media(max-width:980px){
+  .menu-hamburger{display:block}
+  .main-nav{display:none}
+  .main-nav.nav-open{display:block}
+  .main-nav.nav-open ul{flex-direction:column}
+  .main-nav.nav-open li>a{padding:14px 20px}
+}
