@@ -18,11 +18,7 @@
       <button>&#128269;</button>
     </div>
     <div class="header-actions">
-      <a href="#" class="ha"><span>&#128100;</span> Ingresar</a>
-      <button class="cart" onclick="abrirCarrito()">
-        <span>🛒</span>
-        <span class="badge" id="carrito-badge" style="display:none">0</span>
-      </button>
+      <button class="menu-hamburger">&#9776;</button>
     </div>
   </div>
 </header>
@@ -31,7 +27,11 @@
 <nav class="main-nav">
   <div class="container">
     <ul>
-      <li><a href="catalogo.html">Catálogo</a></li>
+      <li><a href="catalogo.html?cat=Vacuno">Vacuno</a></li>
+      <li><a href="catalogo.html?cat=Pollo">Pollo</a></li>
+      <li><a href="catalogo.html?cat=Elaborados">Elaborados</a></li>
+      <li><a href="catalogo.html?cat=EmbutidosAchuras">Embutidos y Achuras</a></li>
+      <li><a href="catalogo.html?cat=FiambreríaAlmacén">Fiambrería y Almacén</a></li>
       <li><a href="ofertas.html">Ofertas</a></li>
       <li><a href="mayorista.html" class="nav-active">Mayorista</a></li>
       <li><a href="sucursales.html">Sucursales</a></li>
@@ -74,54 +74,7 @@
       <h2>Mayorista</h2>
       <p>Precios especiales para revendedores y volumen</p>
     </div>
-
-    <div class="mayorista-wrap">
-      <div class="mayorista-intro">
-        <strong>¿Comprás en volumen o revendés?</strong><br>
-        Completá el formulario y te contactamos dentro de las <strong>24 horas</strong> con precios y condiciones especiales adaptadas a tu necesidad.
-      </div>
-
-      <div class="mayorista-form">
-        <div class="form-field">
-          <label for="m-nombre">Nombre y apellido *</label>
-          <input type="text" id="m-nombre" placeholder="Ej: Juan García" maxlength="80">
-        </div>
-
-        <div class="form-field">
-          <label for="m-localidad">Localidad *</label>
-          <input type="text" id="m-localidad" placeholder="Ej: Palermo, Buenos Aires" maxlength="80">
-        </div>
-
-        <div class="form-field">
-          <label for="m-telefono">WhatsApp *</label>
-          <input type="tel" id="m-telefono" placeholder="Ej: 1155554444" maxlength="20">
-        </div>
-
-        <div class="form-field">
-          <label for="m-mail">Email</label>
-          <input type="email" id="m-mail" placeholder="tu@email.com" maxlength="100">
-        </div>
-
-        <div class="form-field">
-          <label for="m-productos">¿Qué productos te interesan? *</label>
-          <textarea id="m-productos" placeholder="Ej: Vacuno en general, especialmente asado y tira. También pollo por cantidad."></textarea>
-        </div>
-
-        <div class="form-field">
-          <label for="m-info">Información adicional</label>
-          <textarea id="m-info" placeholder="Ej: Soy carnicero, necesito pedidos semanales de aprox. 50kg" style="min-height:80px"></textarea>
-        </div>
-
-        <p class="mayorista-aviso">
-          Al enviar, se abre tu WhatsApp con el mensaje listo para mandar.<br>
-          <strong>Te respondemos dentro de las 24 horas hábiles.</strong>
-        </p>
-
-        <button class="btn-mayorista" onclick="enviarMayorista()">
-        Enviar consulta
-        </button>
-      </div>
-    </div>
+    <!-- Catálogo mayorista — próximamente -->
   </div>
 </section>
 
@@ -148,42 +101,6 @@
 <button class="carrito-float" onclick="abrirCarrito()">🛒<span class="float-badge" id="float-carrito-badge" style="display:none">0</span></button>
 
 <script src="assets/js/main.js"></script>
-<script>
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzSAq1rG-P0xz_pxe0WgkiUXMC8z3wLyiZAOaLOxf3y4uj7EUpUScp-Lgmfv7oFIUY/exec";
-
-function enviarMayorista() {
-  const nombre    = document.getElementById("m-nombre").value.trim();
-  const localidad = document.getElementById("m-localidad").value.trim();
-  const telefono  = document.getElementById("m-telefono").value.trim();
-  const mail      = document.getElementById("m-mail").value.trim();
-  const productos = document.getElementById("m-productos").value.trim();
-  const info      = document.getElementById("m-info").value.trim();
-
-  if (!nombre || !localidad || !telefono || !productos) {
-    alert("Por favor completá los campos obligatorios (*).");
-    return;
-  }
-
-  fetch(APPS_SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    body: JSON.stringify({ nombre, localidad, telefono, mail, productos, info }),
-  }).then(() => {
-    document.querySelector(".mayorista-form").innerHTML = `
-      <div style="text-align:center;padding:40px 20px;display:flex;flex-direction:column;align-items:center;gap:16px">
-        <div style="font-size:56px">✅</div>
-        <h3 style="font-family:var(--font-title);color:var(--color-store-font);font-size:26px;font-weight:900">¡Consulta enviada!</h3>
-        <p style="color:var(--grey);font-size:15px;line-height:1.7;max-width:380px">
-          Recibimos tu consulta, <strong>${nombre}</strong>.<br>
-          Nos vamos a comunicar con vos dentro de las <strong>24 horas hábiles</strong>.
-        </p>
-      </div>`;
-  }).catch(() => {
-    alert("Hubo un error al enviar. Intentá de nuevo.");
-  });
-}
-</script>
-</script>
 
 <div id="carrito-overlay" class="carrito-overlay"></div>
 <div id="carrito-drawer" class="carrito-drawer">
