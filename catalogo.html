@@ -40,7 +40,6 @@
   </div>
 </nav>
 
-
 <!-- ===== CARRUSEL ===== -->
 <section class="carrusel-section">
   <div class="carrusel-header">
@@ -56,6 +55,12 @@
 <section class="catalogo-section open" id="productos">
   <div class="catalogo-body open" id="catalogo-body">
     <div class="container">
+
+      <!-- TÍTULO DINÁMICO DE CATEGORÍA -->
+      <div class="sec-title" style="text-align:left;margin-bottom:20px">
+        <h2 id="catalogo-titulo-texto">Catálogo</h2>
+      </div>
+
       <div class="catalogo-info">
         <span class="catalogo-info-icon">ℹ️</span>
         <p>
@@ -116,7 +121,8 @@
   🛒
   <span class="float-badge" id="float-carrito-badge" style="display:none">0</span>
 </button>
- 
+
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script> 
 <script src="assets/js/main.js"></script>
  
 <div id="carrito-overlay" class="carrito-overlay"></div>

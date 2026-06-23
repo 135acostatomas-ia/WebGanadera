@@ -519,7 +519,8 @@ async function renderProductos() {
 
     const cont = document.getElementById("prod-grid");
     if (cont) renderFiltros(categorias, sinCombos);
-
+    
+    initBuscador([...sinCombos, ...combos]);
     renderCarrusel(sinCombos);
     renderCarruselOfertas(combos);
     renderOfertas(combos);
@@ -588,6 +589,115 @@ function irASlide(id, idx) {
   });
 }
 
+// ---- BUSCADOR ----
+let fuseBuscador = null;
+
+function initBuscador(productos) {
+  const Fuse = window.Fuse;
+  if (!Fuse) return;
+  fuseBuscador = new Fuse(productos, {
+    keys: ["nombre", "categoria"],
+    threshold: 0.35,
+    minMatchCharLength: 2,
+  });
+
+  document.querySelectorAll(".search input").forEach(input => {
+    const wrapper = input.closest(".search");
+    let dropdown = wrapper.querySelector(".search-dropdown");
+    if (!dropdown) {
+      dropdown = document.createElement("div");
+      dropdown.className = "search-dropdown";
+      wrapper.appendChild(dropdown);
+    }
+
+    input.addEventListener("input", () => {
+      const q = input.value.trim();
+      if (q.length < 2) { dropdown.innerHTML = ""; dropdown.style.display = "none"; return; }
+      const resultados = fuseBuscador.search(q).slice(0, 8);
+      if (!resultados.length) {
+        dropdown.innerHTML = `<div class="search-noresult">Sin resultados para "${q}"</div>`;
+        dropdown.style.display = "block";
+        return;
+      }
+      dropdown.innerHTML = resultados.map(r => {
+        const p = r.item;
+        const label = { "EmbutidosAchuras": "Embutidos y Achuras", "FiambreriaAlmacen": "Fiambrería y Almacén" }[p.categoriaFiltro] || p.categoriaFiltro || p.categoria;
+        return `<div class="search-item" onclick="irAProducto('${encodeURIComponent(p.nombre)}','${encodeURIComponent(p.categoriaFiltro || p.categoria)}')">
+          <span class="search-item-nombre">${p.nombre}</span>
+          <span class="search-item-cat">${label}</span>
+        </div>`;
+      }).join("");
+      dropdown.style.display = "block";
+    });
+
+    input.addEventListener("keydown", e => {
+      if (e.key === "Enter") {
+        const q = input.value.trim();
+        if (!q) return;
+        const res = fuseBuscador ? fuseBuscador.search(q) : [];
+        if (res.length) {
+          const p = res[0].item;
+          irAProducto(encodeURIComponent(p.nombre), encodeURIComponent(p.categoriaFiltro || p.categoria));
+        }
+        dropdown.innerHTML = ""; dropdown.style.display = "none";
+      }
+      if (e.key === "Escape") { dropdown.innerHTML = ""; dropdown.style.display = "none"; }
+    });
+
+    document.addEventListener("click", e => {
+      if (!wrapper.contains(e.target)) { dropdown.innerHTML = ""; dropdown.style.display = "none"; }
+    });
+  });
+
+  document.querySelectorAll(".search button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const input = btn.closest(".search").querySelector("input");
+      const q = input?.value.trim();
+      if (!q || !fuseBuscador) return;
+      const res = fuseBuscador.search(q);
+      if (res.length) {
+        const p = res[0].item;
+        irAProducto(encodeURIComponent(p.nombre), encodeURIComponent(p.categoriaFiltro || p.categoria));
+      }
+    });
+  });
+}
+
+function irAProducto(nombreEnc, catEnc) {
+  const nombre = decodeURIComponent(nombreEnc);
+  const cat = decodeURIComponent(catEnc);
+  const estaEnCatalogo = window.location.pathname.includes("catalogo.html");
+  const urlCatActual = new URLSearchParams(window.location.search).get("cat");
+
+  document.querySelectorAll(".search input").forEach(i => i.value = "");
+  document.querySelectorAll(".search-dropdown").forEach(d => { d.innerHTML = ""; d.style.display = "none"; });
+
+  if (estaEnCatalogo && urlCatActual === cat) {
+    highlightProducto(nombre);
+  } else {
+    window.location.href = `catalogo.html?cat=${encodeURIComponent(cat)}&producto=${encodeURIComponent(nombre)}`;
+  }
+}
+
+function highlightProducto(nombre) {
+  setTimeout(() => {
+    const id = "prod-" + nombre.replace(/[^a-zA-Z0-9]/g, "-");
+    const card = document.getElementById(id)?.closest(".prod-card");
+    if (!card) return;
+    card.scrollIntoView({ behavior: "smooth", block: "center" });
+    const info = card.querySelector(".prod-info");
+    if (!info) return;
+    info.style.transition = "background 0.3s ease, border-top 0.3s ease";
+    info.style.background = "#fff8f5";
+    info.style.borderTop = "2px solid #e34b00";
+    setTimeout(() => {
+      info.style.transition = "background 1.5s ease, border-top 1.5s ease";
+      info.style.background = "";
+      info.style.borderTop = "";
+    }, 2500);
+  }, 600);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   actualizarCarrito();
   renderProductos();
@@ -595,7 +705,35 @@ document.addEventListener("DOMContentLoaded", () => {
   initHeroDots();
   document.getElementById("carrito-overlay").addEventListener("click", cerrarCarrito);
   ['banner-home','banner-mayorista'].forEach(initBanner);
+
+  // ---- NAV ACTIVO ----
+  const urlCat = new URLSearchParams(window.location.search).get("cat");
+  const pagina = window.location.pathname.split("/").pop();
+  document.querySelectorAll(".main-nav a").forEach(a => {
+    const href = a.getAttribute("href");
+    if (!href) return;
+    if (urlCat && href.includes(`cat=${urlCat}`)) {
+      a.classList.add("nav-active");
+    } else if (!urlCat && href === pagina) {
+      a.classList.add("nav-active");
+    }
+  });
+
+  // ---- TÍTULO CATEGORÍA ----
+  const tituloCat = document.getElementById("catalogo-titulo-texto");
+  if (tituloCat && urlCat) {
+    const label = {
+      "EmbutidosAchuras": "Embutidos y Achuras",
+      "FiambreriaAlmacen": "Fiambrería y Almacén"
+    }[urlCat] || urlCat;
+    tituloCat.textContent = label;
+  }
+
+  // ---- HIGHLIGHT PRODUCTO ----
+  const urlProd = new URLSearchParams(window.location.search).get("producto");
+  if (urlProd) highlightProducto(decodeURIComponent(urlProd));
 });
+
 (function initSteps(){
   const steps = [0,1,2,3].map(i => document.getElementById('env-step-'+i));
   if(!steps[0]) return;
