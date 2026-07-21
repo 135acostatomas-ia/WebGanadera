@@ -21,6 +21,21 @@ const GRUPOS = {
   "FiambreriaAlmacen": ["Fiambrería", "Almacén"]
 };
 
+// Carpeta real de assets/img para cada categoría del Sheet.
+// Ojo: NO se deriva automáticamente del nombre (los acentos rompían la cuenta),
+// así que si agregás una categoría nueva, sumala acá también.
+const CARPETA_IMG = {
+  "Vacuno": "vacuno",
+  "Cerdo": "cerdo",
+  "Pollo": "pollo",
+  "Achuras": "achuras",
+  "Elaborados": "elaborados",
+  "Embutidos": "embutidos",
+  "Almacén": "almacen-y-fiambreria",
+  "Fiambrería": "almacen-y-fiambreria",
+  "Combos": "combos",
+};
+
 let carrito = JSON.parse(localStorage.getItem("carrito") || "[]");
 let todosLosProductos = [];
 let vistaActual = localStorage.getItem("vista-catalogo") || null; // null = no eligió todavía
@@ -244,7 +259,7 @@ function renderGridConVista() {
 // ---- PRODUCTOS ----
 
 function tarjetaProducto(p) {
-  const carpeta = p.categoria.toLowerCase().replace(/[^a-z]/g, "");
+  const carpeta = CARPETA_IMG[p.categoria] || p.categoria.toLowerCase().replace(/[^a-z]/g, "");
   const imgProducto = p.imagen ? `assets/img/${carpeta}/${p.imagen}` : (IMG_CAT[p.categoria] || "assets/img/cat-vacuno.png");
   const nombreEscapado = p.nombre.replace(/'/g, "\\'");
   const id = "prod-" + p.nombre.replace(/[^a-zA-Z0-9]/g, "-");
@@ -318,7 +333,7 @@ function renderCarruselOfertas(combos) {
 function pintarCarrusel(track, productos, onclickFn, esOferta) {
   const items = [...productos, ...productos];
   track.innerHTML = items.map(p => {
-    const carpeta = p.categoria.toLowerCase().replace(/[^a-z]/g, "");
+    const carpeta = CARPETA_IMG[p.categoria] || p.categoria.toLowerCase().replace(/[^a-z]/g, "");
     const img = p.imagen ? `assets/img/${carpeta}/${p.imagen}` : (IMG_CAT[p.categoria] || "assets/img/cat-vacuno.png");
     const catLabel = esOferta ? `<span class="carrusel-badge-oferta">🔥 OFERTA</span>` : `<div class="carrusel-card-cat">${p.categoria}</div>`;
     return `
@@ -621,8 +636,9 @@ function initBuscador(productos) {
       }
       dropdown.innerHTML = resultados.map(r => {
         const p = r.item;
-        const label = { "EmbutidosAchuras": "Embutidos y Achuras", "FiambreriaAlmacen": "Fiambrería y Almacén" }[p.categoriaFiltro] || p.categoriaFiltro || p.categoria;
-        return `<div class="search-item" onclick="irAProducto('${encodeURIComponent(p.nombre)}','${encodeURIComponent(p.categoriaFiltro || p.categoria)}')">
+        const esCombo = p.categoria === "Combos";
+        const label = esCombo ? "Oferta" : ({ "EmbutidosAchuras": "Embutidos y Achuras", "FiambreriaAlmacen": "Fiambrería y Almacén" }[p.categoriaFiltro] || p.categoriaFiltro || p.categoria);
+        return `<div class="search-item" onclick="irAProducto('${encodeURIComponent(p.nombre)}','${encodeURIComponent(p.categoriaFiltro || p.categoria)}',${esCombo})">
           <span class="search-item-nombre">${p.nombre}</span>
           <span class="search-item-cat">${label}</span>
         </div>`;
@@ -637,7 +653,7 @@ function initBuscador(productos) {
         const res = fuseBuscador ? fuseBuscador.search(q) : [];
         if (res.length) {
           const p = res[0].item;
-          irAProducto(encodeURIComponent(p.nombre), encodeURIComponent(p.categoriaFiltro || p.categoria));
+          irAProducto(encodeURIComponent(p.nombre), encodeURIComponent(p.categoriaFiltro || p.categoria), p.categoria === "Combos");
         }
         dropdown.innerHTML = ""; dropdown.style.display = "none";
       }
@@ -657,20 +673,32 @@ function initBuscador(productos) {
       const res = fuseBuscador.search(q);
       if (res.length) {
         const p = res[0].item;
-        irAProducto(encodeURIComponent(p.nombre), encodeURIComponent(p.categoriaFiltro || p.categoria));
+        irAProducto(encodeURIComponent(p.nombre), encodeURIComponent(p.categoriaFiltro || p.categoria), p.categoria === "Combos");
       }
     });
   });
 }
 
-function irAProducto(nombreEnc, catEnc) {
+function irAProducto(nombreEnc, catEnc, esCombo) {
   const nombre = decodeURIComponent(nombreEnc);
   const cat = decodeURIComponent(catEnc);
-  const estaEnCatalogo = window.location.pathname.includes("catalogo.html");
-  const urlCatActual = new URLSearchParams(window.location.search).get("cat");
 
   document.querySelectorAll(".search input").forEach(i => i.value = "");
   document.querySelectorAll(".search-dropdown").forEach(d => { d.innerHTML = ""; d.style.display = "none"; });
+
+  // Los combos/ofertas viven en ofertas.html, no en catalogo.html
+  if (esCombo) {
+    const estaEnOfertas = window.location.pathname.includes("ofertas.html");
+    if (estaEnOfertas) {
+      highlightProducto(nombre, true);
+    } else {
+      window.location.href = `ofertas.html?producto=${encodeURIComponent(nombre)}`;
+    }
+    return;
+  }
+
+  const estaEnCatalogo = window.location.pathname.includes("catalogo.html");
+  const urlCatActual = new URLSearchParams(window.location.search).get("cat");
 
   if (estaEnCatalogo && urlCatActual === cat) {
     highlightProducto(nombre);
@@ -679,13 +707,15 @@ function irAProducto(nombreEnc, catEnc) {
   }
 }
 
-function highlightProducto(nombre) {
+function highlightProducto(nombre, esCombo) {
   setTimeout(() => {
-    const id = "prod-" + nombre.replace(/[^a-zA-Z0-9]/g, "-");
-    const card = document.getElementById(id)?.closest(".prod-card");
+    const prefix = esCombo ? "oferta-" : "prod-";
+    const claseCard = esCombo ? ".oferta-item" : ".prod-card";
+    const id = prefix + nombre.replace(/[^a-zA-Z0-9]/g, "-");
+    const card = document.getElementById(id)?.closest(claseCard) || document.getElementById(id);
     if (!card) return;
     card.scrollIntoView({ behavior: "smooth", block: "center" });
-    const info = card.querySelector(".prod-info");
+    const info = esCombo ? card : card.querySelector(".prod-info");
     if (!info) return;
     info.style.transition = "background 0.3s ease, border-top 0.3s ease";
     info.style.background = "#fff8f5";
@@ -731,7 +761,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ---- HIGHLIGHT PRODUCTO ----
   const urlProd = new URLSearchParams(window.location.search).get("producto");
-  if (urlProd) highlightProducto(decodeURIComponent(urlProd));
+  if (urlProd) highlightProducto(decodeURIComponent(urlProd), window.location.pathname.includes("ofertas.html"));
 });
 
 (function initSteps(){
