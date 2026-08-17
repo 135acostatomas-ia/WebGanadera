@@ -170,6 +170,10 @@ a.corte-card{color:inherit}
 .btn-finalizar{width:100%;background:#25D366;color:#fff;border:none;padding:16px;font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:13px;cursor:pointer;border-radius:3px;display:flex;align-items:center;justify-content:center;gap:10px}
 .btn-finalizar img{width:20px;height:20px}
 .btn-finalizar:hover{filter:brightness(.95)}
+.btn-finalizar.disabled{background:var(--grey-300);color:var(--grey-100);cursor:not-allowed;pointer-events:none}
+.btn-finalizar.disabled:hover{filter:none}
+.btn-finalizar.disabled img{opacity:.5}
+.carrito-minimo-msg{display:none;font-size:12px;color:var(--red);text-align:center;line-height:1.5;margin-bottom:12px;background:#fdecea;border-radius:3px;padding:8px 10px}
 
 /* ---- BOTÓN AGREGAR ---- */
 .btn-agregar{width:100%;background:var(--color-store);color:#fff;border:none;padding:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:12px;cursor:pointer;border-radius:3px;transition:background .2s;margin-top:12px}

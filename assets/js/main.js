@@ -1,5 +1,7 @@
 const WHATSAPP_NUMERO = "5491100000000";
 
+const MINIMO_COMPRA = 60000;
+
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vROVeMldIsOVsSeIQx_yBV7JFz_GaSDnlK1JuOTVnAmxtTHSBN4Q4oiFbelaHSQ_8dnynHz8yUo0PG1/pub?gid=1110466768&single=true&output=csv";
 
 const IMG_CAT = {
@@ -35,6 +37,52 @@ const CARPETA_IMG = {
   "Fiambrería": "almacen-y-fiambreria",
   "Combos": "combos",
 };
+
+// Productos que se venden por unidad/presentación y NO por kilo
+const PRODUCTOS_POR_UNIDAD = new Set([
+  "Provoletta Parrillera en cazuela",
+
+  "Bolsa Sazón Knorr (varios)",
+  "Bolsa Sazón Barbacoa",
+  "Bolsa de Carbón Chico",
+  "Bolsa de Carbón Grande",
+  "Leña x 10kg",
+  "Maderitas (iniciador de fuego)",
+  "Maple de Huevos N°1",
+  "Huevos cajita x 1/2 doc",
+  "Pan Baguetin (cong p hornear)",
+  "Miel Pura x 500",
+  "Miel Pura x 250",
+
+  "Queso Rallado Sobre x2 La Quesera",
+  "Dulce de Batata Esnaola Lata",
+  "Dulce Choco Esnaola Lata",
+  "Dulce de Membrillo Esnaola Lata",
+  "Huevos Maple 30 N°1 Especiales",
+  "Huevos 1/2 Docena Cajita Estuche",
+  "Aceite Girasol Leira 900",
+  "Arroz Ala 500gr",
+  "Puré de Tomate Marolio 520gr",
+  "Puré Molto 520"
+]);
+
+function esProductoPorUnidad(nombre, categoria) {
+  if (categoria === "⭐ OFERTA") return false;
+  return PRODUCTOS_POR_UNIDAD.has(nombre);
+}
+
+function pasoProducto(nombre, categoria) {
+  return esProductoPorUnidad(nombre, categoria) ? 1 : 0.5;
+}
+
+function mostrarCantidad(cantidad, nombre, categoria) {
+  if (esProductoPorUnidad(nombre, categoria)) {
+    return `${cantidad} un.`;
+  }
+
+  return `${cantidad} kg`;
+}
+
 
 let carrito = JSON.parse(localStorage.getItem("carrito") || "[]");
 let todosLosProductos = [];
@@ -79,29 +127,56 @@ function actualizarCarrito() {
     empty.style.display = "block";
     cont.innerHTML = "";
     total.textContent = "$ 0";
+    actualizarEstadoMinimo(0);
     localStorage.setItem("carrito", JSON.stringify(carrito));
     return;
   }
 
   empty.style.display = "none";
+
   cont.innerHTML = carrito.map((item, idx) => {
     const esOferta = item.categoria === "⭐ OFERTA";
-    const step = esOferta ? kgDesdeNombre(item.nombre) : 0.5;
+    const esUnidad = esProductoPorUnidad(item.nombre, item.categoria);
+
+    const step = esOferta
+      ? kgDesdeNombre(item.nombre)
+      : esUnidad
+        ? 1
+        : 0.5;
+
+    const cantidadTexto = esUnidad
+      ? `${item.cantidad} un.`
+      : `${item.cantidad} kg`;
+
     const catLabel = esOferta
       ? `<span class="ci-cat" style="color:var(--red);font-weight:700">⭐ OFERTA</span>`
       : `<span class="ci-cat">${item.categoria}</span>`;
+
+    let subtotal;
+
+    if (esOferta) {
+      const kg = kgDesdeNombre(item.nombre);
+      const packs = Math.round(item.cantidad / kg);
+      subtotal = item.precio * packs;
+    } else {
+      subtotal = item.precio * item.cantidad;
+    }
+
     return `
     <div class="carrito-item">
       <div class="ci-info">
         <span class="ci-nombre">${item.nombre}</span>
         ${catLabel}
       </div>
+
       <div class="ci-controles">
         <button onclick="cambiarCantidad(${idx}, -${step})">−</button>
-        <span>${item.cantidad} kg</span>
+        <span>${cantidadTexto}</span>
         <button onclick="cambiarCantidad(${idx}, ${step})">+</button>
       </div>
-      <div class="ci-precio">$ ${formatPrecio(item.precio * (esOferta ? 1 : item.cantidad))}</div>
+
+      <div class="ci-precio">$ ${formatPrecio(subtotal)}</div>
+
       <button class="ci-borrar" onclick="eliminarItem(${idx})">✕</button>
     </div>`;
   }).join("");
@@ -111,19 +186,58 @@ function actualizarCarrito() {
       const kg = kgDesdeNombre(i.nombre);
       return s + i.precio * Math.round(i.cantidad / kg);
     }
+
     return s + i.precio * i.cantidad;
   }, 0);
+
   total.textContent = "$ " + totalNum.toLocaleString("es-AR");
+  actualizarEstadoMinimo(totalNum);
+
   localStorage.setItem("carrito", JSON.stringify(carrito));
 }
 
-function agregarAlCarrito(btn, nombre, categoria, precio) {
-  const existente = carrito.find(i => i.nombre === nombre);
-  if (existente) {
-    existente.cantidad = Math.round((existente.cantidad + 0.5) * 10) / 10;
-  } else {
-    carrito.push({ nombre, categoria, precio: Number(precio), cantidad: 0.5 });
+// Deshabilita el botón de WhatsApp y muestra cuánto falta hasta el mínimo de compra
+function actualizarEstadoMinimo(totalNum) {
+  const btn = document.querySelector(".btn-finalizar");
+  if (!btn) return;
+
+  let msg = document.getElementById("carrito-minimo-msg");
+  if (!msg) {
+    msg = document.createElement("div");
+    msg.id = "carrito-minimo-msg";
+    msg.className = "carrito-minimo-msg";
+    btn.parentNode.insertBefore(msg, btn);
   }
+
+  const falta = MINIMO_COMPRA - totalNum;
+
+  if (falta > 0) {
+    btn.classList.add("disabled");
+    btn.disabled = true;
+    msg.style.display = "block";
+    msg.textContent = `Te faltan $${falta.toLocaleString("es-AR")} para llegar al mínimo de compra ($${MINIMO_COMPRA.toLocaleString("es-AR")})`;
+  } else {
+    btn.classList.remove("disabled");
+    btn.disabled = false;
+    msg.style.display = "none";
+  }
+}
+
+function agregarAlCarrito(btn, nombre, categoria, precio) {
+  const step = pasoProducto(nombre, categoria);
+  const existente = carrito.find(i => i.nombre === nombre);
+
+  if (existente) {
+    existente.cantidad = Math.round((existente.cantidad + step) * 10) / 10;
+  } else {
+    carrito.push({
+      nombre,
+      categoria,
+      precio: Number(precio),
+      cantidad: step
+    });
+  }
+
   actualizarCarrito();
   animarBadge();
   actualizarControlTarjeta(nombre, categoria, precio);
@@ -133,37 +247,56 @@ function actualizarControlTarjeta(nombre, categoria, precio) {
   const id = "prod-" + nombre.replace(/[^a-zA-Z0-9]/g, "-");
   const cont = document.getElementById(id);
   if (!cont) return;
+
   const item = carrito.find(i => i.nombre === nombre);
   const nombreEscapado = nombre.replace(/'/g, "\\'");
+
   if (!item) {
     cont.innerHTML = `<button class="btn-agregar" onclick="agregarAlCarrito(this, '${nombreEscapado}', '${categoria}', '${precio}')">+ Agregar al carrito</button>`;
     return;
   }
+
+  const cantidadTexto = mostrarCantidad(item.cantidad, nombre, categoria);
+
   cont.innerHTML = `
     <div class="prod-controles">
       <button onclick="restarEnTarjeta('${nombreEscapado}', '${categoria}', '${precio}')">−</button>
-      <span>${item.cantidad} kg</span>
+      <span>${cantidadTexto}</span>
       <button onclick="sumarEnTarjeta('${nombreEscapado}', '${categoria}', '${precio}')">+</button>
     </div>`;
 }
 
 function sumarEnTarjeta(nombre, categoria, precio) {
+  const step = pasoProducto(nombre, categoria);
   const existente = carrito.find(i => i.nombre === nombre);
+
   if (existente) {
-    existente.cantidad = Math.round((existente.cantidad + 0.5) * 10) / 10;
+    existente.cantidad = Math.round((existente.cantidad + step) * 10) / 10;
   } else {
-    carrito.push({ nombre, categoria, precio: Number(precio), cantidad: 0.5 });
+    carrito.push({
+      nombre,
+      categoria,
+      precio: Number(precio),
+      cantidad: step
+    });
   }
+
   actualizarCarrito();
   animarBadge();
   actualizarControlTarjeta(nombre, categoria, precio);
 }
 
 function restarEnTarjeta(nombre, categoria, precio) {
+  const step = pasoProducto(nombre, categoria);
   const idx = carrito.findIndex(i => i.nombre === nombre);
   if (idx === -1) return;
-  carrito[idx].cantidad = Math.round((carrito[idx].cantidad - 0.5) * 10) / 10;
-  if (carrito[idx].cantidad <= 0) carrito.splice(idx, 1);
+
+  carrito[idx].cantidad = Math.round((carrito[idx].cantidad - step) * 10) / 10;
+
+  if (carrito[idx].cantidad <= 0) {
+    carrito.splice(idx, 1);
+  }
+
   actualizarCarrito();
   actualizarControlTarjeta(nombre, categoria, precio);
 }
@@ -201,14 +334,35 @@ function cerrarCarrito() {
 
 function finalizarPedido() {
   if (carrito.length === 0) return;
+
+  const totalActual = carrito.reduce((s, i) => {
+    if (i.categoria === "⭐ OFERTA") {
+      const kg = kgDesdeNombre(i.nombre);
+      return s + i.precio * Math.round(i.cantidad / kg);
+    }
+    return s + i.precio * i.cantidad;
+  }, 0);
+
+  if (totalActual < MINIMO_COMPRA) return;
+
   const lineas = carrito.map(i => {
     if (i.categoria === "⭐ OFERTA") {
       const kg = kgDesdeNombre(i.nombre);
       const packs = Math.round(i.cantidad / kg);
       return `• [OFERTA] ${i.nombre} x${packs} — $${formatPrecio(i.precio * packs)}`;
     }
+
+    if (esProductoPorUnidad(i.nombre, i.categoria)) {
+      const textoUnidad = i.cantidad === 1
+        ? "1 unidad"
+        : `${i.cantidad} unidades`;
+
+      return `• ${i.nombre}: ${textoUnidad} — $${formatPrecio(i.precio * i.cantidad)}`;
+    }
+
     return `• ${i.nombre}: ${i.cantidad} kg — $${formatPrecio(i.precio * i.cantidad)}`;
   }).join("\n");
+
   const totalNum = carrito.reduce((s, i) => {
     if (i.categoria === "⭐ OFERTA") {
       const kg = kgDesdeNombre(i.nombre);
@@ -216,6 +370,7 @@ function finalizarPedido() {
     }
     return s + i.precio * i.cantidad;
   }, 0);
+
   const texto = `Hola! Quiero hacer el siguiente pedido:\n\n${lineas}\n\nTOTAL: $${totalNum.toLocaleString("es-AR")}`;
   window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(texto)}`, "_blank");
 }
@@ -260,16 +415,21 @@ function renderGridConVista() {
 
 function tarjetaProducto(p) {
   const carpeta = CARPETA_IMG[p.categoria] || p.categoria.toLowerCase().replace(/[^a-z]/g, "");
-  const imgProducto = p.imagen ? `assets/img/${carpeta}/${p.imagen}` : (IMG_CAT[p.categoria] || "assets/img/cat-vacuno.png");
+  const imgProducto = p.imagen
+    ? `assets/img/${carpeta}/${p.imagen}`
+    : (IMG_CAT[p.categoria] || "assets/img/cat-vacuno.png");
+
   const nombreEscapado = p.nombre.replace(/'/g, "\\'");
   const id = "prod-" + p.nombre.replace(/[^a-zA-Z0-9]/g, "-");
+  const unidadPrecio = esProductoPorUnidad(p.nombre, p.categoria) ? "/ unidad" : "/ kg";
+
   return `
   <div class="prod-card">
     <div class="prod-thumb"><img src="${imgProducto}" alt="${p.nombre}"></div>
     <div class="prod-info">
       <div class="cat">${p.categoria}</div>
       <h4>${p.nombre}</h4>
-      <div class="prod-price"><span class="now">$ ${formatPrecio(p.precio)}</span><span class="kg">/ kg</span></div>
+      <div class="prod-price"><span class="now">$ ${formatPrecio(p.precio)}</span><span class="kg">${unidadPrecio}</span></div>
       <div class="prod-cantidad" id="${id}">
         <button class="btn-agregar" onclick="agregarAlCarrito(this, '${nombreEscapado}', '${p.categoria}', '${p.precio}')">
           + Agregar al carrito
