@@ -271,8 +271,8 @@ a.corte-card{color:inherit}
 }
 .envios-steps{background:var(--color-store);padding:72px 0}
 .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
-.step-line{position:absolute;top:38px;left:12.5%;width:75%;height:2px;background:rgba(255,255,255,.15)}
-.step-progress{position:absolute;top:38px;left:12.5%;height:2px;width:0;background:var(--red);transition:width .6s ease}
+.step-line{display:none}
+.step-progress{display:none}
 .env-step{text-align:center;padding:0 12px;position:relative;z-index:2}
 .env-circle{width:76px;height:76px;border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05);font-size:28px;transition:all .5s ease;position:relative}
 .env-step.active .env-circle{background:var(--action-blue);border-color:var(--action-blue-border);box-shadow:0 0 0 8px rgba(31,110,212,.18);transform:scale(1.1)}
