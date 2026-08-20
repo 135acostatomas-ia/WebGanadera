@@ -116,15 +116,28 @@
       <h2>Zona de cobertura y sucursales</h2>
       <p>Mirá dónde estamos y hasta dónde llegamos con nuestros envíos</p>
     </div>
-    <div style="border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08)">
-      <iframe
-        src="https://www.google.com/maps/d/embed?mid=1Galt8ou5aI-Z2HqTFyp5ObF2qblyF9Y&ll=-34.49400537653811%2C-58.663085249999995&z=10"
-        width="100%"
-        height="450"
-        style="border:0;display:block"
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade">
-      </iframe>
+    <div class="coverage-card">
+      <div class="coverage-callout">
+        <div class="coverage-callout-icon" aria-hidden="true">📍</div>
+        <div class="coverage-callout-copy">
+          <h3>¿Llegamos a tu zona?</h3>
+          <p>Hacemos entregas refrigeradas en CABA y Zona Norte. Revisá el mapa o consultanos por WhatsApp.</p>
+        </div>
+        <a
+          href="#"
+          class="coverage-cta"
+          onclick="window.open('https://wa.me/' + WHATSAPP_NUMERO + '?text=' + encodeURIComponent('Hola! Quiero consultar si hacen entregas en mi zona.'), '_blank'); return false;">
+          Consultar cobertura
+        </a>
+      </div>
+      <div class="coverage-map-crop">
+        <iframe
+          src="https://www.google.com/maps/d/embed?mid=1Galt8ou5aI-Z2HqTFyp5ObF2qblyF9Y&ll=-34.49400537653811%2C-58.663085249999995&z=10"
+          title="Mapa de cobertura y sucursales de Ganadera Panamericana"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
     </div>
   </div>
 </section>
