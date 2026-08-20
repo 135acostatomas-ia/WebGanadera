@@ -16,6 +16,7 @@
   --font-title:'Frank Ruhl Libre',serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
+html{max-width:100%;overflow-x:hidden;overflow-x:clip}
 body{font-family:var(--font-base);background:var(--body-bg);color:var(--grey);font-size:14px}
 img{max-width:100%;display:block}
 a{text-decoration:none;color:inherit}
@@ -177,8 +178,8 @@ a.corte-card{color:inherit}
 /* ---- CARRITO DRAWER ---- */
 .carrito-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000}
 .carrito-overlay.open{display:block}
-.carrito-drawer{position:fixed;top:0;right:-420px;width:100%;max-width:420px;height:100vh;background:#fff;z-index:1001;display:flex;flex-direction:column;transition:right .3s ease;box-shadow:-4px 0 20px rgba(0,0,0,.15)}
-.carrito-drawer.open{right:0}
+.carrito-drawer{position:fixed;top:0;right:0;transform:translateX(100%);width:100%;max-width:420px;height:100vh;background:#fff;z-index:1001;display:flex;flex-direction:column;transition:transform .3s ease;box-shadow:-4px 0 20px rgba(0,0,0,.15)}
+.carrito-drawer.open{transform:translateX(0)}
 .carrito-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--grey-300)}
 .carrito-header h3{font-family:var(--font-title);color:var(--color-store-font);font-size:22px;font-weight:700}
 .carrito-header button{background:none;border:none;font-size:20px;cursor:pointer;color:var(--grey)}
@@ -274,8 +275,8 @@ a.corte-card{color:inherit}
 .step-progress{position:absolute;top:38px;left:12.5%;height:2px;width:0;background:var(--red);transition:width .6s ease}
 .env-step{text-align:center;padding:0 12px;position:relative;z-index:2}
 .env-circle{width:76px;height:76px;border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05);font-size:28px;transition:all .5s ease;position:relative}
-.env-step.active .env-circle{background:var(--red);border-color:var(--red);box-shadow:0 0 0 8px rgba(227,75,0,.2);transform:scale(1.1)}
-.env-step.done .env-circle{background:rgba(227,75,0,.25);border-color:rgba(227,75,0,.5)}
+.env-step.active .env-circle{background:var(--action-blue);border-color:var(--action-blue-border);box-shadow:0 0 0 8px rgba(31,110,212,.18);transform:scale(1.1)}
+.env-step.done .env-circle{background:rgba(31,110,212,.32);border-color:var(--action-blue-border)}
 .env-num{position:absolute;top:-6px;right:-6px;width:22px;height:22px;background:rgba(255,255,255,.15);border-radius:50%;font-size:10px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center}
 .env-step.active .env-num{background:#fff;color:var(--color-store)}
 .env-step h4{color:rgba(255,255,255,.4);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;transition:color .5s}
@@ -283,7 +284,14 @@ a.corte-card{color:inherit}
 .env-step p{color:rgba(255,255,255,.3);font-size:12px;line-height:1.6;transition:color .5s}
 .env-step.active p{color:rgba(255,255,255,.7)}
 .env-step.done p{color:rgba(255,255,255,.4)}
-@media(max-width:640px){.steps-grid{grid-template-columns:1fr 1fr;gap:32px}.step-line{display:none}
+@media(max-width:980px){
+  .steps-grid{grid-template-columns:repeat(2,1fr);gap:32px}
+  .envios-steps .step-line,.envios-steps .step-progress{display:none}
+  .envios-steps .sec-title h2:after{display:none}
+}
+@media(max-width:640px){
+  .steps-grid{grid-template-columns:1fr;gap:28px}
+  .env-step{width:100%;max-width:320px;margin:0 auto}
 }
 /* ---- OFERTAS ---- */
 .ofertas-intro{background:#fff;border-left:4px solid var(--red);border-radius:0 4px 4px 0;padding:14px 18px;margin-bottom:36px;font-size:14px;color:var(--grey);line-height:1.6;display:flex;gap:12px;align-items:flex-start}
