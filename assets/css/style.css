@@ -229,7 +229,7 @@ a.corte-card{color:inherit}
   .search{display:none}
   .page-header .header-content{padding-top:8px;padding-bottom:8px}
   .logo-icon{height:82px}
-  .logo-text{position:absolute;left:49%;top:50%;transform:translate(-50%,-50%);height:45px}
+  .logo-text{position:absolute;left:51%;top:50%;transform:translate(-50%,-50%);height:45px}
   .menu-hamburger{font-size:32px;padding:6px 10px}
 }
 @media(max-width:560px){
