@@ -27,7 +27,8 @@ a{text-decoration:none;color:inherit}
 
 /* ---- HEADER ---- */
 .page-header{background:var(--primary);border-bottom:1px solid var(--grey-300)}
-.header-content{position:relative;display:flex;align-items:center;justify-content:space-between;padding:18px 0;gap:30px}
+.header-content{position:relative;display:flex;align-items:center;justify-content:space-between;gap:30px}
+.page-header .header-content{padding-top:18px;padding-bottom:18px}
 .logo{display:flex;align-items:center;gap:12px;flex-shrink:0}
 .logo-icon{height:56px;width:auto;display:block}
 .logo-text{height:34px;width:auto;display:block}
@@ -226,8 +227,10 @@ a.corte-card{color:inherit}
   .footer-cols{grid-template-columns:1fr 1fr}
   .hero-caption h1{font-size:36px}
   .search{display:none}
-  .logo-icon{height:44px}
-  .logo-text{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);height:22px}
+  .page-header .header-content{padding-top:16px;padding-bottom:16px}
+  .logo-icon{height:52px}
+  .logo-text{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);height:26px}
+  .menu-hamburger{font-size:32px;padding:6px 10px}
 }
 @media(max-width:560px){
   .cortes,.prod-grid{grid-template-columns:1fr}
