@@ -227,9 +227,9 @@ a.corte-card{color:inherit}
   .footer-cols{grid-template-columns:1fr 1fr}
   .hero-caption h1{font-size:36px}
   .search{display:none}
-  .page-header .header-content{padding-top:16px;padding-bottom:16px}
-  .logo-icon{height:52px}
-  .logo-text{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);height:26px}
+  .page-header .header-content{padding-top:14px;padding-bottom:14px}
+  .logo-icon{height:72px}
+  .logo-text{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);height:38px}
   .menu-hamburger{font-size:32px;padding:6px 10px}
 }
 @media(max-width:560px){
