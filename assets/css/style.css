@@ -39,7 +39,7 @@ a{text-decoration:none;color:inherit}
   .page-header .header-content{height:92px;padding-top:0;padding-bottom:0}
   .logo-icon{height:72px}
   .logo-text{height:44px}
-  .search{
+  .page-header .search{
     position:absolute;
     left:50%;
     top:50%;
