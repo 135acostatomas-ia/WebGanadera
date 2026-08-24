@@ -85,27 +85,14 @@
   </div>
 </section>
  
-<!-- ===== CORTES POR TIPO ===== -->
-<section class="section">
-  <div class="container">
-    <div class="sec-title">
-      <h2>Comprá por sección</h2>
-      <p>Carnicería, fiambrería y almacén en un solo lugar</p>
-    </div>
-    <div class="cortes" style="grid-template-columns:repeat(3,1fr)">
-      <a href="catalogo.html?cat=Vacuno" class="corte-card">
-        <div style="height:150px;background:linear-gradient(135deg,#1a0a0a,#3d0f0f);display:flex;align-items:center;justify-content:center;font-size:56px">🥩</div>
-        <div class="corte-body"><h3>Carnicería</h3><span>Ver cortes →</span></div>
-      </a>
-      <a href="catalogo.html?cat=FiambreriaAlmacen" class="corte-card">
-        <div style="height:150px;overflow:hidden"><img src="assets/img/banners/fiambreria/banner-fiabre.png" alt="Fiambrería" style="width:100%;height:100%;object-fit:cover"></div>
-        <div class="corte-body"><h3>Fiambrería</h3><span>Ver productos →</span></div>
-      </a>
-      <a href="catalogo.html?cat=FiambreriaAlmacen" class="corte-card">
-        <div style="height:150px;background:linear-gradient(135deg,#1a3a1a,#2d5a2d);display:flex;align-items:center;justify-content:center;font-size:56px">🛒</div>
-        <div class="corte-body"><h3>Almacén</h3><span>Ver almacén →</span></div>
-      </a>
-    </div>
+<!-- ===== CARRUSEL DEL CATALOGO ===== -->
+<section class="carrusel-section">
+  <div class="carrusel-header">
+    <h2>Descubrí nuestro catálogo</h2>
+    <p>Todos nuestros productos</p>
+  </div>
+  <div class="carrusel-track-wrap">
+    <div class="carrusel-track" id="carrusel-track"></div>
   </div>
 </section>
 
@@ -281,3 +268,4 @@ function enviarSumate() {
  
 </body>
 </html>
+
