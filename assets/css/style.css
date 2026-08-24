@@ -265,18 +265,18 @@ a.corte-card{color:inherit}
 .carrusel-header{text-align:center;margin-bottom:32px}
 .carrusel-header h2{font-family:var(--font-title);color:#fff;font-size:30px;font-weight:900;text-transform:uppercase}
 .carrusel-header p{color:rgba(255,255,255,.65);font-size:14px;margin-top:6px;text-transform:uppercase;letter-spacing:2px}
-.carrusel-track-wrap{overflow:hidden;width:100%;mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%)}
+.carrusel-track-wrap{overflow:hidden;width:100%;padding:10px 0;margin:-10px 0;mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%)}
 .carrusel-track{display:flex;gap:20px;width:max-content;animation:carrusel-scroll var(--carrusel-duration,70s) linear infinite}
 .carrusel-track:hover{animation-play-state:paused}
 @keyframes carrusel-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.carrusel-card{width:260px;flex-shrink:0;border-radius:10px;overflow:hidden;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);cursor:pointer;transition:transform .2s,background .2s}
-.carrusel-card:hover{transform:translateY(-6px) scale(1.03);background:rgba(255,255,255,.14)}
+.carrusel-card{width:260px;flex-shrink:0;border-radius:10px;overflow:hidden;background:#fff;border:1px solid rgba(3,19,67,.12);cursor:pointer;transition:transform .2s,box-shadow .2s}
+.carrusel-card:hover{transform:translateY(-6px) scale(1.03);box-shadow:0 12px 28px rgba(0,0,0,.2)}
 .carrusel-card-img{width:260px;height:200px;object-fit:cover;display:block;background:rgba(255,255,255,.05)}
-.carrusel-card-body{padding:14px 14px 16px}
-.carrusel-card-cat{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:#fff;font-weight:700}
-.carrusel-card-nombre{font-family:var(--font-libre);color:#fff;font-size:14px;font-weight:700;margin-top:4px;line-height:1.3}
+.carrusel-card-body{padding:16px 16px 20px;min-height:104px}
+.carrusel-card-cat{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--color-store);font-weight:700}
+.carrusel-card-nombre{font-family:var(--font-libre);color:var(--color-store-font);font-size:18px;font-weight:800;margin-top:6px;line-height:1.35}
 .carrusel-badge-oferta{display:inline-block;background:var(--red);color:#fff;font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border-radius:2px}
-.carrusel-card-precio{color:#fff;font-size:18px;font-weight:900;margin-top:6px}
+.carrusel-card-precio{color:var(--color-store-font);font-size:18px;font-weight:900;margin-top:6px}
 
 /* ---- RESPONSIVE ---- */
 @media(max-width:980px){
