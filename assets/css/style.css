@@ -269,7 +269,7 @@ a.corte-card{color:inherit}
 .carrusel-track{display:flex;gap:20px;width:max-content;animation:carrusel-scroll var(--carrusel-duration,70s) linear infinite}
 .carrusel-track:hover{animation-play-state:paused}
 @keyframes carrusel-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.carrusel-card{width:260px;flex-shrink:0;border-radius:10px;overflow:hidden;background:#fff;border:1px solid rgba(3,19,67,.12);cursor:pointer;transition:transform .2s,box-shadow .2s}
+.carrusel-card{width:260px;flex-shrink:0;border-radius:10px;overflow:hidden;background:#f7f7f5;border:1px solid rgba(3,19,67,.72);box-shadow:0 4px 14px rgba(0,0,0,.12);cursor:pointer;transition:transform .2s,box-shadow .2s}
 .carrusel-card:hover{transform:translateY(-6px) scale(1.03);box-shadow:0 12px 28px rgba(0,0,0,.2)}
 .carrusel-card-img{width:260px;height:200px;object-fit:cover;display:block;background:rgba(255,255,255,.05)}
 .carrusel-card-body{padding:16px 16px 20px;min-height:104px}
