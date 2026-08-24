@@ -465,18 +465,29 @@ function renderFiltros(categorias, todos) {
 function renderCarrusel(productos) {
   const track = document.getElementById("carrusel-track");
   if (!track) return;
-  const categorias = [...new Set(productos.map(p => p.categoria))];
-  let seleccionados = [];
-  categorias.forEach(cat => {
-    const conImg = productos.filter(p => p.categoria === cat && p.imagen);
-    const sinImg = productos.filter(p => p.categoria === cat && !p.imagen);
-    const pool = conImg.length > 0 ? conImg : sinImg;
-    const shuffled = pool.sort(() => Math.random() - 0.5).slice(0, 3);
-    seleccionados = seleccionados.concat(shuffled);
-  });
-  seleccionados = seleccionados.sort(() => Math.random() - 0.5);
+
+  const urlCat = new URLSearchParams(window.location.search).get("cat");
+  const categorias = [...new Set(productos.map(p => p.categoriaFiltro))];
+  const categoriaActiva = window.location.pathname.includes("catalogo.html")
+    ? ((urlCat && categorias.includes(urlCat)) ? urlCat : categorias[0])
+    : null;
+
+  const seleccionados = barajarProductos(
+    categoriaActiva
+      ? productos.filter(p => p.categoriaFiltro === categoriaActiva)
+      : productos
+  );
 
   pintarCarrusel(track, seleccionados, p => `abrirCategoria('${encodeURIComponent(p.categoriaFiltro)}')`);
+}
+
+function barajarProductos(productos) {
+  const resultado = [...productos];
+  for (let i = resultado.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [resultado[i], resultado[j]] = [resultado[j], resultado[i]];
+  }
+  return resultado;
 }
 
 function renderCarruselOfertas(combos) {
@@ -492,13 +503,14 @@ function renderCarruselOfertas(combos) {
 // esOferta=true muestra badge "OFERTA" y precio del pack en vez de categoría.
 function pintarCarrusel(track, productos, onclickFn, esOferta) {
   const items = [...productos, ...productos];
+  track.style.setProperty("--carrusel-duration", `${Math.max(productos.length * 4, 40)}s`);
   track.innerHTML = items.map(p => {
     const carpeta = CARPETA_IMG[p.categoria] || p.categoria.toLowerCase().replace(/[^a-z]/g, "");
     const img = p.imagen ? `assets/img/${carpeta}/${p.imagen}` : (IMG_CAT[p.categoria] || "assets/img/cat-vacuno.png");
     const catLabel = esOferta ? `<span class="carrusel-badge-oferta">🔥 OFERTA</span>` : `<div class="carrusel-card-cat">${p.categoria}</div>`;
     return `
       <div class="carrusel-card" onclick="${onclickFn(p)}">
-        <img class="carrusel-card-img" src="${img}" alt="${p.nombre}">
+        <img class="carrusel-card-img" src="${img}" alt="${p.nombre}" onerror="this.onerror=null;this.src='assets/img/ganadera-logo.png'">
         <div class="carrusel-card-body">
           ${catLabel}
           <div class="carrusel-card-nombre">${p.nombre}</div>
@@ -938,3 +950,4 @@ document.addEventListener("DOMContentLoaded", () => {
   activate(0);
   setInterval(()=>{ cur=(cur+1)%steps.length; activate(cur); },2200);
 })();
+

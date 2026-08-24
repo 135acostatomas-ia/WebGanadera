@@ -246,7 +246,7 @@ a.corte-card{color:inherit}
 .carrusel-header h2{font-family:var(--font-title);color:#fff;font-size:30px;font-weight:900}
 .carrusel-header p{color:rgba(255,255,255,.65);font-size:14px;margin-top:6px;text-transform:uppercase;letter-spacing:2px}
 .carrusel-track-wrap{overflow:hidden;width:100%;mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%)}
-.carrusel-track{display:flex;gap:20px;width:max-content;animation:carrusel-scroll 70s linear infinite}
+.carrusel-track{display:flex;gap:20px;width:max-content;animation:carrusel-scroll var(--carrusel-duration,70s) linear infinite}
 .carrusel-track:hover{animation-play-state:paused}
 @keyframes carrusel-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .carrusel-card{width:260px;flex-shrink:0;border-radius:10px;overflow:hidden;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);cursor:pointer;transition:transform .2s,background .2s}
@@ -420,3 +420,4 @@ a.corte-card{color:inherit}
 .search-item-nombre{font-size:14px;font-weight:700;color:var(--color-store-font)}
 .search-item-cat{font-size:11px;background:var(--color-store);color:#fff;padding:2px 8px;border-radius:3px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;flex-shrink:0}
 .search-noresult{padding:14px 16px;font-size:13px;color:var(--grey-100)}
+
