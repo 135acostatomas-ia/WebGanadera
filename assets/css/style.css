@@ -16,7 +16,7 @@
   --font-title:'Frank Ruhl Libre',serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{max-width:100%;overflow-x:hidden;overflow-x:clip}
+html{max-width:100%;overflow-x:hidden;overflow-x:clip;scroll-padding-top:150px}
 body{font-family:var(--font-base);background:var(--body-bg);color:var(--grey);font-size:14px}
 img{max-width:100%;display:block}
 a{text-decoration:none;color:inherit}
@@ -29,7 +29,7 @@ a{text-decoration:none;color:inherit}
 .top-bar .tb-right span{margin-left:22px}
 
 /* ---- HEADER ---- */
-.page-header{background:var(--primary);border-bottom:1px solid var(--grey-300)}
+.page-header{background:var(--primary);border-bottom:1px solid var(--grey-300);position:sticky;top:0;z-index:990}
 .header-content{position:relative;display:flex;align-items:center;justify-content:space-between;gap:30px}
 .page-header .header-content{padding-top:18px;padding-bottom:18px}
 .logo{display:flex;align-items:center;gap:12px;flex-shrink:0}
@@ -58,7 +58,7 @@ a{text-decoration:none;color:inherit}
 .header-actions .cart .badge{position:absolute;top:-8px;right:-10px;background:var(--red);color:#fff;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center}
 
 /* ---- NAV ---- */
-.main-nav{background:var(--color-store)}
+.main-nav{background:var(--color-store);position:sticky;top:92px;z-index:989}
 .main-nav ul{display:flex;list-style:none;justify-content:center;flex-wrap:wrap}
 .main-nav li>a{display:block;color:#fff;padding:14px 22px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;transition:background .2s}
 .main-nav li>a:hover{background:var(--header-wrapper)}
@@ -170,6 +170,11 @@ a.corte-card{color:inherit}
 .social-profile-avatar{position:absolute;top:-44px;width:88px;height:88px;object-fit:contain;border-radius:50%;background:#fff;border:4px solid #fff;box-shadow:0 4px 14px rgba(3,19,67,.18)}
 .social-profile-body h3{font-family:var(--font-title);color:var(--color-store-font);font-size:23px;margin:0 0 4px}
 .social-profile-body>span{font-size:13px;color:var(--grey-100);overflow-wrap:anywhere}
+.social-profile-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;margin:22px 0 0;padding:16px 0;border-top:1px solid var(--grey-300);border-bottom:1px solid var(--grey-300)}
+.social-profile-stats div{display:flex;flex-direction:column;gap:3px;padding:0 8px;border-right:1px solid var(--grey-300)}
+.social-profile-stats div:last-child{border-right:0}
+.social-profile-stats strong{font-size:16px;color:var(--color-store-font);font-weight:900}
+.social-profile-stats small{font-size:10px;color:var(--grey-100);text-transform:uppercase;letter-spacing:.5px}
 .social-profile-body p{font-size:14px;line-height:1.65;color:var(--grey);margin:18px 0 22px;max-width:340px}
 .social-profile-btn{display:flex;align-items:center;justify-content:center;width:100%;margin-top:auto;padding:13px 18px;border-radius:4px;color:#fff;font-size:12px;font-weight:900;letter-spacing:1px;text-transform:uppercase;transition:filter .2s,transform .2s}
 .social-profile-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
@@ -283,6 +288,7 @@ a.corte-card{color:inherit}
   .logo-icon{height:82px}
   .logo-text{position:absolute;left:51%;top:50%;transform:translate(-50%,-50%);height:45px}
   .menu-hamburger{font-size:32px;padding:6px 10px}
+  .main-nav{top:98px}
 }
 @media(max-width:560px){
   .cortes,.prod-grid{grid-template-columns:1fr}
