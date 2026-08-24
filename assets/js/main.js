@@ -503,11 +503,14 @@ function renderCarruselOfertas(combos) {
 // esOferta=true muestra badge "OFERTA" y precio del pack en vez de categoría.
 function pintarCarrusel(track, productos, onclickFn, esOferta) {
   const items = [...productos, ...productos];
+  const mostrarCategoria = !window.location.pathname.includes("catalogo.html");
   track.style.setProperty("--carrusel-duration", `${Math.max(productos.length * 4, 40)}s`);
   track.innerHTML = items.map(p => {
     const carpeta = CARPETA_IMG[p.categoria] || p.categoria.toLowerCase().replace(/[^a-z]/g, "");
     const img = p.imagen ? `assets/img/${carpeta}/${p.imagen}` : (IMG_CAT[p.categoria] || "assets/img/cat-vacuno.png");
-    const catLabel = esOferta ? `<span class="carrusel-badge-oferta">🔥 OFERTA</span>` : `<div class="carrusel-card-cat">${p.categoria}</div>`;
+    const catLabel = esOferta
+      ? `<span class="carrusel-badge-oferta">🔥 OFERTA</span>`
+      : (mostrarCategoria ? `<div class="carrusel-card-cat">${p.categoria}</div>` : "");
     return `
       <div class="carrusel-card" onclick="${onclickFn(p)}">
         <img class="carrusel-card-img" src="${img}" alt="${p.nombre}" onerror="this.onerror=null;this.src='assets/img/ganadera-logo.png'">
@@ -950,4 +953,5 @@ document.addEventListener("DOMContentLoaded", () => {
   activate(0);
   setInterval(()=>{ cur=(cur+1)%steps.length; activate(cur); },2200);
 })();
+
 
