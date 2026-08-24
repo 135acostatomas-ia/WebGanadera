@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ganadera Panamericana — Carnes</title>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Libre+Franklin:wght@400;700&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20260824-1">
+<link rel="stylesheet" href="assets/css/style.css?v=20260824-2">
 </head>
 <body>
  
@@ -176,61 +176,40 @@
       <p>Novedades, ofertas y productos</p>
     </div>
 
-    <div class="social-layout">
-      <div class="instagram-panel">
-        <div class="social-panel-header">
-          <div class="social-icon instagram-icon" aria-hidden="true">◎</div>
-          <div>
-            <h3>Últimos reels</h3>
-            <a href="https://www.instagram.com/ganaderacarnes/" target="_blank" rel="noopener noreferrer">@ganaderacarnes</a>
-          </div>
+    <div class="social-profile-grid">
+      <article class="social-profile-card">
+        <div class="social-cover instagram-cover">
+          <svg class="social-brand-icon" viewBox="0 0 24 24" aria-label="Instagram">
+            <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"></rect>
+            <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"></circle>
+            <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"></circle>
+          </svg>
         </div>
-
-        <div class="reels-grid">
-          <iframe src="https://www.instagram.com/reel/DcbVLgtPnsq/embed/captioned/" title="Último reel de Ganadera Panamericana" loading="lazy" allowfullscreen></iframe>
-          <iframe src="https://www.instagram.com/reel/DcEqVN_BpYW/embed/captioned/" title="Reel reciente de Ganadera Panamericana" loading="lazy" allowfullscreen></iframe>
-          <iframe src="https://www.instagram.com/reel/Db6cLznQVQX/embed/captioned/" title="Reel reciente de Ganadera Panamericana" loading="lazy" allowfullscreen></iframe>
+        <div class="social-profile-body">
+          <img class="social-profile-avatar" src="assets/img/ganadera-logo.png" alt="Logo de Ganadera Panamericana">
+          <h3>Ganadera Panamericana</h3>
+          <span>@ganaderacarnes</span>
+          <p>Ofertas, productos y novedades de nuestras sucursales.</p>
+          <a class="social-profile-btn instagram-profile-btn" href="https://www.instagram.com/ganaderacarnes/" target="_blank" rel="noopener noreferrer">Ver perfil de Instagram</a>
         </div>
+      </article>
 
-        <a class="social-btn instagram-btn" href="https://www.instagram.com/ganaderacarnes/" target="_blank" rel="noopener noreferrer">Ver Instagram</a>
-      </div>
-
-      <aside class="facebook-panel">
-        <div class="social-panel-header">
-          <div class="social-icon facebook-icon" aria-hidden="true">f</div>
-          <div>
-            <h3>Facebook</h3>
-            <span>Ganadera Panamericana</span>
-          </div>
+      <article class="social-profile-card">
+        <div class="social-cover facebook-cover">
+          <svg class="social-brand-icon" viewBox="0 0 24 24" aria-label="Facebook">
+            <path fill="currentColor" d="M14.3 8.2V6.7c0-.7.5-.9 1-.9h2.5V2.1L14.4 2C11 2 9.7 4 9.7 6.3v1.9H7v4.2h2.7V22h4.6v-9.6h3.1l.5-4.2h-3.6Z"></path>
+          </svg>
         </div>
-
-        <div class="facebook-embed">
-          <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fganaderacarnes%2F&amp;tabs=&amp;width=340&amp;height=210&amp;small_header=false&amp;adapt_container_width=true&amp;hide_cover=false&amp;show_facepile=false" width="340" height="210" title="Página de Facebook de Ganadera Panamericana" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+        <div class="social-profile-body">
+          <img class="social-profile-avatar" src="assets/img/ganadera-logo.png" alt="Logo de Ganadera Panamericana">
+          <h3>Ganadera Panamericana</h3>
+          <span>facebook.com/ganaderacarnes</span>
+          <p>Promociones, información y atención desde nuestra página oficial.</p>
+          <a class="social-profile-btn facebook-profile-btn" href="https://www.facebook.com/ganaderacarnes/" target="_blank" rel="noopener noreferrer">Ver perfil de Facebook</a>
         </div>
-
-        <p>Encontrá novedades, promociones y atención desde nuestra página oficial.</p>
-        <a class="social-btn facebook-btn" href="https://www.facebook.com/ganaderacarnes/" target="_blank" rel="noopener noreferrer">Ver Facebook</a>
-      </aside>
+      </article>
     </div>
   </div>
-</section>
-
-<!-- ===== NEWSLETTER ===== -->
-<section class="newsletter">
-  <strong>Sumate a Ganadera</strong>
-  <p>Recibí ofertas exclusivas y novedades por nuestro grupo de Whatsapp</p>
-  <form class="news-form" id="sumate-form" onsubmit="return false">
-    <div class="form-field">
-      <input type="text" id="s-nombre" placeholder="Nombre y apellido" maxlength="80">
-    </div>
-    <div class="form-field">
-      <input type="tel" id="s-whatsapp" placeholder="Número de WhatsApp" maxlength="20">
-    </div>
-    <div class="form-field">
-      <input type="email" id="s-mail" placeholder="Email">
-    </div>
-    <button type="button" onclick="enviarSumate()">Sumate</button>
-  </form>
 </section>
  
 <!-- ===== FOOTER ===== -->
@@ -263,33 +242,6 @@
  
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
 <script src="assets/js/main.js?v=20260820-5"></script>
-<script>
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzSAq1rG-P0xz_pxe0WgkiUXMC8z3wLyiZAOaLOxf3y4uj7EUpUScp-Lgmfv7oFIUY/exec";
-
-function enviarSumate() {
-  const nombre   = document.getElementById("s-nombre").value.trim();
-  const telefono = document.getElementById("s-whatsapp").value.trim();
-  const mail     = document.getElementById("s-mail").value.trim();
-
-  if (!nombre || !telefono) {
-    alert("Por favor completá nombre y WhatsApp.");
-    return;
-  }
-
-  fetch(APPS_SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    body: JSON.stringify({ nombre, localidad: "", telefono, mail, productos: "Newsletter / grupo de WhatsApp", info: "" }),
-  }).then(() => {
-    document.getElementById("sumate-form").innerHTML = `
-      <p style="color:#fff;font-size:15px;line-height:1.7;text-align:center">
-        ¡Gracias, ${nombre}! Te vamos a contactar pronto.
-      </p>`;
-  }).catch(() => {
-    alert("Hubo un error al enviar. Intentá de nuevo.");
-  });
-}
-</script>
  
 <!-- OVERLAY -->
 <div id="carrito-overlay" class="carrito-overlay"></div>
