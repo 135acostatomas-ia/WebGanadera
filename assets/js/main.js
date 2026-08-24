@@ -112,15 +112,30 @@ function actualizarCarrito() {
   const cont = document.getElementById("carrito-items");
   const total = document.getElementById("carrito-total");
   const empty = document.getElementById("carrito-empty");
-  const floatBadge = document.getElementById("float-carrito-badge");
+  const badges = [
+    document.getElementById("float-carrito-badge"),
+    document.getElementById("header-carrito-badge")
+  ].filter(Boolean);
+  const headerTotal = document.getElementById("header-carrito-total");
 
   if (!cont) return;
 
   const totalUnidades = carrito.reduce((s, i) => s + i.cantidad, 0);
+  const totalNum = carrito.reduce((s, i) => {
+    if (i.categoria === "⭐ OFERTA") {
+      const kg = kgDesdeNombre(i.nombre);
+      return s + i.precio * Math.round(i.cantidad / kg);
+    }
+    return s + i.precio * i.cantidad;
+  }, 0);
 
-  if (floatBadge) {
-    floatBadge.textContent = totalUnidades;
-    floatBadge.style.display = totalUnidades > 0 ? "flex" : "none";
+  badges.forEach(badge => {
+    badge.textContent = totalUnidades;
+    badge.style.display = totalUnidades > 0 ? "flex" : "none";
+  });
+
+  if (headerTotal) {
+    headerTotal.textContent = "$ " + totalNum.toLocaleString("es-AR");
   }
 
   if (carrito.length === 0) {
@@ -180,15 +195,6 @@ function actualizarCarrito() {
       <button class="ci-borrar" onclick="eliminarItem(${idx})">✕</button>
     </div>`;
   }).join("");
-
-  const totalNum = carrito.reduce((s, i) => {
-    if (i.categoria === "⭐ OFERTA") {
-      const kg = kgDesdeNombre(i.nombre);
-      return s + i.precio * Math.round(i.cantidad / kg);
-    }
-
-    return s + i.precio * i.cantidad;
-  }, 0);
 
   total.textContent = "$ " + totalNum.toLocaleString("es-AR");
   actualizarEstadoMinimo(totalNum);
@@ -302,11 +308,14 @@ function restarEnTarjeta(nombre, categoria, precio) {
 }
 
 function animarBadge() {
-  const badge = document.getElementById("float-carrito-badge");
-  if (!badge) return;
-  badge.classList.remove("badge-bump");
-  void badge.offsetWidth;
-  badge.classList.add("badge-bump");
+  [
+    document.getElementById("float-carrito-badge"),
+    document.getElementById("header-carrito-badge")
+  ].filter(Boolean).forEach(badge => {
+    badge.classList.remove("badge-bump");
+    void badge.offsetWidth;
+    badge.classList.add("badge-bump");
+  });
 }
 
 function cambiarCantidad(idx, delta) {
