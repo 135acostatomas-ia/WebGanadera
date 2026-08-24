@@ -265,7 +265,7 @@ a.corte-card{color:inherit}
 .carrusel-header{text-align:center;margin-bottom:32px}
 .carrusel-header h2{font-family:var(--font-title);color:#fff;font-size:30px;font-weight:900;text-transform:uppercase}
 .carrusel-header p{color:rgba(255,255,255,.65);font-size:14px;margin-top:6px;text-transform:uppercase;letter-spacing:2px}
-.carrusel-track-wrap{overflow:hidden;width:100%;padding:10px 0;margin:-10px 0;mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%)}
+.carrusel-track-wrap{overflow:hidden;width:100%;padding:14px 0;margin:-14px 0;mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%)}
 .carrusel-track{display:flex;gap:20px;width:max-content;animation:carrusel-scroll var(--carrusel-duration,70s) linear infinite}
 .carrusel-track:hover{animation-play-state:paused}
 @keyframes carrusel-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
