@@ -236,7 +236,7 @@ a.corte-card{color:inherit}
 .btn-finalizar.disabled img{opacity:.5}
 .carrito-minimo-msg{display:none;font-size:12px;color:var(--red);text-align:center;line-height:1.5;margin-bottom:12px;background:#fdecea;border-radius:3px;padding:8px 10px}
 
-/* ---- BOTÃ“N AGREGAR ---- */
+/* ---- BOTÓN AGREGAR ---- */
 .btn-agregar{width:100%;background:var(--color-store);color:#fff;border:none;padding:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:12px;cursor:pointer;border-radius:3px;transition:background .2s;margin-top:12px}
 .btn-agregar:hover{filter:brightness(1.1)}
 .prod-controles{display:flex;align-items:center;justify-content:space-between;margin-top:12px;border:2px solid var(--color-store);border-radius:3px;overflow:hidden}
@@ -249,11 +249,11 @@ a.corte-card{color:inherit}
 .badge-bump{animation:bump .3s ease}
 .cart{background:none;border:none;cursor:pointer;position:relative;font-size:22px;color:var(--color-store)}
 
-/* ---- CATÃLOGO ---- */
+/* ---- CATÁLOGO ---- */
 .catalogo-section{width:100%;background:#fff;border-top:60px solid #fff}
 .catalogo-body{background:#fff;padding:32px 0 48px}
 
-/* ---- CATÃLOGO: TEXTO INFORMATIVO ---- */
+/* ---- CATÁLOGO: TEXTO INFORMATIVO ---- */
 .catalogo-info{display:flex;align-items:flex-start;gap:12px;background:#eef2ff;border-left:4px solid var(--color-store);border-radius:0 4px 4px 0;padding:14px 18px;margin-bottom:24px;font-size:14px;color:var(--grey);line-height:1.6}
 .catalogo-info-icon{font-size:18px;flex-shrink:0;margin-top:1px}
 .catalogo-info p{margin:0}
@@ -331,7 +331,7 @@ a.corte-card{color:inherit}
 .ofertas-intro{background:#fff;border-left:4px solid var(--red);border-radius:0 4px 4px 0;padding:14px 18px;margin-bottom:36px;font-size:14px;color:var(--grey);line-height:1.6;display:flex;gap:12px;align-items:flex-start}
 .ofertas-cols-wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;align-items:start}
 
-/* AcordeÃ³n de columna */
+/* Acordeón de columna */
 .oferta-col-titulo{font-family:var(--font-title);color:var(--color-store-font);font-size:16px;font-weight:900;padding:12px 16px;background:#fff;border:1px solid var(--grey-300);border-radius:6px;margin-bottom:0;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .2s}
 .oferta-col-titulo:hover{background:var(--grey-500)}
 .oferta-col-titulo.open{border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom:none;background:var(--color-store);color:#fff}
