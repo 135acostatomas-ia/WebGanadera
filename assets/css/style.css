@@ -419,29 +419,30 @@ a.corte-card{color:inherit}
   .banner-prev,.banner-next{display:none}
 
   .banner-slide-beneficios{
-    --mobile-banner-half:min(41.667vw,180px);
+    --mobile-banner-overlap:min(35.5vw,152px);
+    --mobile-caption-height:min(46.7vw,200px);
     background:#061c5d;
   }
   .banner-slide-beneficios>.banner-beneficios-desktop{display:none}
   .banner-slide-beneficios>.banner-beneficios-mobile{
     position:absolute;
     z-index:0;
-    left:0;
-    width:100%;
-    height:var(--mobile-banner-half);
+    left:-15%;
+    width:130%;
+    height:auto;
     max-width:none;
     display:block;
     object-fit:contain;
     object-position:center;
   }
   .banner-slide-beneficios>.banner-beneficios-mobile-top{top:0}
-  .banner-slide-beneficios>.banner-beneficios-mobile-bottom{top:var(--mobile-banner-half)}
+  .banner-slide-beneficios>.banner-beneficios-mobile-bottom{top:var(--mobile-banner-overlap)}
   .banner-slide-beneficios .banner-caption{
     z-index:2;
     inset:0 0 auto;
     box-sizing:border-box;
     width:100%;
-    height:var(--mobile-banner-half);
+    height:var(--mobile-caption-height);
     max-width:none;
     padding:14px 18px 0;
     align-items:center;
