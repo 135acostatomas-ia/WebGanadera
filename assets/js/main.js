@@ -189,6 +189,27 @@ const RECOMENDACIONES_PRODUCTOS = {
   "Panceta Salada Mangiarotti": "Ideal para guisos, salsas, rellenos, tortillas y preparaciones al horno.",
   "Chorizo Colorado": "Aporta sabor a guisos, lentejas, pizzas, salsas y picadas.",
   "Longaniza Bastón para Fetear": "Ideal para picadas, tablas de fiambres, sándwiches y aperitivos."
+  ,"Espinazo 3kg": "Ideal para preparar caldos, pucheros, sopas y guisos abundantes."
+  ,"Pata y Muslo 3kg": "Rinde para horno, parrilla, guisos o comidas familiares."
+  ,"Rebozadas de carne 2kg": "Opción práctica y rendidora para horno o fritura."
+  ,"Rebozadas de pollo 2kg": "Opción práctica y rendidora para horno o fritura."
+  ,"Suprema 2kg": "Ideal para milanesas, plancha, horno o preparaciones rellenas."
+  ,"Carre 2kg": "Ideal para parrilla, plancha u horno, entero o en chuletas."
+  ,"Picada Especial 2kg": "Rendidora para hamburguesas, albóndigas, empanadas o pastel de papa."
+  ,"Bola de lomo 2kg": "Ideal para milanesas, bifes, horno o cacerola."
+  ,"Cuadrada 2kg": "Recomendada para milanesas, bifes y preparaciones al horno."
+  ,"Osobuco 2kg": "Perfecto para guisos, pucheros y estofados abundantes."
+  ,"Paleta 1kg": "Ideal para guisos, estofados, horno, milanesas o carne desmechada."
+  ,"Cuadrada 1kg": "Recomendada para milanesas, bifes y preparaciones al horno."
+  ,"Nalga 1kg": "Corte magro, ideal para milanesas, bifes, escalopes o al horno."
+  ,"Bola de lomo 1kg": "Ideal para milanesas, bifes, horno o cacerola."
+  ,"Roast beef 1kg": "Perfecto para guisos, estofados, horno, hamburguesas o carne picada."
+  ,"Bife ancho 1kg": "Muy sabroso para parrilla o plancha; ideal para quienes buscan jugosidad."
+  ,"Bife de chorizo 1kg": "Clásico para parrilla o plancha, servido en bifes gruesos."
+  ,"Ojo de bife 1kg": "Ideal para parrilla o plancha; se destaca por su terneza y jugosidad."
+  ,"Bife angosto 1kg": "Recomendado para parrilla, plancha o bifes a la criolla."
+  ,"Cuadril 1kg": "Versátil para bifes, parrilla, plancha, horno o salteados."
+  ,"Marucha 1kg": "Sabrosa y versátil para parrilla, plancha, horno o estofados."
 };
 
 function esProductoPorUnidad(nombre, categoria) {
@@ -650,12 +671,17 @@ function pintarCarrusel(track, productos, onclickFn, esOferta) {
     const catLabel = esOferta
       ? `<span class="carrusel-badge-oferta">🔥 OFERTA</span>`
       : (mostrarCategoria ? `<div class="carrusel-card-cat">${p.categoria}</div>` : "");
+    const recomendacion = RECOMENDACIONES_PRODUCTOS[p.nombre];
+    const recomendacionHtml = recomendacion
+      ? `<p class="carrusel-card-recomendacion">${recomendacion}</p>`
+      : "";
     return `
       <div class="carrusel-card" onclick="${onclickFn(p)}">
         <img class="carrusel-card-img" src="${img}" alt="${p.nombre}" onerror="this.onerror=null;this.src='assets/img/ganadera-logo.png'">
         <div class="carrusel-card-body">
           ${catLabel}
           <div class="carrusel-card-nombre">${p.nombre}</div>
+          ${recomendacionHtml}
           ${esOferta ? `<div class="carrusel-card-precio">$ ${formatPrecio(p.precio)}</div>` : ""}
         </div>
       </div>`;
@@ -1092,5 +1118,4 @@ document.addEventListener("DOMContentLoaded", () => {
   activate(0);
   setInterval(()=>{ cur=(cur+1)%steps.length; activate(cur); },2200);
 })();
-
 
