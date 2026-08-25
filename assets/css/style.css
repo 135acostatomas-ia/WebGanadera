@@ -397,7 +397,8 @@ a.corte-card{color:inherit}
 .banner-slide:first-child .banner-caption h2,
 .banner-slide:first-child .banner-caption p{transform:scaleY(1.08);transform-origin:left center}
 .banner-caption .btn-cta{margin-top:24px;align-self:flex-start}
-.banner-slide-beneficios>img{object-fit:contain;object-position:center}
+.banner-slide-beneficios>.banner-beneficios-desktop{object-fit:contain;object-position:center}
+.banner-beneficios-mobile{display:none}
 .banner-slide-beneficios .banner-caption{max-width:690px}
 .banner-slide-beneficios .banner-eyebrow{margin:0 0 12px;color:#fff;font-size:20px;font-weight:700;letter-spacing:.4px;text-transform:uppercase}
 .banner-slide-beneficios .banner-caption h2{font-family:var(--font-body);font-size:58px;line-height:1;font-weight:900}
@@ -418,37 +419,26 @@ a.corte-card{color:inherit}
   .banner-prev,.banner-next{display:none}
 
   .banner-slide-beneficios{background:#061c5d}
-  .banner-slide-beneficios img{
+  .banner-slide-beneficios>.banner-beneficios-desktop{display:none}
+  .banner-slide-beneficios>.banner-beneficios-mobile{
     position:absolute;
     z-index:0;
-    left:-48%;
-    bottom:34px;
-    width:150%;
-    max-width:none;
-    height:auto;
-    object-fit:contain;
-  }
-  .banner-slide-beneficios::before{
-    content:"";
-    position:absolute;
-    z-index:1;
     left:0;
-    top:176px;
-    bottom:0;
-    width:44px;
-    background:#061c5d;
+    width:100%;
+    max-width:none;
+    display:block;
   }
-  .banner-slide-beneficios::after{
-    content:"";
-    position:absolute;
-    z-index:1;
-    top:16px;
-    right:18px;
-    width:112px;
-    height:112px;
-    background:url("../img/ganadera-logo.png") center/contain no-repeat;
-    opacity:.13;
-    pointer-events:none;
+  .banner-slide-beneficios>.banner-beneficios-mobile-top{
+    top:0;
+    height:176px;
+    object-fit:cover;
+    object-position:center;
+  }
+  .banner-slide-beneficios>.banner-beneficios-mobile-bottom{
+    top:176px;
+    height:190px;
+    object-fit:contain;
+    object-position:center;
   }
   .banner-slide-beneficios .banner-caption{
     z-index:2;
