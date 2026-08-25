@@ -66,6 +66,131 @@ const PRODUCTOS_POR_UNIDAD = new Set([
   "Puré Molto 520"
 ]);
 
+// Recomendaciones breves para la vista de tarjetas del catálogo.
+// Las claves respetan los nombres publicados en el Sheet.
+const RECOMENDACIONES_PRODUCTOS = {
+  "Asado": "Ideal para parrilla u horno, con cocción lenta para lograr una carne tierna.",
+  "Vacío": "Excelente para parrilla u horno; conviene cocinarlo lentamente para conservar su jugosidad.",
+  "Falda parrillera": "Recomendada para parrilla, horno o cocciones largas con mucho sabor.",
+  "Tapa de asado": "Ideal para horno, parrilla o cacerola; queda muy bien marinada.",
+  "Asado americano": "Corte fino y rápido, ideal para parrilla o plancha.",
+  "Costillar": "Clásico para parrilla o asado al horno con cocción lenta.",
+  "Nalga": "Corte magro, ideal para milanesas, bifes, escalopes o al horno.",
+  "Bola de lomo": "Muy versátil para milanesas, bifes, horno o cacerola.",
+  "Cuadrada": "Recomendada para milanesas, bifes y preparaciones al horno.",
+  "Peceto": "Ideal para milanesas, vitel toné, mechado o cocción al horno.",
+  "Palomita": "Buena para horno, estofados, carne mechada o cocciones lentas.",
+  "Roast beef": "Perfecto para guisos, estofados, horno, hamburguesas o carne picada.",
+  "Paleta": "Ideal para guisos, estofados, horno, milanesas o carne desmechada.",
+  "Colita": "Excelente para horno o parrilla, entera o cortada en bifes.",
+  "Matambre": "Clásico para parrilla, arrollado, pizza de matambre o cocción al horno.",
+  "Osobuco del Rey": "Ideal para braseados, guisos y estofados de cocción prolongada.",
+  "Tomahawk": "Corte grueso ideal para parrilla, sellado fuerte y cocción controlada.",
+  "Lomo": "Muy tierno y magro; ideal para medallones, plancha, horno o con salsa.",
+  "Cuadril": "Versátil para bifes, parrilla, plancha, horno o salteados.",
+  "Ojo de bife": "Ideal para parrilla o plancha; se destaca por su terneza y jugosidad.",
+  "Arañita": "Corte pequeño y sabroso, recomendado para parrilla o plancha.",
+  "Picaña": "Excelente para parrilla u horno, aprovechando su capa de grasa para mayor sabor.",
+  "Riñonada": "Ideal para bifes, plancha o parrilla por su terneza.",
+  "Bife de chorizo": "Clásico para parrilla o plancha, servido en bifes gruesos.",
+  "Bife ancho": "Muy sabroso para parrilla o plancha; ideal para quienes buscan jugosidad.",
+  "Bife angosto": "Recomendado para parrilla, plancha o bifes a la criolla.",
+  "Entraña": "Ideal para parrilla o plancha con cocción rápida.",
+  "Tapa de nalga": "Buena para horno, milanesas, escalopes o carne rellena.",
+  "Marucha": "Sabrosa y versátil para parrilla, plancha, horno o estofados.",
+  "Tortuguita": "Ideal para guisos, estofados, horno o milanesas.",
+  "Osobuco": "Perfecto para guisos, pucheros y estofados de cocción lenta.",
+  "Espinazo": "Aporta mucho sabor a caldos, sopas, pucheros y guisos.",
+  "Picada Especial": "Ideal para hamburguesas, albóndigas, pastel de papa, empanadas o salsas.",
+  "Falda Puchero": "Especial para pucheros, caldos, sopas y guisos.",
+  "Chiquizuela": "Recomendada para caldos, pucheros y cocciones largas.",
+  "Carre": "Ideal para parrilla, plancha u horno, entero o cortado en chuletas.",
+  "Carre americano": "Corte práctico para parrilla o plancha, de cocción rápida.",
+  "Carre deshuesado": "Ideal para horno, bifes, rellenos o cocción a la cacerola.",
+  "Pechito": "Excelente para parrilla u horno con cocción lenta hasta dorar.",
+  "Bondiola": "Muy jugosa para parrilla, horno, braseado o sándwiches desmechados.",
+  "Matambrito": "Ideal para parrilla o plancha; fino, sabroso y de cocción rápida.",
+  "Churrasquito": "Perfecto para parrilla o plancha, marinado o con limón.",
+  "Solomillo": "Corte tierno para medallones, plancha, horno o salsas.",
+  "Ribs de cerdo": "Ideales para horno o parrilla, especialmente con salsa barbacoa.",
+  "Paleta de cerdo": "Recomendada para horno, guisos, braseados o carne desmechada.",
+  "Jamon": "Ideal para horno, bifes, milanesas o preparaciones rellenas.",
+  "Nalga de cerdo": "Corte magro para milanesas, bifes, horno o salteados.",
+  "Peceto de cerdo": "Ideal para horno, medallones, milanesas o cocciones con salsa.",
+  "Bola de lomo de cerdo": "Versátil para milanesas, bifes, salteados o cacerola.",
+  "Cuadril de cerdo": "Recomendado para bifes, parrilla, horno o fajitas.",
+  "Colita de cuadril de cerdo": "Ideal para horno o parrilla, entera o fileteada.",
+  "Cuadrada de cerdo": "Buena para milanesas, bifes, horno o salteados.",
+  "Tortuguita de cerdo": "Ideal para horno, guisos, estofados o carne desmechada.",
+  "Osobuco de cerdo": "Perfecto para guisos, estofados y cocciones lentas.",
+  "Pollo Entero": "Ideal para horno, parrilla, spiedo, guisos o sopas.",
+  "Pata y Muslo": "Jugoso y versátil para horno, parrilla, guisos o estofados.",
+  "Pata y muslo deshuesado": "Ideal para plancha, parrilla, rellenos, arrollados o salteados.",
+  "Suprema": "Perfecta para milanesas, plancha, horno, rellenos o salteados.",
+  "Alitas": "Ideales para horno, parrilla o fritas, con salsas y marinadas.",
+  "Mollejas": "Delicadas y crocantes a la parrilla o plancha, con limón.",
+  "Chinchulín": "Clásico de parrilla; queda mejor bien dorado y crocante.",
+  "Rueda": "Ideal para parrilla, cocida lentamente hasta quedar dorada.",
+  "Riñón": "Recomendado para parrilla, plancha o preparaciones al vino.",
+  "Tripa gorda": "Especial para parrilla, con cocción lenta y dorado final.",
+  "Lengua": "Ideal hervida para lengua a la vinagreta, escabeche o salsas.",
+  "Hígado": "Perfecto para plancha, bifes encebollados o paté casero.",
+  "Corazón": "Ideal para brochettes, plancha o parrilla, previamente marinado.",
+  "Centro": "Recomendado para parrilla, bien dorado por fuera.",
+  "Mondongo": "Clásico para guisos, buseca y cocciones largas.",
+  "Seso": "Ideal para buñuelos, frituras, tortillas o preparaciones suaves.",
+  "Rabo": "Excelente para guisos, estofados y caldos de cocción prolongada.",
+  "Quijada": "Ideal para guisos, braseados y carne desmechada.",
+  "Rebozadas de carne": "Prácticas para horno o fritura, ideales con puré, ensalada o en sándwich.",
+  "Rebozadas de pollo": "Ideales para horno o fritura, acompañadas con ensalada o papas.",
+  "Hamburguesa de carne": "Ideal para plancha, parrilla o sartén, en pan o al plato.",
+  "Hamburguesa de pollo": "Buena para plancha, parrilla o sartén, en pan o al plato.",
+  "Hamburguesa de cerdo": "Sabrosa para parrilla o plancha, ideal con quesos y salsas.",
+  "Salchichas viena con piel": "Ideales para panchos, plancha, hervor o preparaciones rápidas.",
+  "Chorizos de carne": "Clásicos para parrilla, choripán, guisos o salsa.",
+  "Salchichas Parrilleras": "Ideales para parrilla o plancha, como entrada o en sándwich.",
+  "Chorizo Puro cerdo": "Perfecto para parrilla, choripán o para sumar sabor a guisos.",
+  "Morcilla rosca": "Ideal para parrilla y picadas calientes.",
+  "Morcilla atada": "Clásica para parrilla, servida sola o en tostadas.",
+  "Morcilla vasca": "Ideal para parrilla, picadas y entradas de sabor intenso.",
+  "Morcilla Asturiana": "Especial para guisos, fabadas, parrilla o platos de cocción lenta.",
+  "Chorizo colorado": "Aporta sabor a guisos, lentejas, salsas, pizzas y picadas.",
+  "Nuggets": "Prácticos para horno, air fryer o fritura, con salsas para acompañar.",
+  "Provoletta Parrillera en cazuela": "Lista para parrilla u horno; ideal como entrada caliente.",
+  "Panceta Salada": "Ideal para guisos, salsas, rellenos, huevos o preparaciones al horno.",
+  "Panceta Ahumada": "Perfecta para hamburguesas, pastas, salsas, rellenos o desayunos.",
+  "Bolsa Sazón Knorr (varios)": "Práctica para condimentar carnes, pollo, vegetales y preparaciones al horno.",
+  "Bolsa Sazón Barbacoa": "Ideal para marinar y condimentar carnes, pollo, costillas y preparaciones al horno.",
+  "Maple de Huevos N°1": "Rendidor para desayunos, repostería, tortillas, rebozados y comidas familiares.",
+  "Huevos cajita x 1/2 doc": "Prácticos para desayunos, tortillas, repostería, ensaladas y rebozados.",
+  "Miel Pura x 500": "Ideal para tostadas, infusiones, yogur, postres, marinadas y aderezos.",
+  "Miel Pura x 250": "Ideal para tostadas, infusiones, yogur, postres, marinadas y aderezos.",
+  "Queso Barra Punta del Agua": "Ideal para sándwiches, tostados, picadas y gratinados.",
+  "Queso Cremoso Punta": "Excelente para pizzas, tartas, empanadas, tostados y postres con dulce.",
+  "Queso Cremoso Clarita": "Ideal para pizzas, tartas, empanadas, tostados y preparaciones gratinadas.",
+  "Queso Sardo Cremoso Fresco Itati": "Ideal para picadas, pastas, gratinados o para rallar.",
+  "Muzzarella Dom Tin": "Especial para pizzas, empanadas, tartas, milanesas y gratinados.",
+  "Queso de Cerdo Mangiarotti": "Ideal para picadas, sándwiches, entradas frías o acompañar con pan.",
+  "Queso Roquefort La Quesera": "Perfecto para picadas, salsas, pizzas, ensaladas o pastas.",
+  "Queso Sardo Est. La Quesera": "Ideal para rallar, gratinar, pastas y picadas de sabor intenso.",
+  "Queso Rallado Suelto La Quesera": "Listo para pastas, sopas, risottos, salsas y gratinados.",
+  "Provoletta La Quesera": "Ideal para parrilla o plancha, con o sin condimentos.",
+  "Queso Sardo Fresco La Quesera": "Ideal para picadas, pastas, gratinados o rallado suave.",
+  "Queso Romanito La Quesera": "Perfecto para rallar, gratinar y sumar sabor a pastas o risottos.",
+  "Queso Rallado Sobre x2 La Quesera": "Práctico para pastas, sopas, salsas y gratinados.",
+  "Queso Mar del Plata": "Ideal para picadas, sándwiches, tostados y gratinados.",
+  "Queso Provolin": "Ideal para parrilla, picadas, pastas, pizzas o gratinados.",
+  "Jamón Crudo Pino Dorado": "Ideal para picadas, bruschettas, sándwiches, ensaladas y tablas con quesos.",
+  "Jamón Cocido Junior Mangiarotti": "Práctico para sándwiches, tostados, pizzas, tartas y empanadas.",
+  "Jamón Cocido Natural": "Ideal para sándwiches, picadas, tostados y preparaciones rellenas.",
+  "Longaniza Puro Cerdo Mangiarotti": "Perfecta para picadas, tablas de fiambres, sándwiches y aperitivos.",
+  "Paleta Sandwich Mangiarotti": "Ideal para sándwiches, tostados, pizzas y preparaciones rápidas.",
+  "Panceta Ahumada Cuero Mangiarotti": "Excelente para guisos, pastas, salsas, rellenos y preparaciones al horno.",
+  "Panceta Salada Mangiarotti": "Ideal para guisos, salsas, rellenos, tortillas y preparaciones al horno.",
+  "Chorizo Colorado": "Aporta sabor a guisos, lentejas, pizzas, salsas y picadas.",
+  "Longaniza Bastón para Fetear": "Ideal para picadas, tablas de fiambres, sándwiches y aperitivos."
+};
+
 function esProductoPorUnidad(nombre, categoria) {
   if (categoria === "⭐ OFERTA") return false;
   return PRODUCTOS_POR_UNIDAD.has(nombre);
@@ -431,6 +556,10 @@ function tarjetaProducto(p) {
   const nombreEscapado = p.nombre.replace(/'/g, "\\'");
   const id = "prod-" + p.nombre.replace(/[^a-zA-Z0-9]/g, "-");
   const unidadPrecio = esProductoPorUnidad(p.nombre, p.categoria) ? "/ unidad" : "/ kg";
+  const recomendacion = vistaActual !== "list" ? RECOMENDACIONES_PRODUCTOS[p.nombre] : "";
+  const recomendacionHtml = recomendacion
+    ? `<p class="prod-recomendacion">${recomendacion}</p>`
+    : "";
 
   return `
   <div class="prod-card">
@@ -438,6 +567,7 @@ function tarjetaProducto(p) {
     <div class="prod-info">
       <div class="cat">${p.categoria}</div>
       <h4>${p.nombre}</h4>
+      ${recomendacionHtml}
       <div class="prod-price"><span class="now">$ ${formatPrecio(p.precio)}</span><span class="kg">${unidadPrecio}</span></div>
       <div class="prod-cantidad" id="${id}">
         <button class="btn-agregar" onclick="agregarAlCarrito(this, '${nombreEscapado}', '${p.categoria}', '${p.precio}')">
