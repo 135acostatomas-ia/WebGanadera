@@ -435,8 +435,10 @@ a.corte-card{color:inherit}
     object-position:center;
   }
   .banner-slide-beneficios>.banner-beneficios-mobile-bottom{
-    top:176px;
-    height:190px;
+    top:147px;
+    left:-12.5%;
+    width:125%;
+    height:auto;
     object-fit:contain;
     object-position:center;
   }
