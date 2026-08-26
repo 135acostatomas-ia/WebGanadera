@@ -1049,25 +1049,36 @@ function toggleMenu() {
 
 // ---- BANNER SLIDER ----
 const bannerState = {};
+const bannerDuraciones = {
+  'banner-home': [5000, 5000, 10000]
+};
+
+function programarBanner(id) {
+  const s = bannerState[id];
+  if (!s) return;
+  clearTimeout(s.timer);
+  const duraciones = bannerDuraciones[id] || [];
+  const demora = duraciones[s.current] || 4500;
+  s.timer = setTimeout(() => moverBanner(id, 1), demora);
+}
 
 function initBanner(id) {
   const el = document.getElementById(id);
   if (!el) return;
-  bannerState[id] = { current: 0, total: el.querySelectorAll('.banner-slide').length };
+  bannerState[id] = { current: 0, total: el.querySelectorAll('.banner-slide').length, timer: null };
   let startX = 0;
   el.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
   el.addEventListener('touchend', e => {
     const dx = e.changedTouches[0].clientX - startX;
     if (Math.abs(dx) > 40) moverBanner(id, dx < 0 ? 1 : -1);
   });
-  setInterval(() => moverBanner(id, 1), 4500);
+  programarBanner(id);
 }
 
 function moverBanner(id, dir) {
   const s = bannerState[id];
   if (!s) return;
-  s.current = (s.current + dir + s.total) % s.total;
-  irASlide(id, s.current);
+  irASlide(id, (s.current + dir + s.total) % s.total);
 }
 
 function irASlide(id, idx) {
@@ -1078,6 +1089,7 @@ function irASlide(id, idx) {
   document.querySelectorAll('#' + id + '-dots span').forEach((d, i) => {
     d.classList.toggle('active', i === idx);
   });
+  programarBanner(id);
 }
 
 // ---- BUSCADOR ----
