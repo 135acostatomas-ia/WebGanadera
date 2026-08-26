@@ -437,16 +437,24 @@ a.corte-card{color:inherit}
   .banner-slide-beneficios>.banner-beneficios-mobile{
     position:absolute;
     z-index:0;
+    max-width:none;
+    display:block;
+    object-position:center;
+  }
+  .banner-slide-beneficios>.banner-beneficios-mobile-top{
+    top:0;
+    left:-30%;
+    width:160%;
+    height:var(--mobile-banner-half);
+    object-fit:cover;
+  }
+  .banner-slide-beneficios>.banner-beneficios-mobile-bottom{
+    top:var(--mobile-banner-half);
     left:-15%;
     width:130%;
     height:auto;
-    max-width:none;
-    display:block;
     object-fit:contain;
-    object-position:center;
   }
-  .banner-slide-beneficios>.banner-beneficios-mobile-top{top:0}
-  .banner-slide-beneficios>.banner-beneficios-mobile-bottom{top:var(--mobile-banner-half)}
   .banner-slide-beneficios .banner-caption{
     z-index:2;
     inset:0 0 auto;
@@ -454,9 +462,9 @@ a.corte-card{color:inherit}
     width:100%;
     height:var(--mobile-caption-height);
     max-width:none;
-    padding:14px 18px 0;
+    padding:0 18px;
     align-items:center;
-    justify-content:flex-start;
+    justify-content:center;
     text-align:center;
   }
   .banner-slide-beneficios .banner-eyebrow{
