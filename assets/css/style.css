@@ -421,7 +421,7 @@ a.corte-card{color:inherit}
 .banner-next{right:16px}
 .banner-prev:hover,.banner-next:hover{background:rgba(255,255,255,.3)}
 @media(max-width:560px){
-  .banner-slide{height:clamp(390px,calc(108.334vw + 40px),508px)}
+  .banner-slide{height:clamp(390px,calc(83.333vw + 40px),490px)}
   .banner-caption h2{font-size:30px}
   .banner-caption p{font-size:13px;margin-top:8px}
   .banner-caption{padding:0 7%}
@@ -429,31 +429,22 @@ a.corte-card{color:inherit}
   .banner-prev,.banner-next{display:none}
 
   .banner-slide-beneficios{
-    --mobile-banner-half:min(54.167vw,234px);
-    --mobile-caption-height:min(46.7vw,200px);
+    --mobile-image-height:min(83.333vw,450px);
+    --mobile-caption-height:min(44vw,190px);
     background:#061c5d;
   }
   .banner-slide-beneficios>.banner-beneficios-desktop{display:none}
   .banner-slide-beneficios>.banner-beneficios-mobile{
     position:absolute;
     z-index:0;
+    top:0;
+    left:0;
+    width:100%;
+    height:auto;
     max-width:none;
     display:block;
-    object-position:center;
-  }
-  .banner-slide-beneficios>.banner-beneficios-mobile-top{
-    top:0;
-    left:-30%;
-    width:160%;
-    height:var(--mobile-banner-half);
-    object-fit:cover;
-  }
-  .banner-slide-beneficios>.banner-beneficios-mobile-bottom{
-    top:var(--mobile-banner-half);
-    left:-15%;
-    width:130%;
-    height:auto;
     object-fit:contain;
+    object-position:center top;
   }
   .banner-slide-beneficios .banner-caption{
     z-index:2;
