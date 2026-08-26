@@ -568,11 +568,24 @@ function renderGridConVista() {
 
 // ---- PRODUCTOS ----
 
-function tarjetaProducto(p) {
+function obtenerImagenProducto(p) {
   const carpeta = CARPETA_IMG[p.categoria] || p.categoria.toLowerCase().replace(/[^a-z]/g, "");
-  const imgProducto = p.imagen
+  const original = p.imagen
     ? `assets/img/${carpeta}/${p.imagen}`
     : (IMG_CAT[p.categoria] || "assets/img/cat-vacuno.png");
+
+  if (!p.imagen || carpeta !== "almacen-y-fiambreria") {
+    return { src: original, fallback: original };
+  }
+
+  return {
+    src: `assets/img/optimized/almacen-y-fiambreria/${p.imagen.replace(/\.(png|jpe?g|webp)$/i, ".webp")}`,
+    fallback: original
+  };
+}
+
+function tarjetaProducto(p) {
+  const imagenProducto = obtenerImagenProducto(p);
 
   const nombreEscapado = p.nombre.replace(/'/g, "\\'");
   const id = "prod-" + p.nombre.replace(/[^a-zA-Z0-9]/g, "-");
@@ -584,7 +597,7 @@ function tarjetaProducto(p) {
 
   return `
   <div class="prod-card">
-    <div class="prod-thumb"><img src="${imgProducto}" alt="${p.nombre}"></div>
+    <div class="prod-thumb"><img src="${imagenProducto.src}" alt="${p.nombre}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${imagenProducto.fallback}'"></div>
     <div class="prod-info">
       <div class="cat">${p.categoria}</div>
       <h4>${p.nombre}</h4>
@@ -668,8 +681,7 @@ function pintarCarrusel(track, productos, onclickFn, esOferta) {
   const mostrarCategoria = !window.location.pathname.includes("catalogo.html");
 
   track.innerHTML = items.map(p => {
-    const carpeta = CARPETA_IMG[p.categoria] || p.categoria.toLowerCase().replace(/[^a-z]/g, "");
-    const img = p.imagen ? `assets/img/${carpeta}/${p.imagen}` : (IMG_CAT[p.categoria] || "assets/img/cat-vacuno.png");
+    const imagenProducto = obtenerImagenProducto(p);
     const catLabel = esOferta
       ? `<span class="carrusel-badge-oferta">🔥 OFERTA</span>`
       : (mostrarCategoria ? `<div class="carrusel-card-cat">${p.categoria}</div>` : "");
@@ -680,7 +692,7 @@ function pintarCarrusel(track, productos, onclickFn, esOferta) {
 
     return `
       <div class="carrusel-card" onclick="${onclickFn(p)}">
-        <img class="carrusel-card-img" src="${img}" alt="${p.nombre}" onerror="this.onerror=null;this.src='assets/img/ganadera-logo.png'">
+        <img class="carrusel-card-img" src="${imagenProducto.src}" alt="${p.nombre}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${imagenProducto.fallback}'">
         <div class="carrusel-card-body">
           ${catLabel}
           <div class="carrusel-card-nombre">${p.nombre}</div>
@@ -759,12 +771,12 @@ function iniciarCarruselInteractivo(track) {
 
   function iniciarAutoplay() {
     clearInterval(autoplayTimer);
-    autoplayTimer = setInterval(() => moverCarrusel(1), 4500);
+    autoplayTimer = setInterval(() => moverCarrusel(1), 3400);
   }
 
   function reanudarAutoplay() {
     pausarAutoplay();
-    resumeTimer = setTimeout(iniciarAutoplay, 3500);
+    resumeTimer = setTimeout(iniciarAutoplay, 800);
   }
 
   anterior.addEventListener("click", () => {
@@ -830,8 +842,6 @@ function iniciarCarruselInteractivo(track) {
   wrap.addEventListener("touchend", reanudarAutoplay, { passive: true });
   wrap.addEventListener("touchcancel", reanudarAutoplay, { passive: true });
 
-  section.addEventListener("mouseenter", pausarAutoplay);
-  section.addEventListener("mouseleave", reanudarAutoplay);
 
   wrap.addEventListener("scroll", () => {
     clearTimeout(normalizarTimer);
