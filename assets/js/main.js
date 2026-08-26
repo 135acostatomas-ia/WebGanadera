@@ -662,9 +662,11 @@ function renderCarruselOfertas(combos) {
 // onclickFn(p) debe devolver el string del atributo onclick para cada tarjeta.
 // esOferta=true muestra badge "OFERTA" y precio del pack en vez de categoría.
 function pintarCarrusel(track, productos, onclickFn, esOferta) {
+  if (!productos.length) return;
+
   const items = [...productos, ...productos];
   const mostrarCategoria = !window.location.pathname.includes("catalogo.html");
-  track.style.setProperty("--carrusel-duration", `${Math.max(productos.length * 4, 40)}s`);
+
   track.innerHTML = items.map(p => {
     const carpeta = CARPETA_IMG[p.categoria] || p.categoria.toLowerCase().replace(/[^a-z]/g, "");
     const img = p.imagen ? `assets/img/${carpeta}/${p.imagen}` : (IMG_CAT[p.categoria] || "assets/img/cat-vacuno.png");
@@ -675,6 +677,7 @@ function pintarCarrusel(track, productos, onclickFn, esOferta) {
     const recomendacionHtml = recomendacion
       ? `<p class="carrusel-card-recomendacion">${recomendacion}</p>`
       : "";
+
     return `
       <div class="carrusel-card" onclick="${onclickFn(p)}">
         <img class="carrusel-card-img" src="${img}" alt="${p.nombre}" onerror="this.onerror=null;this.src='assets/img/ganadera-logo.png'">
@@ -687,32 +690,155 @@ function pintarCarrusel(track, productos, onclickFn, esOferta) {
       </div>`;
   }).join("");
 
+  iniciarCarruselInteractivo(track);
+
   const section = track.closest(".carrusel-section");
   if (section) section.classList.add("loaded");
+}
 
-  // ---- DRAG TÁCTIL ----
+function iniciarCarruselInteractivo(track) {
   const wrap = track.parentElement;
-  let startX = 0;
-  let scrollLeft = 0;
-  let isDragging = false;
+  const section = track.closest(".carrusel-section");
+  if (!wrap || !section || wrap.dataset.carruselListo) return;
 
-  wrap.addEventListener("touchstart", e => {
-    isDragging = true;
-    startX = e.touches[0].clientX;
-    scrollLeft = wrap.scrollLeft;
-    track.style.animationPlayState = "paused";
-  }, { passive: true });
+  wrap.dataset.carruselListo = "true";
+  wrap.tabIndex = 0;
+  wrap.setAttribute("aria-label", "Carrusel de productos");
 
-  wrap.addEventListener("touchmove", e => {
-    if (!isDragging) return;
-    const dx = startX - e.touches[0].clientX;
-    wrap.scrollLeft = scrollLeft + dx;
-  }, { passive: true });
+  const anterior = document.createElement("button");
+  anterior.type = "button";
+  anterior.className = "carrusel-nav-btn carrusel-nav-prev";
+  anterior.setAttribute("aria-label", "Productos anteriores");
+  anterior.innerHTML = "&#10094;";
 
-  wrap.addEventListener("touchend", () => {
-    isDragging = false;
-    setTimeout(() => { track.style.animationPlayState = "running"; }, 2000);
+  const siguiente = document.createElement("button");
+  siguiente.type = "button";
+  siguiente.className = "carrusel-nav-btn carrusel-nav-next";
+  siguiente.setAttribute("aria-label", "Productos siguientes");
+  siguiente.innerHTML = "&#10095;";
+
+  section.append(anterior, siguiente);
+
+  let autoplayTimer;
+  let resumeTimer;
+  let normalizarTimer;
+  let arrastrando = false;
+  let arrastreInicioX = 0;
+  let scrollInicio = 0;
+  let bloqueoClickHasta = 0;
+
+  const mitadCarrusel = () => track.scrollWidth / 2;
+  const distanciaPaso = () => {
+    const visibles = Math.max(1, Math.floor(wrap.clientWidth / 280));
+    return Math.min(visibles, 3) * 280;
+  };
+
+  function normalizarPosicion() {
+    const mitad = mitadCarrusel();
+    if (!mitad) return;
+    if (wrap.scrollLeft >= mitad) wrap.scrollLeft -= mitad;
+  }
+
+  function moverCarrusel(direccion) {
+    const mitad = mitadCarrusel();
+    const distancia = distanciaPaso();
+
+    if (direccion < 0 && wrap.scrollLeft < distancia) {
+      wrap.scrollLeft += mitad;
+    } else if (direccion > 0 && wrap.scrollLeft >= mitad - distancia) {
+      wrap.scrollLeft -= mitad;
+    }
+
+    wrap.scrollBy({ left: direccion * distancia, behavior: "smooth" });
+  }
+
+  function pausarAutoplay() {
+    clearInterval(autoplayTimer);
+    clearTimeout(resumeTimer);
+  }
+
+  function iniciarAutoplay() {
+    clearInterval(autoplayTimer);
+    autoplayTimer = setInterval(() => moverCarrusel(1), 4500);
+  }
+
+  function reanudarAutoplay() {
+    pausarAutoplay();
+    resumeTimer = setTimeout(iniciarAutoplay, 3500);
+  }
+
+  anterior.addEventListener("click", () => {
+    pausarAutoplay();
+    moverCarrusel(-1);
+    reanudarAutoplay();
   });
+
+  siguiente.addEventListener("click", () => {
+    pausarAutoplay();
+    moverCarrusel(1);
+    reanudarAutoplay();
+  });
+
+  wrap.addEventListener("keydown", e => {
+    if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+      e.preventDefault();
+      pausarAutoplay();
+      moverCarrusel(e.key === "ArrowLeft" ? -1 : 1);
+      reanudarAutoplay();
+    }
+  });
+
+  wrap.addEventListener("pointerdown", e => {
+    if (e.pointerType !== "mouse" || e.button !== 0) return;
+    arrastrando = true;
+    arrastreInicioX = e.clientX;
+    scrollInicio = wrap.scrollLeft;
+    wrap.classList.add("is-dragging");
+    wrap.setPointerCapture(e.pointerId);
+    pausarAutoplay();
+  });
+
+  wrap.addEventListener("pointermove", e => {
+    if (!arrastrando) return;
+    const desplazamiento = e.clientX - arrastreInicioX;
+    if (Math.abs(desplazamiento) > 5) {
+      bloqueoClickHasta = Date.now() + 250;
+    }
+    wrap.scrollLeft = scrollInicio - desplazamiento;
+    e.preventDefault();
+  });
+
+  const terminarArrastre = e => {
+    if (!arrastrando) return;
+    arrastrando = false;
+    wrap.classList.remove("is-dragging");
+    if (wrap.hasPointerCapture(e.pointerId)) wrap.releasePointerCapture(e.pointerId);
+    reanudarAutoplay();
+  };
+
+  wrap.addEventListener("pointerup", terminarArrastre);
+  wrap.addEventListener("pointercancel", terminarArrastre);
+
+  wrap.addEventListener("click", e => {
+    if (Date.now() < bloqueoClickHasta) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, true);
+
+  wrap.addEventListener("touchstart", pausarAutoplay, { passive: true });
+  wrap.addEventListener("touchend", reanudarAutoplay, { passive: true });
+  wrap.addEventListener("touchcancel", reanudarAutoplay, { passive: true });
+
+  section.addEventListener("mouseenter", pausarAutoplay);
+  section.addEventListener("mouseleave", reanudarAutoplay);
+
+  wrap.addEventListener("scroll", () => {
+    clearTimeout(normalizarTimer);
+    normalizarTimer = setTimeout(normalizarPosicion, 140);
+  }, { passive: true });
+
+  iniciarAutoplay();
 }
 
 function abrirOfertas() {
