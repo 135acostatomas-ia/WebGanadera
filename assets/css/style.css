@@ -405,6 +405,7 @@ a.corte-card{color:inherit}
 .banner-caption{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 8%;max-width:640px}
 .banner-caption h2{font-family:var(--font-title);color:#fff;font-size:48px;font-weight:900;line-height:1.05;text-shadow:0 2px 20px rgba(0,0,0,.4)}
 .banner-slide:nth-child(-n+2) .banner-caption h2{font-size:58px}
+.banner-title-three-lines span{display:block;white-space:nowrap}
 .banner-caption p{color:rgba(255,255,255,.85);font-size:17px;margin-top:14px;line-height:1.6;max-width:440px}
 .banner-slide:first-child .banner-caption h2,
 .banner-slide:first-child .banner-caption p{transform:scaleY(1.08);transform-origin:left center}
