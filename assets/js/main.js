@@ -38,6 +38,12 @@ const CARPETA_IMG = {
   "Combos": "combos",
 };
 
+// Imágenes propias de productos que se publican fuera de las carpetas del Sheet.
+const IMAGENES_PRODUCTOS = {
+  "Bondiola": "assets/img/productos/bondiola-bandeja.webp",
+  "Costillar": "assets/img/productos/costillar-bandeja.webp",
+};
+
 // Productos que se venden por unidad/presentación y NO por kilo
 const PRODUCTOS_POR_UNIDAD = new Set([
   "Provoletta Parrillera en cazuela",
@@ -569,6 +575,9 @@ function renderGridConVista() {
 // ---- PRODUCTOS ----
 
 function obtenerImagenProducto(p) {
+  if (IMAGENES_PRODUCTOS[p.nombre]) {
+    return { src: IMAGENES_PRODUCTOS[p.nombre], fallback: IMG_CAT[p.categoria] || "assets/img/cat-vacuno.png" };
+  }
   const carpeta = CARPETA_IMG[p.categoria] || p.categoria.toLowerCase().replace(/[^a-z]/g, "");
   const original = p.imagen
     ? `assets/img/${carpeta}/${p.imagen}`
@@ -1266,4 +1275,5 @@ document.addEventListener("DOMContentLoaded", () => {
   activate(0);
   setInterval(()=>{ cur=(cur+1)%steps.length; activate(cur); },2200);
 })();
+
 
