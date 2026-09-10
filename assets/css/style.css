@@ -320,7 +320,8 @@ a.corte-card{color:inherit}
   .footer-cols{grid-template-columns:1fr}
   .carrito-float{right:16px;bottom:16px}
   .wsp-float{right:16px;bottom:86px}
-  body{overflow-x:hidden}
+  /* Clip horizontal overflow without creating a scroll container for the sticky header. */
+  body{overflow-x:clip}
   .container{padding:0 12px}
   .prod-card{width:100%;max-width:100%}
   .prod-grid-list .prod-thumb{width:90px;height:72px}
@@ -425,11 +426,11 @@ a.corte-card{color:inherit}
 .banner-prev:hover,.banner-next:hover{background:rgba(255,255,255,.3)}
 @media(max-width:560px){
   .banner-slide{height:clamp(390px,calc(83.333vw + 40px),490px)}
-  .banner-caption h2{font-size:30px}
-  .banner-slide:nth-child(-n+2) .banner-caption h2{font-size:44px}
+  .banner-caption h2{font-size:28px}
+  .banner-slide:nth-child(-n+2) .banner-caption h2{font-size:clamp(28px,8.2vw,36px)}
   .banner-caption p{font-size:13px;margin-top:8px}
-  .banner-caption{padding:0 7%}
-  .banner-caption .btn-cta{font-size:12px;padding:11px 24px;margin-top:16px}
+  .banner-caption{padding:0 7%;align-items:flex-start;text-align:left}
+  .banner-caption .btn-cta{font-size:11px;padding:11px 24px;margin-top:16px}
   .banner-prev,.banner-next{display:none}
   .banner-slide-envios>img{
     object-fit:cover;
@@ -461,24 +462,24 @@ a.corte-card{color:inherit}
     width:100%;
     height:var(--mobile-caption-height);
     max-width:none;
-    padding:0 18px;
-    align-items:center;
+    padding:0 7%;
+    align-items:flex-start;
     justify-content:center;
-    text-align:center;
+    text-align:left;
   }
   .banner-slide-beneficios .banner-eyebrow{
     margin:0 0 8px;
-    font-size:14px;
+    font-size:12px;
     line-height:1.2;
   }
   .banner-slide-beneficios .banner-caption h2{
-    font-size:36px;
+    font-size:clamp(26px,7.5vw,32px);
     line-height:1;
   }
   .banner-slide-beneficios .btn-cta{
-    align-self:center;
-    max-width:calc(100% - 28px);
-    margin:14px auto 0;
+    align-self:flex-start;
+    max-width:100%;
+    margin:14px 0 0;
     padding:10px 16px;
     font-size:10px;
     line-height:1.25;
