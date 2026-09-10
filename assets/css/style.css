@@ -410,7 +410,7 @@ a.corte-card{color:inherit}
 .banner-slide:first-child .banner-caption h2,
 .banner-slide:first-child .banner-caption p{transform:scaleY(1.08);transform-origin:left center}
 .banner-caption .btn-cta{margin-top:24px;align-self:flex-start}
-.banner-slide-beneficios>.banner-beneficios-desktop{object-fit:contain;object-position:center}
+.banner-slide-beneficios>.banner-beneficios-desktop{object-fit:cover;object-position:center}
 .banner-beneficios-mobile{display:none}
 .banner-slide-beneficios .banner-caption{max-width:690px}
 .banner-slide-beneficios .banner-eyebrow{margin:0 0 12px;color:#fff;font-size:20px;font-weight:700;letter-spacing:.4px;text-transform:uppercase}
