@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cómo comprar — Ganadera Panamericana</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Libre+Franklin:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css?v=20260910-7">
+<style>
+.como-comprar{background:#f7f7f7;min-height:60vh;padding:42px 24px 90px;color:#073d6d}
+.como-comprar-inner{max-width:1120px;margin:auto}
+.como-comprar-breadcrumb{font-size:14px;margin-bottom:20px}.como-comprar-breadcrumb a{color:#073d6d;font-weight:700;text-decoration:none}
+.como-comprar h1{font-family:var(--font-title,'Libre Franklin',sans-serif);font-size:44px;margin:0 0 52px;font-weight:900}
+.como-comprar h2{font-family:var(--font-title,'Libre Franklin',sans-serif);font-size:20px;margin:0 0 46px}
+.como-comprar ol{margin:0;padding-left:28px;font-family:var(--font-title,'Libre Franklin',sans-serif);font-size:18px;font-weight:700;line-height:1.5}
+.como-comprar li{padding-left:4px;margin:0 0 20px}
+@media(max-width:700px){.como-comprar{padding:28px 20px 60px}.como-comprar h1{font-size:32px;margin-bottom:36px}.como-comprar h2{font-size:17px;margin-bottom:34px}.como-comprar ol{font-size:16px}}
+</style>
+</head>
+<body>
+<header class="page-header"><div class="container header-content">
+<a href="index.html" class="logo"><img src="assets/img/ganadera-logo.png" alt="" class="logo-icon"><img src="assets/img/ganadera-panamericana.png" alt="Ganadera Panamericana" class="logo-text"></a>
+<div class="search"><input type="text" placeholder="Buscar cortes, productos..."><button aria-label="Buscar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button></div>
+<div class="header-actions"><button class="header-cart" type="button" onclick="abrirCarrito()" aria-label="Abrir carrito"><span class="header-cart-icon">🛒</span><span class="header-cart-copy"><small>Mi carrito</small><strong id="header-carrito-total">$ 0</strong></span></button><button class="menu-hamburger" onclick="toggleMenu()">&#9776;</button></div>
+</div></header>
+<nav class="main-nav" id="main-nav"><div class="container"><ul>
+<li><a href="catalogo.html?cat=Vacuno">Vacuno</a></li><li><a href="catalogo.html?cat=Cerdo">Cerdo</a></li><li><a href="catalogo.html?cat=Pollo">Pollo</a></li><li><a href="catalogo.html?cat=Elaborados">Elaborados</a></li><li><a href="catalogo.html?cat=EmbutidosAchuras">Embutidos y Achuras</a></li><li><a href="catalogo.html?cat=FiambreriaAlmacen">Fiambrería y Almacén</a></li><li><a href="ofertas.html">Ofertas</a></li><li><a href="mayorista.html">Mayorista</a></li><li><a href="sucursales.html">Sucursales</a></li>
+</ul></div></nav>
+<main class="como-comprar"><div class="como-comprar-inner">
+<div class="como-comprar-breadcrumb"><a href="index.html">Inicio</a> › Cómo comprar</div>
+<h1>CÓMO COMPRAR</h1>
+<h2>Hacer tu compra en Ganadera Panamericana nunca fue tan fácil.</h2>
+<ol>
+<li>Navegá por las categorías o usá el buscador para elegir los cortes y productos que querés.</li>
+<li>Elegí la cantidad que querés y la presentación del corte, si corresponde, y agregalo al carrito.</li>
+<li>Una vez que hayas agregado todos los productos que deseabas, desplegá el carrito y hacé clic en “Finalizar pedido por WhatsApp”.</li>
+<li>Al momento de finalizar el pedido por WhatsApp, continuamos por ese medio para realizar el pago de la compra.</li>
+</ol>
+</div></main>
+<footer class="page-footer"><div class="container"><div class="footer-cols">
+<div class="footer-brand"><img src="assets/img/logo.png" alt="Ganadera Panamericana"><p>Ganadera Panamericana. Carne de calidad, seleccionada del campo argentino y entregada fresca en tu domicilio.</p><div class="footer-pay">Realizá tu pedido por WhatsApp de forma simple y rápida.</div></div>
+<div><h5>Comprar</h5><ul><li><a href="catalogo.html?cat=Vacuno">Vacuno</a></li><li><a href="catalogo.html?cat=Cerdo">Cerdo</a></li><li><a href="catalogo.html?cat=Pollo">Pollo</a></li><li><a href="catalogo.html?cat=EmbutidosAchuras">Embutidos y Achuras</a></li><li><a href="ofertas.html">Ofertas</a></li></ul></div>
+<div><h5>Ayuda</h5><ul><li><a href="como-comprar.html">Cómo comprar</a></li><li><a href="index.html#zona-cobertura">Zonas de envío</a></li><li><a href="#">Preguntas frecuentes</a></li></ul></div>
+<div><h5>Contacto</h5><ul><li>WhatsApp: 11 0000-0000</li><li>info@ganaderapanamericana.com</li><li>Lun a Sáb · 9 a 19hs</li></ul></div>
+</div></div><div class="footer-bottom"><div class="container">© 2024 Ganadera Panamericana — Todos los derechos reservados</div></div></footer>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script><script src="assets/js/main.js?v=20260825-9"></script>
+<div id="carrito-overlay" class="carrito-overlay"></div><div id="carrito-drawer" class="carrito-drawer"><div class="carrito-header"><h3>Tu pedido</h3><button onclick="cerrarCarrito()">✕</button></div><div id="carrito-empty" class="carrito-empty">Todavía no agregaste productos.</div><div id="carrito-items" class="carrito-items"></div><div class="carrito-footer"><div class="carrito-total-row"><span>Total estimado</span><span id="carrito-total">$ 0</span></div><button class="btn-finalizar" onclick="finalizarPedido()"><img src="assets/img/whatsapp.png" alt=""> Finalizar pedido por WhatsApp</button></div></div>
+</body></html>
