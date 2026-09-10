@@ -434,7 +434,7 @@ a.corte-card{color:inherit}
   .banner-prev,.banner-next{display:none}
   .banner-slide-envios>img{
     object-fit:cover;
-    object-position:center;
+    object-position:65% center;
     background:#061c5d;
   }
 
