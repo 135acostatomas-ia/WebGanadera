@@ -532,3 +532,10 @@ a.corte-card{color:inherit}
 .search-item-cat{font-size:11px;background:var(--color-store);color:#fff;padding:2px 8px;border-radius:3px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;flex-shrink:0}
 .search-noresult{padding:14px 16px;font-size:13px;color:var(--grey-100)}
 
+
+/* ---- MODALIDAD DEL PEDIDO ---- */
+.modalidad-selector{display:flex;gap:10px;margin-bottom:18px}
+.modalidad-btn{flex:1;border:1px solid #c8c8c8;background:#fff;color:var(--color-store-font);border-radius:6px;padding:12px 10px;font-family:var(--font-body);font-size:13px;font-weight:800;cursor:pointer;transition:all .2s ease}
+.modalidad-btn:hover{border-color:var(--color-store);color:var(--color-store)}
+.modalidad-btn.active{background:var(--color-store);border-color:var(--color-store);color:#fff;box-shadow:0 2px 6px rgba(7,61,109,.22)}
+@media(max-width:480px){.modalidad-selector{gap:8px}.modalidad-btn{font-size:12px;padding:11px 6px}}
