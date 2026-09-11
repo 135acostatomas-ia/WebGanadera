@@ -406,6 +406,13 @@ function actualizarEstadoMinimo(totalNum) {
     btn.parentNode.insertBefore(msg, btn);
   }
 
+  if (carrito.length === 0) {
+    btn.classList.add("disabled");
+    btn.disabled = true;
+    msg.style.display = "none";
+    return;
+  }
+
   if (modalidadPedido === "retiro") {
     btn.classList.remove("disabled");
     btn.disabled = false;
