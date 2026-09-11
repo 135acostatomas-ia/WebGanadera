@@ -260,6 +260,43 @@ function formatPrecio(precio) {
 
 // ---- CARRITO ----
 
+let modalidadPedido = localStorage.getItem("modalidadPedido") || "envio";
+
+function obtenerTotalCarrito() {
+  return carrito.reduce((s, i) => {
+    if (i.categoria === "⭐ OFERTA") {
+      const kg = kgDesdeNombre(i.nombre);
+      return s + i.precio * Math.round(i.cantidad / kg);
+    }
+    return s + i.precio * i.cantidad;
+  }, 0);
+}
+
+function renderSelectorModalidad() {
+  const footer = document.querySelector(".carrito-footer");
+  const totalRow = footer?.querySelector(".carrito-total-row");
+  if (!footer || !totalRow) return;
+
+  let selector = footer.querySelector(".modalidad-selector");
+  if (!selector) {
+    selector = document.createElement("div");
+    selector.className = "modalidad-selector";
+    totalRow.parentNode.insertBefore(selector, totalRow);
+  }
+
+  selector.innerHTML = `
+    <button type="button" class="modalidad-btn ${modalidadPedido === "envio" ? "active" : ""}" onclick="seleccionarModalidad('envio')">Envío</button>
+    <button type="button" class="modalidad-btn ${modalidadPedido === "retiro" ? "active" : ""}" onclick="seleccionarModalidad('retiro')">Retiro en tienda</button>
+  `;
+}
+
+function seleccionarModalidad(modalidad) {
+  modalidadPedido = modalidad === "retiro" ? "retiro" : "envio";
+  localStorage.setItem("modalidadPedido", modalidadPedido);
+  renderSelectorModalidad();
+  actualizarEstadoMinimo(obtenerTotalCarrito());
+}
+
 function actualizarCarrito() {
   const cont = document.getElementById("carrito-items");
   const total = document.getElementById("carrito-total");
@@ -271,6 +308,8 @@ function actualizarCarrito() {
   const headerTotal = document.getElementById("header-carrito-total");
 
   if (!cont) return;
+
+  renderSelectorModalidad();
 
   const totalUnidades = carrito.reduce((s, i) => s + i.cantidad, 0);
   const totalNum = carrito.reduce((s, i) => {
@@ -365,6 +404,13 @@ function actualizarEstadoMinimo(totalNum) {
     msg.id = "carrito-minimo-msg";
     msg.className = "carrito-minimo-msg";
     btn.parentNode.insertBefore(msg, btn);
+  }
+
+  if (modalidadPedido === "retiro") {
+    btn.classList.remove("disabled");
+    btn.disabled = false;
+    msg.style.display = "none";
+    return;
   }
 
   const falta = MINIMO_COMPRA - totalNum;
@@ -504,7 +550,7 @@ function finalizarPedido() {
     return s + i.precio * i.cantidad;
   }, 0);
 
-  if (totalActual < MINIMO_COMPRA) return;
+  if (modalidadPedido === "envio" && totalActual < MINIMO_COMPRA) return;
 
   const lineas = carrito.map(i => {
     if (i.categoria === "⭐ OFERTA") {
@@ -532,7 +578,8 @@ function finalizarPedido() {
     return s + i.precio * i.cantidad;
   }, 0);
 
-  const texto = `Hola! Quiero hacer el siguiente pedido:\n\n${lineas}\n\nTOTAL: $${totalNum.toLocaleString("es-AR")}`;
+  const modalidadTexto = modalidadPedido === "retiro" ? "Retiro en tienda" : "Envío";
+  const texto = `Hola! Quiero hacer el siguiente pedido:\n\nModalidad: ${modalidadTexto}\n\n${lineas}\n\nTOTAL: ${totalNum.toLocaleString("es-AR")}`;
   window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(texto)}`, "_blank");
 }
 
