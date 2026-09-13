@@ -42,6 +42,9 @@ const CARPETA_IMG = {
 const IMAGENES_PRODUCTOS = {
   "Bondiola": "assets/img/productos/bondiola-bandeja.webp",
   "Costillar": "assets/img/productos/costillar-bandeja.webp",
+  "Chiquizuela": "assets/img/vacuno/chiquizuela.webp",
+  "Ribs de cerdo": "assets/img/cerdo/ribs-de-cerdo.webp",
+  "Paleta de cerdo": "assets/img/cerdo/paleta-de-cerdo.webp",
 };
 
 // Productos que se venden por unidad/presentación y NO por kilo
