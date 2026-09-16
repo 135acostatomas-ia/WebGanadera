@@ -45,6 +45,7 @@ const IMAGENES_PRODUCTOS = {
   "Chiquizuela": "assets/img/vacuno/chiquizuela.webp",
   "Ribs de cerdo": "assets/img/cerdo/ribs-de-cerdo.webp",
   "Paleta de cerdo": "assets/img/cerdo/paleta-de-cerdo.webp",
+  "Carre americano": "assets/img/cerdo/carre-americano.webp",
 };
 
 // Productos que se venden por unidad/presentación y NO por kilo
