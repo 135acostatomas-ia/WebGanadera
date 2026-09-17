@@ -129,7 +129,7 @@ const RECOMENDACIONES_PRODUCTOS = {
   "Peceto de cerdo": "Ideal para horno, medallones, milanesas o cocciones con salsa.",
   "Bola de lomo de cerdo": "Versátil para milanesas, bifes, salteados o cacerola.",
   "Cuadril de cerdo": "Recomendado para bifes, parrilla, horno o fajitas.",
-  "Colita de cuadril de cerdo": "Ideal para horno o parrilla, entera o fileteada.",
+  "Colita de cuadril de cerdo": "assets/img/cerdo/colita-de-cuadril-cerdo.webp",
   "Cuadrada de cerdo": "Buena para milanesas, bifes, horno o salteados.",
   "Tortuguita de cerdo": "Ideal para horno, guisos, estofados o carne desmechada.",
   "Osobuco de cerdo": "Perfecto para guisos, estofados y cocciones lentas.",
