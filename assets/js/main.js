@@ -46,6 +46,7 @@ const IMAGENES_PRODUCTOS = {
   "Ribs de cerdo": "assets/img/cerdo/ribs-de-cerdo.webp",
   "Paleta de cerdo": "assets/img/cerdo/paleta-de-cerdo.webp",
   "Carre americano": "assets/img/cerdo/carre-americano.webp",
+  "Colita de cuadril de cerdo": "assets/img/cerdo/colita-de-cuadril-cerdo.webp",
 };
 
 // Productos que se venden por unidad/presentación y NO por kilo
