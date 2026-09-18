@@ -48,7 +48,7 @@ const IMAGENES_PRODUCTOS = {
   "Carre americano": "assets/img/cerdo/carre-americano.webp",
   "Colita de cuadril de cerdo": "assets/img/cerdo/colita-de-cuadril-cerdo.webp",
   "Hamburguesa de cerdo": "assets/img/productos/hamburguesa-de-cerdo-bandeja.webp",
-  "Nuggets": "assets/img/productos/nuggets-bandeja.webp",
+  "Nuggets": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/productos/nuggets-bandeja.webp?v=20260918-4",
 };
 
 // Productos que se venden por unidad/presentación y NO por kilo
