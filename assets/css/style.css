@@ -539,3 +539,35 @@ a.corte-card{color:inherit}
 .modalidad-btn:hover{border-color:var(--color-store);color:var(--color-store)}
 .modalidad-btn.active{background:var(--color-store);border-color:var(--color-store);color:#fff;box-shadow:0 2px 6px rgba(7,61,109,.22)}
 @media(max-width:480px){.modalidad-selector{gap:8px}.modalidad-btn{font-size:12px;padding:11px 6px}}
+
+/* ---- TITULO LARGO EN FRASE (sucursales) ---- */
+.sec-title-frase h2{text-transform:none;font-size:30px;line-height:1.25;max-width:860px}
+@media(max-width:700px){.sec-title-frase h2{font-size:22px}}
+
+/* ---- SUGERENCIA DE LOCALIDAD ---- */
+.coverage-card-suc{margin-top:42px}
+.localidad-ask{padding:22px 24px;background:var(--grey-500);border-top:1px solid var(--grey-300)}
+.localidad-ask label{display:block;font-family:var(--font-title);color:var(--color-store-font);font-size:18px;font-weight:900;margin-bottom:12px}
+.localidad-ask-row{display:flex;gap:10px}
+.localidad-ask-row input{flex:1;min-width:0;border:1px solid var(--grey-300);border-radius:4px;padding:13px 14px;font-family:var(--font-base);font-size:14px;color:var(--grey);background:#fff;transition:border-color .2s}
+.localidad-ask-row input:focus{outline:none;border-color:var(--color-store)}
+.localidad-ask-row button{flex-shrink:0;background:var(--color-store);color:#fff;border:none;border-radius:4px;padding:0 22px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:filter .2s,transform .2s}
+.localidad-ask-row button:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.localidad-ask-row button:disabled{opacity:.6;cursor:default;transform:none}
+.localidad-ask-msg{margin-top:10px;font-size:14px;font-weight:700;color:var(--color-store-font)}
+.localidad-ask-msg.error{color:var(--red)}
+@media(max-width:700px){
+  .localidad-ask{padding:18px}
+  .localidad-ask label{font-size:16px}
+  .localidad-ask-row{flex-direction:column}
+  .localidad-ask-row button{padding:14px}
+}
+
+/* ---- MENU DE PRODUCTOS MAYORISTA ---- */
+.prod-menu{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.form-field[hidden]{display:none}
+.prod-menu .prod-opt{display:flex;align-items:center;gap:10px;border:1px solid var(--grey-300);border-radius:4px;padding:11px 13px;background:#fff;font-family:var(--font-base);font-size:14px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--grey);cursor:pointer;transition:border-color .2s,background .2s}
+.prod-menu .prod-opt:hover{border-color:var(--color-store)}
+.prod-menu .prod-opt input{width:17px;height:17px;flex-shrink:0;accent-color:var(--color-store);cursor:pointer}
+.prod-menu .prod-opt.checked{border-color:var(--color-store);background:rgba(6,28,93,.05);font-weight:700;color:var(--color-store-font)}
+@media(max-width:700px){.prod-menu{grid-template-columns:1fr}}

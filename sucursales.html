@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sucursales — Ganadera Panamericana</title>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Libre+Franklin:wght@400;700&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20260825-21">
+<link rel="stylesheet" href="assets/css/style.css?v=20260921-3">
 </head>
 <body>
 
@@ -48,11 +48,11 @@
 </nav>
 
 <!-- ===== CONTENIDO ===== -->
-<section class="section">
+<section class="section" id="zona-cobertura">
   <div class="container">
-    <div class="sec-title">
-      <h2>NUESTRAS SUCURSALES</h2>
-      <p>Encontranos cerca tuyo · Lunes a Sábados</p>
+    <div class="sec-title sec-title-frase">
+      <h2>Recibí tu pedido en casa o retiralo en cualquiera de nuestras sucursales</h2>
+      <p>Encontranos cerca tuyo · Lunes a Sábados · Mirá hasta dónde llegamos con nuestros envíos</p>
     </div>
 
     <div class="sucursales-grid">
@@ -136,25 +136,43 @@
       </div>
 
     </div>
-  </div>
-</section>
 
-<!-- ===== MAPA DE COBERTURA Y SUCURSALES ===== -->
-<section class="section">
-  <div class="container">
-    <div class="sec-title">
-      <h2>Zona de cobertura y sucursales</h2>
-      <p>Todas nuestras sucursales y el área que cubrimos con envíos</p>
-    </div>
-    <div style="border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08)">
-      <iframe
-        src="https://www.google.com/maps/d/embed?mid=1Galt8ou5aI-Z2HqTFyp5ObF2qblyF9Y&ll=-34.49400537653811%2C-58.663085249999995&z=10"
-        width="100%"
-        height="450"
-        style="border:0;display:block"
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade">
-      </iframe>
+    <div class="coverage-card coverage-card-suc">
+      <div class="coverage-callout">
+        <div class="coverage-callout-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 21s7-5.4 7-12a7 7 0 1 0-14 0c0 6.6 7 12 7 12Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="12" cy="9" r="2.5" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="coverage-callout-copy">
+          <h3>¿Llegamos a tu zona?</h3>
+          <p>Hacemos entregas refrigeradas en CABA y Zona Norte. Revisá el mapa o consultanos por WhatsApp.</p>
+        </div>
+        <a
+          href="#"
+          class="coverage-cta"
+          onclick="window.open('https://wa.me/' + WHATSAPP_NUMERO + '?text=' + encodeURIComponent('Hola! Quiero consultar si hacen entregas en mi zona.'), '_blank'); return false;">
+          Consultar cobertura
+        </a>
+      </div>
+      <div class="coverage-map-crop">
+        <iframe
+          src="https://www.google.com/maps/d/embed?mid=1Galt8ou5aI-Z2HqTFyp5ObF2qblyF9Y&ll=-34.49400537653811%2C-58.663085249999995&z=10"
+          title="Mapa de cobertura y sucursales de Ganadera Panamericana"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+      <!-- ===== SUGERENCIA DE LOCALIDAD ===== -->
+      <form class="localidad-ask" onsubmit="return enviarLocalidad(this)">
+        <label for="localidad-suc">¿A qué localidad te gustaría que lleguemos?</label>
+        <div class="localidad-ask-row">
+          <input type="text" id="localidad-suc" name="localidad" placeholder="Escribí tu localidad o barrio" maxlength="80" autocomplete="address-level2" required>
+          <button type="submit">Enviar sugerencia</button>
+        </div>
+        <p class="localidad-ask-msg" role="status" hidden></p>
+      </form>
     </div>
   </div>
 </section>
@@ -169,7 +187,7 @@
         <div class="footer-pay">Realizá tu pedido por WhatsApp de forma simple y rápida.</div>
       </div>
       <div><h5>Comprar</h5><ul><li><a href="catalogo.html?cat=Vacuno">Vacuno</a></li><li><a href="catalogo.html?cat=Cerdo">Cerdo</a></li><li><a href="catalogo.html?cat=Pollo">Pollo</a></li><li><a href="catalogo.html?cat=EmbutidosAchuras">Embutidos y Achuras</a></li><li><a href="ofertas.html">Ofertas</a></li></ul></div>
-      <div><h5>Ayuda</h5><ul><li><a href="como-comprar.html">Cómo comprar</a></li><li><a href="#">Zonas de envío</a></li></ul></div>
+      <div><h5>Ayuda</h5><ul><li><a href="index.html#pasos-pedido">Cómo comprar</a></li><li><a href="index.html#zona-cobertura">Zonas de envío</a></li></ul></div>
       <div><h5>Contacto</h5><ul><li>WhatsApp: 11 2177-3350</li><li>info@ganaderapanamericana.com</li><li>Lun a Sáb · 8:00 a 17:00 hs</li></ul></div>
     </div>
   </div>
@@ -182,7 +200,7 @@
 <button class="carrito-float" onclick="abrirCarrito()">🛒<span class="float-badge" id="float-carrito-badge" style="display:none">0</span></button>
 
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script> 
-<script src="assets/js/main.js?v=20260921-2"></script>
+<script src="assets/js/main.js?v=20260921-3"></script>
 <div id="carrito-overlay" class="carrito-overlay"></div>
 <div id="carrito-drawer" class="carrito-drawer">
   <div class="carrito-header"><h3>Tu pedido</h3><button onclick="cerrarCarrito()">✕</button></div>

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mayorista — Ganadera Panamericana</title>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Libre+Franklin:wght@400;700&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20260825-21">
+<link rel="stylesheet" href="assets/css/style.css?v=20260921-3">
 </head>
 <body>
 
@@ -106,13 +106,24 @@
         </div>
 
         <div class="form-field">
-          <label for="m-mail">Email</label>
-          <input type="email" id="m-mail" placeholder="tu@email.com" maxlength="100">
+          <label>¿Qué productos te interesan? * <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--grey-100)">(podés elegir varios)</span></label>
+          <div class="prod-menu" id="m-productos">
+            <label class="prod-opt"><input type="checkbox" value="Mocho"><span>Mocho</span></label>
+            <label class="prod-opt"><input type="checkbox" value="Pecho"><span>Pecho</span></label>
+            <label class="prod-opt"><input type="checkbox" value="Media res"><span>Media res</span></label>
+            <label class="prod-opt"><input type="checkbox" value="Tren de bife"><span>Tren de bife</span></label>
+            <label class="prod-opt"><input type="checkbox" value="Completo (asado, vacío y matambre)"><span>Completo (asado, vacío y matambre)</span></label>
+            <label class="prod-opt"><input type="checkbox" value="Cajón de pollo"><span>Cajón de pollo</span></label>
+            <label class="prod-opt"><input type="checkbox" value="Cajón de suprema"><span>Cajón de suprema</span></label>
+            <label class="prod-opt"><input type="checkbox" value="Horma de queso"><span>Horma de queso</span></label>
+            <label class="prod-opt"><input type="checkbox" value="Horma de fiambre"><span>Horma de fiambre</span></label>
+            <label class="prod-opt"><input type="checkbox" value="Otros" id="m-otros-check"><span>Otros</span></label>
+          </div>
         </div>
 
-        <div class="form-field">
-          <label for="m-productos">¿Qué productos te interesan? *</label>
-          <textarea id="m-productos" placeholder="Ej: Vacuno en general, especialmente asado y tira. También pollo por cantidad."></textarea>
+        <div class="form-field" id="m-otros-wrap" hidden>
+          <label for="m-otros">Contanos qué otros productos buscás *</label>
+          <textarea id="m-otros" placeholder="Ej: bondiola de cerdo por cantidad, chorizos por caja" style="min-height:80px"></textarea>
         </div>
 
         <div class="form-field">
@@ -121,11 +132,11 @@
         </div>
 
         <p class="mayorista-aviso">
-          Al enviar, se abre tu WhatsApp con el mensaje listo para mandar.<br>
+          Dejanos tus datos y un asesor se contacta con vos.<br>
           <strong>Te respondemos dentro de las 24 horas hábiles.</strong>
         </p>
 
-        <button class="btn-mayorista" onclick="enviarMayorista()">
+        <button class="btn-mayorista" id="m-enviar" onclick="enviarMayorista()">
         Enviar consulta
         </button>
       </div>
@@ -143,7 +154,7 @@
         <div class="footer-pay">Realizá tu pedido por WhatsApp de forma simple y rápida.</div>
       </div>
       <div><h5>Comprar</h5><ul><li><a href="catalogo.html?cat=Vacuno">Vacuno</a></li><li><a href="catalogo.html?cat=Cerdo">Cerdo</a></li><li><a href="catalogo.html?cat=Pollo">Pollo</a></li><li><a href="catalogo.html?cat=EmbutidosAchuras">Embutidos y Achuras</a></li><li><a href="ofertas.html">Ofertas</a></li></ul></div>
-      <div><h5>Ayuda</h5><ul><li><a href="como-comprar.html">Cómo comprar</a></li><li><a href="#">Zonas de envío</a></li></ul></div>
+      <div><h5>Ayuda</h5><ul><li><a href="index.html#pasos-pedido">Cómo comprar</a></li><li><a href="index.html#zona-cobertura">Zonas de envío</a></li></ul></div>
       <div><h5>Contacto</h5><ul><li>WhatsApp: 11 2177-3350</li><li>info@ganaderapanamericana.com</li><li>Lun a Sáb · 8:00 a 17:00 hs</li></ul></div>
     </div>
   </div>
@@ -156,39 +167,69 @@
 <button class="carrito-float" onclick="abrirCarrito()">🛒<span class="float-badge" id="float-carrito-badge" style="display:none">0</span></button>
 
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script> 
-<script src="assets/js/main.js?v=20260921-2"></script>
+<script src="assets/js/main.js?v=20260921-3"></script>
 <script>
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzSAq1rG-P0xz_pxe0WgkiUXMC8z3wLyiZAOaLOxf3y4uj7EUpUScp-Lgmfv7oFIUY/exec";
+/* ---- MENU DE PRODUCTOS ---- */
+(function initMenuProductos(){
+  const menu = document.getElementById("m-productos");
+  const wrapOtros = document.getElementById("m-otros-wrap");
+  if (!menu) return;
+  menu.addEventListener("change", e => {
+    const box = e.target;
+    if (box.type !== "checkbox") return;
+    box.closest(".prod-opt").classList.toggle("checked", box.checked);
+    if (box.id === "m-otros-check") {
+      wrapOtros.hidden = !box.checked;
+      if (box.checked) document.getElementById("m-otros").focus();
+    }
+  });
+})();
+
+function productosElegidos(){
+  return Array.from(document.querySelectorAll("#m-productos input:checked")).map(b => b.value);
+}
 
 function enviarMayorista() {
   const nombre    = document.getElementById("m-nombre").value.trim();
   const localidad = document.getElementById("m-localidad").value.trim();
   const telefono  = document.getElementById("m-telefono").value.trim();
-  const mail      = document.getElementById("m-mail").value.trim();
-  const productos = document.getElementById("m-productos").value.trim();
+  const productos = productosElegidos();
+  const otros     = document.getElementById("m-otros").value.trim();
   const info      = document.getElementById("m-info").value.trim();
+  const btn       = document.getElementById("m-enviar");
 
-  if (!nombre || !localidad || !telefono || !productos) {
-    alert("Por favor completá los campos obligatorios (*).");
+  if (!nombre || !localidad || !telefono || !productos.length) {
+    alert("Por favor completá los campos obligatorios (*) y elegí al menos un producto.");
+    return;
+  }
+  if (productos.includes("Otros") && !otros) {
+    alert("Contanos qué otros productos buscás.");
+    document.getElementById("m-otros").focus();
     return;
   }
 
-  fetch(APPS_SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    body: JSON.stringify({ nombre, localidad, telefono, mail, productos, info }),
+  btn.disabled = true;
+  btn.textContent = "Enviando...";
+
+  enviarAPlanilla({
+    tipo: "mayorista",
+    nombre, localidad, telefono,
+    productos: productos.join(", "),
+    otros, info
   }).then(() => {
     document.querySelector(".mayorista-form").innerHTML = `
       <div style="text-align:center;padding:40px 20px;display:flex;flex-direction:column;align-items:center;gap:16px">
-        <div style="font-size:56px">✅</div>
-        <h3 style="font-family:var(--font-title);color:var(--color-store-font);font-size:26px;font-weight:900">¡Consulta enviada!</h3>
+        <div style="font-size:56px">&#9989;</div>
+        <h3 style="font-family:var(--font-title);color:var(--color-store-font);font-size:26px;font-weight:900">&iexcl;Consulta enviada!</h3>
         <p style="color:var(--grey);font-size:15px;line-height:1.7;max-width:380px">
           Recibimos tu consulta, <strong>${nombre}</strong>.<br>
-          Nos vamos a comunicar con vos dentro de las <strong>24 horas hábiles</strong>.
+          Nos vamos a comunicar con vos dentro de las <strong>24 horas h&aacute;biles</strong>.
         </p>
       </div>`;
   }).catch(() => {
-    alert("Hubo un error al enviar. Intentá de nuevo.");
+    btn.disabled = false;
+    btn.textContent = "Enviar consulta";
+    alert("Hubo un error al enviar. Intent\u00e1 de nuevo o escribinos por WhatsApp.");
   });
 }
 </script>

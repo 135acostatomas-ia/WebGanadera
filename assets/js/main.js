@@ -1339,3 +1339,56 @@ document.addEventListener("DOMContentLoaded", () => {
 })();
 
 
+
+/* =========================================================
+   FORMULARIOS -> PLANILLA (Google Apps Script)
+   Un solo endpoint recibe los dos formularios y escribe cada
+   uno en su pestaña segun el campo "tipo".
+   ========================================================= */
+const FORMS_URL = "https://script.google.com/macros/s/AKfycbzSAq1rG-P0xz_pxe0WgkiUXMC8z3wLyiZAOaLOxf3y4uj7EUpUScp-Lgmfv7oFIUY/exec";
+
+// Devuelve una promesa que se resuelve SOLO si la planilla confirmo el guardado.
+function enviarAPlanilla(datos) {
+  return fetch(FORMS_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" }, // evita el preflight CORS
+    body: JSON.stringify(datos)
+  })
+  .then(r => r.json())
+  .then(res => {
+    if (!res || res.ok !== true) throw new Error(res && res.error ? res.error : "No se pudo guardar");
+    return res;
+  });
+}
+
+/* ---- SUGERENCIA DE LOCALIDAD (debajo de los mapas) ---- */
+function enviarLocalidad(form) {
+  const input = form.querySelector('input[name="localidad"]');
+  const btn   = form.querySelector('button');
+  const msg   = form.querySelector('.localidad-ask-msg');
+  const localidad = input.value.trim();
+
+  msg.hidden = true;
+  msg.classList.remove("error");
+  if (!localidad) return false;
+
+  btn.disabled = true;
+  const textoOriginal = btn.textContent;
+  btn.textContent = "Enviando...";
+
+  enviarAPlanilla({ tipo: "localidad", localidad, pagina: location.pathname.split("/").pop() || "index.html" })
+    .then(() => {
+      form.querySelector(".localidad-ask-row").style.display = "none";
+      msg.textContent = "¡Gracias! Anotamos " + localidad + ". Lo tenemos en cuenta para ampliar la cobertura.";
+      msg.hidden = false;
+    })
+    .catch(() => {
+      btn.disabled = false;
+      btn.textContent = textoOriginal;
+      msg.textContent = "No pudimos enviar tu sugerencia. Probá de nuevo en un rato.";
+      msg.classList.add("error");
+      msg.hidden = false;
+    });
+
+  return false; // no recarga la pagina
+}

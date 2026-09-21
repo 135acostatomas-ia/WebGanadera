@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ganadera Panamericana — Carnes</title>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Libre+Franklin:wght@400;700&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20260910-6">
+<link rel="stylesheet" href="assets/css/style.css?v=20260921-3">
 </head>
 <body>
  
@@ -140,12 +140,21 @@
           referrerpolicy="no-referrer-when-downgrade">
         </iframe>
       </div>
+      <!-- ===== SUGERENCIA DE LOCALIDAD ===== -->
+      <form class="localidad-ask" onsubmit="return enviarLocalidad(this)">
+        <label for="localidad-home">¿A qué localidad te gustaría que lleguemos?</label>
+        <div class="localidad-ask-row">
+          <input type="text" id="localidad-home" name="localidad" placeholder="Escribí tu localidad o barrio" maxlength="80" autocomplete="address-level2" required>
+          <button type="submit">Enviar sugerencia</button>
+        </div>
+        <p class="localidad-ask-msg" role="status" hidden></p>
+      </form>
     </div>
   </div>
 </section>
  
 <!-- ===== ENVIO CON PASOS ===== -->
-<section class="envios-steps">
+<section class="envios-steps" id="pasos-pedido">
   <div class="container">
     <div style="text-align:center;margin-bottom:48px">
       <h2 style="font-family:var(--font-title);color:#fff;font-size:30px;font-weight:900">Tu pedido, del campo a tu puerta</h2>
@@ -242,7 +251,7 @@
         <div class="footer-pay">Realizá tu pedido por WhatsApp de forma simple y rápida.</div>
       </div>
       <div><h5>Comprar</h5><ul><li><a href="catalogo.html?cat=Vacuno">Vacuno</a></li><li><a href="catalogo.html?cat=Cerdo">Cerdo</a></li><li><a href="catalogo.html?cat=Pollo">Pollo</a></li><li><a href="catalogo.html?cat=EmbutidosAchuras">Embutidos y Achuras</a></li><li><a href="ofertas.html">Ofertas</a></li></ul></div>
-      <div><h5>Ayuda</h5><ul><li><a href="como-comprar.html">Cómo comprar</a></li><li><a href="#">Zonas de envío</a></li></ul></div>
+      <div><h5>Ayuda</h5><ul><li><a href="#pasos-pedido">Cómo comprar</a></li><li><a href="#zona-cobertura">Zonas de envío</a></li></ul></div>
       <div><h5>Contacto</h5><ul><li>WhatsApp: 11 2177-3350</li><li>info@ganaderapanamericana.com</li><li>Lun a Sáb · 8:00 a 17:00 hs</li></ul></div>
     </div>
   </div>
@@ -261,7 +270,7 @@
 </button>
  
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
-<script src="assets/js/main.js?v=20260921-2"></script>
+<script src="assets/js/main.js?v=20260921-3"></script>
  
 <!-- OVERLAY -->
 <div id="carrito-overlay" class="carrito-overlay"></div>
