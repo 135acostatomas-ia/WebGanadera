@@ -50,6 +50,31 @@ const IMAGENES_PRODUCTOS = {
   "Hamburguesa de cerdo": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/productos/hamburguesa-de-cerdo-bandeja.webp?v=20260922-1",
   "Nuggets": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/productos/nuggets-bandeja.webp?v=20260918-4",
   "Provoletta Parrillera en cazuela": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/provoletta-parrillera-cazuela.webp?v=20260918-2",
+  // Combos y ofertas: reutilizan la foto del corte base (no hay carpeta propia).
+  "Espinazo 3kg": "assets/img/vacuno/espinazo.jpg",
+  "Pata y Muslo 3kg": "assets/img/pollo/pata_muslo_1.jpg",
+  "Rebozadas de carne 2kg": "assets/img/elaborados/milanesa_de_carne_1.jpg",
+  "Rebozadas de pollo 2kg": "assets/img/elaborados/milanesa_de_pollo_1.jpg",
+  "Suprema 2kg": "assets/img/pollo/suprema.jpg",
+  "Picada Especial 2kg": "assets/img/vacuno/carne-picada.jpg",
+  "Osobuco 2kg": "assets/img/vacuno/osobuco_1.jpg",
+  "Carre 1kg": "assets/img/cerdo/carre_de_cerdo.jpg",
+  "Matambrito 1kg": "assets/img/cerdo/matambrito_1.jpg",
+  "Lomo 1kg": "assets/img/vacuno/lomo.jpg",
+  "Asado 1kg": "assets/img/vacuno/asado.jpg",
+  "Colita de cuadril 1kg": "assets/img/vacuno/colita_de_cuadril.jpg",
+  "Matambre 1kg": "assets/img/vacuno/matambre_1.jpg",
+  "Paleta 1kg": "assets/img/vacuno/paleta.jpg",
+  "Cuadrada 1kg": "assets/img/vacuno/cuadrada.jpg",
+  "Nalga 1kg": "assets/img/vacuno/nalga.jpg",
+  "Bola de lomo 1kg": "assets/img/vacuno/bola_de_lomo.jpg",
+  "Roast beef 1kg": "assets/img/vacuno/roast_beef.jpg",
+  "Bife ancho 1kg": "assets/img/vacuno/bife_ancho.jpg",
+  "Bife de chorizo 1kg": "assets/img/vacuno/bife_de_chorizo.jpg",
+  "Ojo de bife 1kg": "assets/img/vacuno/ojo_de_bife.jpg",
+  "Bife angosto 1kg": "assets/img/vacuno/bife_angosto.jpg",
+  "Cuadril 1kg": "assets/img/vacuno/cuadril.jpg",
+  "Marucha 1kg": "assets/img/vacuno/marucha.jpg",
 };
 
 // Productos que se venden por unidad/presentación y NO por kilo
@@ -58,8 +83,8 @@ const PRODUCTOS_POR_UNIDAD = new Set([
 
   "Bolsa Sazón Knorr (varios)",
   "Bolsa Sazón Barbacoa",
-  "Bolsa de Carbón Chico",
-  "Bolsa de Carbón Grande",
+  "Bolsa de Carbón Chico (3,5 kg)",
+  "Bolsa de Carbón Grande (6 kg)",
   "Leña x 10kg",
   "Maderitas (iniciador de fuego)",
   "Maple de Huevos N°1",
@@ -67,14 +92,14 @@ const PRODUCTOS_POR_UNIDAD = new Set([
   "Pan Baguetin (cong p hornear)",
   "Miel Pura x 500",
   "Miel Pura x 250",
+  "Miel La Colmena x 1 kg",
 
   "Queso Rallado Sobre x2 La Quesera",
   "Dulce de Batata Esnaola Lata",
   "Dulce Choco Esnaola Lata",
   "Dulce de Membrillo Esnaola Lata",
-  "Huevos Maple 30 N°1 Especiales",
-  "Huevos 1/2 Docena Cajita Estuche",
   "Aceite Girasol Leira 900",
+  "Aceite girasol Natura 900 cc",
   "Arroz Ala 500gr",
   "Puré de Tomate Marolio 520gr",
   "Puré Molto 520"
@@ -208,10 +233,13 @@ const RECOMENDACIONES_PRODUCTOS = {
   ,"Rebozadas de carne 2kg": "Opción práctica y rendidora para horno o fritura."
   ,"Rebozadas de pollo 2kg": "Opción práctica y rendidora para horno o fritura."
   ,"Suprema 2kg": "Ideal para milanesas, plancha, horno o preparaciones rellenas."
-  ,"Carre 2kg": "Ideal para parrilla, plancha u horno, entero o en chuletas."
+  ,"Carre 1kg": "Ideal para parrilla, plancha u horno, entero o cortado en chuletas."
+  ,"Matambrito 1kg": "Ideal para parrilla o plancha; fino, sabroso y de cocción rápida."
+  ,"Lomo 1kg": "Muy tierno y magro; ideal para medallones, plancha, horno o con salsa."
+  ,"Asado 1kg": "Ideal para parrilla u horno, con cocción lenta para lograr una carne tierna."
+  ,"Colita de cuadril 1kg": "Excelente para horno o parrilla, entera o cortada en bifes."
+  ,"Matambre 1kg": "Clásico para parrilla, arrollado, pizza de matambre o cocción al horno."
   ,"Picada Especial 2kg": "Rendidora para hamburguesas, albóndigas, empanadas o pastel de papa."
-  ,"Bola de lomo 2kg": "Ideal para milanesas, bifes, horno o cacerola."
-  ,"Cuadrada 2kg": "Recomendada para milanesas, bifes y preparaciones al horno."
   ,"Osobuco 2kg": "Perfecto para guisos, pucheros y estofados abundantes."
   ,"Paleta 1kg": "Ideal para guisos, estofados, horno, milanesas o carne desmechada."
   ,"Cuadrada 1kg": "Recomendada para milanesas, bifes y preparaciones al horno."
@@ -248,11 +276,41 @@ let carrito = JSON.parse(localStorage.getItem("carrito") || "[]");
 let todosLosProductos = [];
 let vistaActual = localStorage.getItem("vista-catalogo") || null; // null = no eligió todavía
 
+// Separa una linea de CSV respetando las comillas.
+// Hace falta porque hay nombres con coma adentro, como "Bolsa de Carbon Chico (3,5 kg)".
+// Partir por comas a secas rompia esos productos.
+function parseLineaCSV(linea) {
+  const campos = [];
+  let actual = "";
+  let entreComillas = false;
+
+  for (let i = 0; i < linea.length; i++) {
+    const c = linea[i];
+    if (entreComillas) {
+      if (c === '"') {
+        if (linea[i + 1] === '"') { actual += '"'; i++; }  // comilla escapada
+        else entreComillas = false;
+      } else {
+        actual += c;
+      }
+    } else if (c === '"') {
+      entreComillas = true;
+    } else if (c === ",") {
+      campos.push(actual);
+      actual = "";
+    } else {
+      actual += c;
+    }
+  }
+  campos.push(actual);
+  return campos;
+}
+
 function parseCSV(text) {
-  const lines = text.trim().split("\n").slice(1);
+  const lines = text.replace(/\r/g, "").trim().split("\n").slice(1);
   return lines
     .map(line => {
-      const parts = line.split(",");
+      const parts = parseLineaCSV(line);
       const nombre = parts[0]?.trim();
       const categoria = parts[1]?.trim();
       const precio = parts[2]?.trim();
