@@ -571,3 +571,7 @@ a.corte-card{color:inherit}
 .prod-menu .prod-opt input{width:17px;height:17px;flex-shrink:0;accent-color:var(--color-store);cursor:pointer}
 .prod-menu .prod-opt.checked{border-color:var(--color-store);background:rgba(6,28,93,.05);font-weight:700;color:var(--color-store-font)}
 @media(max-width:700px){.prod-menu{grid-template-columns:1fr}}
+
+/* ---- PRODUCTOS SIN FOTO: se muestra el logo, entero y centrado ---- */
+.prod-thumb img[src*="ganadera-logo"],
+.carrusel-card-img[src*="ganadera-logo"]{object-fit:contain;background:#fff;padding:18px}

@@ -4,17 +4,10 @@ const MINIMO_COMPRA = 60000;
 
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vROVeMldIsOVsSeIQx_yBV7JFz_GaSDnlK1JuOTVnAmxtTHSBN4Q4oiFbelaHSQ_8dnynHz8yUo0PG1/pub?gid=1110466768&single=true&output=csv";
 
-const IMG_CAT = {
-  "Vacuno":     "assets/img/cat-vacuno.png",
-  "Cerdo":      "assets/img/cat-cerdo.png",
-  "Pollo":      "assets/img/cat-pollo.png",
-  "Achuras":    "assets/img/cat-achuras.png",
-  "Embutidos":  "assets/img/cat-vacuno.png",
-  "Elaborados": "assets/img/cat-vacuno.png",
-  "Combos":     "assets/img/cat-vacuno.png",
-  "Almacén":    "assets/img/cat-vacuno.png",
-  "Fiambrería": "assets/img/cat-vacuno.png",
-};
+// Imagen que se muestra cuando un producto todavia no tiene foto propia.
+// Antes apuntaba a archivos cat-*.png que no existen en el repo, asi que las
+// tarjetas sin foto quedaban rotas.
+const IMG_PLACEHOLDER = "assets/img/ganadera-logo.png";
 
 
 // Agrupa categorías del Sheet bajo los botones unificados del nav
@@ -48,7 +41,6 @@ const IMAGENES_PRODUCTOS = {
   "Carre americano": "assets/img/cerdo/carre-americano.webp",
   "Colita de cuadril de cerdo": "assets/img/cerdo/colita-de-cuadril-cerdo.webp",
   "Hamburguesa de cerdo": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/productos/hamburguesa-de-cerdo-bandeja.webp?v=20260922-1",
-  "Tripa gorda": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/tripa-gorda.webp?v=20260922-1",
   "Nuggets": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/productos/nuggets-bandeja.webp?v=20260918-4",
   "Provoletta Parrillera en cazuela": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/provoletta-parrillera-cazuela.webp?v=20260918-2",
   // Combos y ofertas: reutilizan la foto del corte base (no hay carpeta propia).
@@ -697,12 +689,12 @@ function renderGridConVista() {
 
 function obtenerImagenProducto(p) {
   if (IMAGENES_PRODUCTOS[p.nombre]) {
-    return { src: IMAGENES_PRODUCTOS[p.nombre], fallback: IMG_CAT[p.categoria] || "assets/img/cat-vacuno.png" };
+    return { src: IMAGENES_PRODUCTOS[p.nombre], fallback: IMG_PLACEHOLDER };
   }
   const carpeta = CARPETA_IMG[p.categoria] || p.categoria.toLowerCase().replace(/[^a-z]/g, "");
   const original = p.imagen
     ? `assets/img/${carpeta}/${p.imagen}`
-    : (IMG_CAT[p.categoria] || "assets/img/cat-vacuno.png");
+    : IMG_PLACEHOLDER;
 
   if (!p.imagen || carpeta !== "almacen-y-fiambreria") {
     return { src: original, fallback: original };
