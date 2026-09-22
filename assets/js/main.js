@@ -50,6 +50,7 @@ const IMAGENES_PRODUCTOS = {
   "Chorizo Colorado": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/embutidos/chorizo-colorado.webp?v=20260922-1",
   "Morcilla Asturiana": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/embutidos/morcilla-asturiana.webp?v=20260922-1",
   "Panceta Salada": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/panceta-salada-nueva.webp?v=20260922-1",
+  "Panceta Ahumada": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/panceta-ahumada-nueva.webp?v=20260922-1",
   "Rabo": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/rabo.webp?v=20260922-1",
   "Nuggets": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/productos/nuggets-bandeja.webp?v=20260918-4",
   "Provoletta Parrillera en cazuela": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/provoletta-parrillera-cazuela.webp?v=20260918-2",
