@@ -41,6 +41,7 @@ const IMAGENES_PRODUCTOS = {
   "Carre americano": "assets/img/cerdo/carre-americano.webp",
   "Colita de cuadril de cerdo": "assets/img/cerdo/colita-de-cuadril-cerdo.webp",
   "Hamburguesa de cerdo": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/productos/hamburguesa-de-cerdo-bandeja.webp?v=20260922-1",
+  "Corazón": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/corazon.webp?v=20260922-1",
   "Nuggets": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/productos/nuggets-bandeja.webp?v=20260918-4",
   "Provoletta Parrillera en cazuela": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/provoletta-parrillera-cazuela.webp?v=20260918-2",
   // Combos y ofertas: reutilizan la foto del corte base (no hay carpeta propia).
