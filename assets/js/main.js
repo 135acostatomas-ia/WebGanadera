@@ -45,6 +45,7 @@ const IMAGENES_PRODUCTOS = {
   "Tripa gorda": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/tripa-gorda.webp?v=20260922-2",
   "Seso": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/seso.webp?v=20260922-1",
   "Salchichas viena con piel": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/embutidos/salchichas-viena-con-piel.webp?v=20260922-1",
+  "Chorizos de carne": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/embutidos/chorizos-de-carne.webp?v=20260922-1",
   "Rabo": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/rabo.webp?v=20260922-1",
   "Nuggets": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/productos/nuggets-bandeja.webp?v=20260918-4",
   "Provoletta Parrillera en cazuela": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/provoletta-parrillera-cazuela.webp?v=20260918-2",
