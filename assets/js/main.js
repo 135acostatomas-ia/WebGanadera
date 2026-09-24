@@ -65,6 +65,7 @@ const IMAGENES_PRODUCTOS = {
   "Longaniza Bastón para Fetear": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/longaniza-baston-para-fetear.webp?v=20260924-1",
   "Paleta Sandwich Mangiarotti": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/paleta-sandwich-mangiarotti.webp?v=20260924-1",
   "Queso gouda Melincue": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/queso-gouda-melincue.webp?v=20260924-1",
+  "Salamín picado fino Los Calvos": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/salamin-picado-fino-los-calvos.webp?v=20260924-1",
   "Rabo": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/rabo.webp?v=20260922-1",
   "Quijada": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/quijada.webp?v=20260924-1",
   "Rueda": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/rueda.webp?v=20260924-1",
