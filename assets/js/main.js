@@ -55,6 +55,7 @@ const IMAGENES_PRODUCTOS = {
   "Jamón Cocido Natural": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/jamon-cocido-natural.webp?v=20260922-1",
   "Maderitas (iniciador de fuego)": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/maderitas-iniciador-de-fuego.webp?v=20260922-1",
   "Dulce de Batata Esnaola Lata": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/dulce-de-batata-esnaola-lata.webp?v=20260923-1",
+  "Aceite Girasol Leira 900": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/aceite-girasol-leira-900.webp?v=20260924-1",
   "Rabo": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/rabo.webp?v=20260922-1",
   "Nuggets": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/productos/nuggets-bandeja.webp?v=20260918-4",
   "Provoletta Parrillera en cazuela": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/provoletta-parrillera-cazuela.webp?v=20260918-2",
