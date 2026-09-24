@@ -59,6 +59,7 @@ const IMAGENES_PRODUCTOS = {
   "Rabo": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/rabo.webp?v=20260922-1",
   "Quijada": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/quijada.webp?v=20260924-1",
   "Rueda": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/rueda.webp?v=20260924-1",
+  "Centro": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/centro.webp?v=20260924-1",
   "Nuggets": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/productos/nuggets-bandeja.webp?v=20260918-4",
   "Provoletta Parrillera en cazuela": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/provoletta-parrillera-cazuela.webp?v=20260918-2",
   // Combos y ofertas: reutilizan la foto del corte base (no hay carpeta propia).
