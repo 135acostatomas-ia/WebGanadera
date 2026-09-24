@@ -57,6 +57,7 @@ const IMAGENES_PRODUCTOS = {
   "Dulce de Batata Esnaola Lata": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/dulce-de-batata-esnaola-lata.webp?v=20260923-1",
   "Dulce Choco Esnaola Lata": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/dulce-choco-esnaola-lata.webp?v=20260924-1",
   "Dulce de Membrillo Esnaola Lata": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/dulce-de-membrillo-esnaola-lata.webp?v=20260924-1",
+  "Arroz Ala 500gr": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/arroz-ala-500gr.webp?v=20260924-1",
   "Aceite Girasol Leira 900": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/aceite-girasol-leira-900.webp?v=20260924-1",
   "Rabo": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/rabo.webp?v=20260922-1",
   "Quijada": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/quijada.webp?v=20260924-1",
