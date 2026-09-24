@@ -63,6 +63,7 @@ const IMAGENES_PRODUCTOS = {
   "Aceite Girasol Leira 900": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/aceite-girasol-leira-900.webp?v=20260924-1",
   "Aceite girasol Natura 900 cc": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/aceite-girasol-natura-900-cc.webp?v=20260924-1",
   "Longaniza Bastón para Fetear": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/longaniza-baston-para-fetear.webp?v=20260924-1",
+  "Paleta Sandwich Mangiarotti": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/paleta-sandwich-mangiarotti.webp?v=20260924-1",
   "Rabo": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/rabo.webp?v=20260922-1",
   "Quijada": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/quijada.webp?v=20260924-1",
   "Rueda": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/rueda.webp?v=20260924-1",
