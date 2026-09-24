@@ -61,6 +61,7 @@ const IMAGENES_PRODUCTOS = {
   "Puré de Tomate Marolio 520gr": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/pure-de-tomate-marolio-520gr.webp?v=20260924-1",
   "Puré Molto 520": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/pure-molto-520.webp?v=20260924-1",
   "Aceite Girasol Leira 900": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/aceite-girasol-leira-900.webp?v=20260924-1",
+  "Aceite girasol Natura 900 cc": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/aceite-girasol-natura-900-cc.webp?v=20260924-1",
   "Rabo": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/rabo.webp?v=20260922-1",
   "Quijada": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/quijada.webp?v=20260924-1",
   "Rueda": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/achuras/rueda.webp?v=20260924-1",
