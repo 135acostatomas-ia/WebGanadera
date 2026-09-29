@@ -408,6 +408,9 @@ a.corte-card{color:inherit}
 .banner-slide:nth-child(-n+2) .banner-caption h2{font-size:66px}
 .banner-title-three-lines span{display:block;white-space:nowrap}
 .banner-caption p{color:rgba(255,255,255,.85);font-size:17px;margin-top:14px;line-height:1.6;max-width:440px}
+.banner-slide-caption-right .banner-overlay{background:linear-gradient(to left,rgba(3,19,67,.72) 0%,rgba(3,19,67,.22) 60%,transparent 100%)}
+.banner-slide-caption-right .banner-caption{inset:0 0 0 auto;width:640px;box-sizing:border-box;align-items:flex-end;text-align:right}
+.banner-slide-caption-right .banner-caption p{margin-left:auto}
 .banner-slide:first-child .banner-caption h2,
 .banner-slide:first-child .banner-caption p{transform:scaleY(1.08);transform-origin:left center}
 .banner-caption .btn-cta{margin-top:24px;align-self:flex-start}
@@ -430,6 +433,7 @@ a.corte-card{color:inherit}
   .banner-slide:nth-child(-n+2) .banner-caption h2{font-size:clamp(28px,8.2vw,36px)}
   .banner-caption p{font-size:13px;margin-top:8px}
   .banner-caption{padding:0 7%;align-items:flex-start;text-align:left}
+  .banner-slide-caption-right .banner-caption{left:auto;right:0;width:100%;align-items:flex-end;text-align:right}
   .banner-caption .btn-cta{font-size:11px;padding:11px 24px;margin-top:16px}
   .banner-prev,.banner-next{display:none}
   .banner-slide-envios>img{
