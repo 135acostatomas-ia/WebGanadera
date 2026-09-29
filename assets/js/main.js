@@ -54,6 +54,7 @@ const IMAGENES_PRODUCTOS = {
   "Queso Provolin": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/queso-provolin.webp?v=20260922-1",
   "Jamón Cocido Natural": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/jamon-cocido-natural.webp?v=20260922-1",
   "Maderitas (iniciador de fuego)": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/maderitas-iniciador-de-fuego.webp?v=20260922-1",
+  "Miel La Colmena x 1 kg": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/miel-la-colmena-1kg.jpg?v=20260929-1",
   "Dulce de Batata Esnaola Lata": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/dulce-de-batata-esnaola-lata.webp?v=20260928-2",
   "Dulce Choco Esnaola Lata": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/dulce-choco-esnaola-lata.webp?v=20260924-1",
   "Dulce de Membrillo Esnaola Lata": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/dulce-de-membrillo-esnaola-lata.webp?v=20260924-1",
