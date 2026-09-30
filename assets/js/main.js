@@ -1388,7 +1388,7 @@ async function renderProductos() {
     }
   } catch (e) {
     const cont = document.getElementById("prod-grid");
-    if (cont) cont.innerHTML = `<p style="padding:20px;color:#e34b00">Error al cargar productos. Intentá recargar la página.</p>`;
+    if (cont) cont.innerHTML = `<p style="padding:20px;color:var(--red)">Error al cargar productos. Intentá recargar la página.</p>`;
     console.error("Error cargando CSV:", e);
   }
 }
@@ -1577,8 +1577,8 @@ function highlightProducto(nombre, esCombo) {
     const info = esCombo ? card : card.querySelector(".prod-info");
     if (!info) return;
     info.style.transition = "background 0.3s ease, border-top 0.3s ease";
-    info.style.background = "#fff8f5";
-    info.style.borderTop = "2px solid #e34b00";
+    info.style.background = "#fff4f4";
+    info.style.borderTop = "2px solid var(--red)";
     setTimeout(() => {
       info.style.transition = "background 1.5s ease, border-top 1.5s ease";
       info.style.background = "";
