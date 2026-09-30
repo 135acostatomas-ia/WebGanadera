@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Catálogo — Ganadera Panamericana</title>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Libre+Franklin:wght@400;700&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20260922-3">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260929-1">
 </head>
 <body>
  
@@ -63,25 +63,20 @@
   <div class="catalogo-body open" id="catalogo-body">
     <div class="container">
 
-      <!-- TÍTULO DINÁMICO DE CATEGORÍA -->
-      <div class="sec-title" style="text-align:left;margin-bottom:20px">
-        <h2 id="catalogo-titulo-texto">Catálogo</h2>
+      <!-- TÍTULO DINÁMICO DE CATEGORÍA Y VISTA -->
+      <div class="catalogo-heading-row">
+        <div class="sec-title catalogo-title">
+          <h2 id="catalogo-titulo-texto">Catálogo</h2>
+        </div>
+        <div class="vista-toggle" aria-label="Formato del catálogo">
+          <button id="btn-vista-grid" class="vista-btn active" onclick="setVista('grid')" title="Vista cuadrícula" aria-label="Vista cuadrícula">⊞</button>
+          <button id="btn-vista-list" class="vista-btn" onclick="setVista('list')" title="Vista lista" aria-label="Vista lista">☰</button>
+        </div>
       </div>
 
       <div class="catalogo-info">
         <span class="catalogo-info-icon">ℹ️</span>
-        <p>
-          Cada producto se agrega al carrito de a <strong>0,5 kg</strong>. 
-          También podrás indicar cómo preferís recibir cada corte.
-        </p>
-      </div>
-
-      <!-- Toggle de vista -->
-      <div class="filtros-y-vista">
-        <div class="vista-toggle">
-          <button id="btn-vista-grid" class="vista-btn active" onclick="setVista('grid')" title="Vista cuadrícula">⊞</button>
-          <button id="btn-vista-list" class="vista-btn" onclick="setVista('list')" title="Vista lista">☰</button>
-        </div>
+        <p>Sumá de a <strong>0,5 kg</strong> y elegí cómo recibir cada corte.</p>
       </div>
 
       <!-- Selector de vista inicial (se oculta después de elegir) -->
@@ -130,7 +125,7 @@
 </button>
 
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script> 
-<script src="assets/js/main.js?v=20260922-16"></script>
+<script src="assets/js/main.js?v=20260928-4"></script>
  
 <div id="carrito-overlay" class="carrito-overlay"></div>
 <div id="carrito-drawer" class="carrito-drawer">
@@ -148,6 +143,44 @@
     <button class="btn-finalizar" onclick="finalizarPedido()">
       <img src="assets/img/whatsapp.png" alt=""> Finalizar pedido por WhatsApp
     </button>
+  </div>
+</div>
+
+<!-- ===== DETALLE DEL PRODUCTO ===== -->
+<div id="producto-modal-overlay" class="producto-modal-overlay" onclick="cerrarProductoDetalle()" aria-hidden="true">
+  <div id="producto-modal" class="producto-modal" role="dialog" aria-modal="true" aria-labelledby="producto-modal-nombre" onclick="event.stopPropagation()">
+    <button class="producto-modal-cerrar" type="button" onclick="cerrarProductoDetalle()" aria-label="Cerrar detalle del producto">✕</button>
+    <div class="producto-modal-imagen-wrap">
+      <img id="producto-modal-imagen" src="" alt="">
+    </div>
+    <div class="producto-modal-info">
+      <span id="producto-modal-categoria" class="producto-modal-categoria"></span>
+      <h2 id="producto-modal-nombre"></h2>
+      <p id="producto-modal-recomendacion" class="producto-modal-recomendacion"></p>
+      <div class="producto-modal-precio">
+        <strong id="producto-modal-precio"></strong>
+        <span id="producto-modal-unidad"></span>
+      </div>
+      <fieldset id="producto-modal-preparacion" class="producto-modal-preparacion" hidden>
+        <legend>¿Cómo lo querés?</legend>
+        <p>Elegí una preparación para continuar.</p>
+        <div id="producto-modal-preparacion-opciones" class="producto-modal-preparacion-opciones"></div>
+      </fieldset>
+      <div class="producto-modal-compra">
+        <span class="producto-modal-label">Elegí la cantidad</span>
+        <div class="producto-modal-cantidad" aria-label="Cantidad del producto">
+          <button id="producto-modal-restar" type="button" onclick="cambiarCantidadProductoDetalle(-1)" aria-label="Restar cantidad">−</button>
+          <span id="producto-modal-cantidad-texto" aria-live="polite"></span>
+          <button type="button" onclick="cambiarCantidadProductoDetalle(1)" aria-label="Sumar cantidad">+</button>
+        </div>
+        <small id="producto-modal-paso"></small>
+      </div>
+      <div class="producto-modal-total">
+        <span>Total estimado</span>
+        <strong id="producto-modal-total"></strong>
+      </div>
+      <button id="producto-modal-agregar" class="producto-modal-agregar" type="button" onclick="confirmarProductoDetalle()">Agregar al carrito</button>
+    </div>
   </div>
 </div>
  
