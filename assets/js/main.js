@@ -1009,7 +1009,7 @@ function renderCarrusel(productos) {
       : productos
   );
 
-  pintarCarrusel(track, seleccionados, p => `catalogo.html?cat=${encodeURIComponent(p.categoriaFiltro)}#productos`);
+  pintarCarrusel(track, seleccionados, p => `catalogo.html?cat=${encodeURIComponent(p.categoriaFiltro)}&producto=${encodeURIComponent(p.nombre)}&detalle=1`);
 }
 
 function barajarProductos(productos) {
@@ -1373,6 +1373,19 @@ async function renderProductos() {
     renderCarrusel(sinCombos);
     renderCarruselOfertas(combos);
     renderOfertas(combos);
+
+    // Ubicar el producto enlazado una vez que la planilla y las tarjetas estén listas.
+    const parametros = new URLSearchParams(window.location.search);
+    const productoEnlazado = parametros.get("producto");
+    if (productoEnlazado) {
+      if (parametros.get("detalle") === "1" && document.getElementById("prod-grid") && !vistaActual) {
+        elegirVista("grid");
+      }
+      highlightProducto(productoEnlazado, window.location.pathname.includes("ofertas.html"));
+      if (parametros.get("detalle") === "1" && window.location.pathname.includes("catalogo.html")) {
+        abrirProductoDetalle(encodeURIComponent(productoEnlazado));
+      }
+    }
   } catch (e) {
     const cont = document.getElementById("prod-grid");
     if (cont) cont.innerHTML = `<p style="padding:20px;color:#e34b00">Error al cargar productos. Intentá recargar la página.</p>`;
@@ -1608,9 +1621,6 @@ document.addEventListener("DOMContentLoaded", () => {
     tituloCat.textContent = label;
   }
 
-  // ---- HIGHLIGHT PRODUCTO ----
-  const urlProd = new URLSearchParams(window.location.search).get("producto");
-  if (urlProd) highlightProducto(decodeURIComponent(urlProd), window.location.pathname.includes("ofertas.html"));
 });
 
 (function initSteps(){
