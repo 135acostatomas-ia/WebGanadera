@@ -278,6 +278,48 @@ const RECOMENDACIONES_PRODUCTOS = {
   ,"Marucha 1kg": "Sabrosa y versátil para parrilla, plancha, horno o estofados."
 };
 
+// Preparaciones disponibles para los productos que requieren elección de corte.
+// Las claves coinciden con los nombres publicados en la hoja de productos.
+const PREPARACIONES_PRODUCTOS = {
+  "Asado": ["Tira", "Banderita", "Marcado", "En una pieza"],
+  "Colita": ["Entera", "Entera mechada"],
+  "Lomo": ["Entero", "Churrasco grueso", "Churrasco fino"],
+  "Bola de lomo": ["Cortado fino", "Cortado grueso", "En un trozo", "Picado"],
+  "Paleta": ["En un trozo", "Picado", "Churrasco grueso", "Churrasco fino"],
+  "Roast beef": ["En un trozo", "Picado", "Churrasco fino", "Churrasco grueso"],
+  "Bife de chorizo": ["Churrasco fino", "Churrasco grueso", "En un trozo"],
+  "Ojo de bife": ["Churrasco fino", "Churrasco grueso", "En un trozo"],
+  "Peceto": ["Cortado fino", "Cortado grueso", "En un trozo"],
+  "Tapa de asado": ["En un trozo", "Picado"],
+  "Picaña": ["Entera", "Entera mechada"],
+  "Cuadrada": ["Cortado fino", "Cortado grueso", "En un trozo", "Picado"],
+  "Cuadril": ["Churrasco fino", "Churrasco grueso", "En un trozo"],
+  "Nalga": ["Cortado fino", "Cortado grueso", "En un trozo", "Picado"],
+  "Tapa de nalga": ["Entera", "Entera mechada"],
+  "Riñonada": ["Churrasco fino", "Churrasco grueso", "En un trozo"],
+  "Bondiola": ["Churrasco fino", "Churrasco grueso", "En un trozo"],
+  "Carre": ["Churrasco fino", "Churrasco grueso"],
+  "Carre deshuesado": ["Churrasco fino", "Churrasco grueso", "En un trozo"],
+  "Cuadril de cerdo": ["Cortado fino", "Cortado grueso", "En un trozo"],
+  "Jamon": ["Churrasco fino", "Churrasco grueso"],
+  "Nalga de cerdo": ["Cortadas finas", "Cortadas gruesas", "En un trozo"],
+  "Peceto de cerdo": ["Cortadas finas", "Cortadas gruesas", "En un trozo"],
+  "Bola de lomo de cerdo": ["Cortadas finas", "Cortadas gruesas", "En un trozo"],
+  "Cuadrada de cerdo": ["Cortadas finas", "Cortadas gruesas", "En un trozo"],
+  "Tortuguita de cerdo": ["Cortadas finas", "Cortadas gruesas", "En un trozo"],
+  "Suprema": ["Fileteada", "Entera", "Cortada mariposa"],
+  "Pata y Muslo": ["Unidad con piel", "Unidad sin piel"],
+  "Pollo Entero": ["Entero con piel", "Entero sin piel", "En 4 con piel", "En 4 sin piel", "En 8 con piel", "En 8 sin piel", "Rana"]
+};
+
+function preparacionesProducto(nombre) {
+  return PREPARACIONES_PRODUCTOS[nombre] || [];
+}
+
+function tieneMenuPreparacion(nombre) {
+  return preparacionesProducto(nombre).length > 0;
+}
+
 function esProductoPorUnidad(nombre, categoria) {
   if (categoria === "⭐ OFERTA") return false;
   return PRODUCTOS_POR_UNIDAD.has(nombre);
@@ -299,6 +341,10 @@ function mostrarCantidad(cantidad, nombre, categoria) {
 let carrito = JSON.parse(localStorage.getItem("carrito") || "[]");
 let todosLosProductos = [];
 let vistaActual = localStorage.getItem("vista-catalogo") || null; // null = no eligió todavía
+let productoModalActual = null;
+let cantidadProductoModal = 0;
+let productoModalTrigger = null;
+let preparacionProductoModal = "";
 
 // Separa una linea de CSV respetando las comillas.
 // Hace falta porque hay nombres con coma adentro, como "Bolsa de Carbon Chico (3,5 kg)".
@@ -462,6 +508,7 @@ function actualizarCarrito() {
     <div class="carrito-item">
       <div class="ci-info">
         <span class="ci-nombre">${item.nombre}</span>
+        ${item.preparacion ? `<span class="ci-preparacion">${item.preparacion}</span>` : ""}
         ${catLabel}
       </div>
 
@@ -525,8 +572,13 @@ function actualizarEstadoMinimo(totalNum) {
 }
 
 function agregarAlCarrito(btn, nombre, categoria, precio) {
+  if (tieneMenuPreparacion(nombre)) {
+    abrirProductoDetalle(encodeURIComponent(nombre));
+    return;
+  }
+
   const step = pasoProducto(nombre, categoria);
-  const existente = carrito.find(i => i.nombre === nombre);
+  const existente = carrito.find(i => i.nombre === nombre && !i.preparacion);
 
   if (existente) {
     existente.cantidad = Math.round((existente.cantidad + step) * 10) / 10;
@@ -549,11 +601,21 @@ function actualizarControlTarjeta(nombre, categoria, precio) {
   const cont = document.getElementById(id);
   if (!cont) return;
 
-  const item = carrito.find(i => i.nombre === nombre);
+  const items = carrito.filter(i => i.nombre === nombre);
+  const item = items.find(i => !i.preparacion) || items[0];
   const nombreEscapado = nombre.replace(/'/g, "\\'");
 
+  if (tieneMenuPreparacion(nombre)) {
+    const cantidadTotal = items.reduce((total, actual) => total + actual.cantidad, 0);
+    const resumen = cantidadTotal > 0
+      ? `<span class="prod-preparaciones-resumen">${mostrarCantidad(cantidadTotal, nombre, categoria)} en el carrito</span>`
+      : `<span class="prod-preparaciones-hint">Elegí cómo querés recibirlo</span>`;
+    cont.innerHTML = `${resumen}<button class="btn-agregar" onclick="event.stopPropagation(); abrirProductoDetalle('${encodeURIComponent(nombre)}')">+ Agregar al carrito</button>`;
+    return;
+  }
+
   if (!item) {
-    cont.innerHTML = `<button class="btn-agregar" onclick="agregarAlCarrito(this, '${nombreEscapado}', '${categoria}', '${precio}')">+ Agregar al carrito</button>`;
+    cont.innerHTML = `<button class="btn-agregar" onclick="event.stopPropagation(); agregarAlCarrito(this, '${nombreEscapado}', '${categoria}', '${precio}')">+ Agregar al carrito</button>`;
     return;
   }
 
@@ -561,15 +623,15 @@ function actualizarControlTarjeta(nombre, categoria, precio) {
 
   cont.innerHTML = `
     <div class="prod-controles">
-      <button onclick="restarEnTarjeta('${nombreEscapado}', '${categoria}', '${precio}')">−</button>
+      <button onclick="event.stopPropagation(); restarEnTarjeta('${nombreEscapado}', '${categoria}', '${precio}')">−</button>
       <span>${cantidadTexto}</span>
-      <button onclick="sumarEnTarjeta('${nombreEscapado}', '${categoria}', '${precio}')">+</button>
+      <button onclick="event.stopPropagation(); sumarEnTarjeta('${nombreEscapado}', '${categoria}', '${precio}')">+</button>
     </div>`;
 }
 
 function sumarEnTarjeta(nombre, categoria, precio) {
   const step = pasoProducto(nombre, categoria);
-  const existente = carrito.find(i => i.nombre === nombre);
+  const existente = carrito.find(i => i.nombre === nombre && !i.preparacion);
 
   if (existente) {
     existente.cantidad = Math.round((existente.cantidad + step) * 10) / 10;
@@ -589,7 +651,7 @@ function sumarEnTarjeta(nombre, categoria, precio) {
 
 function restarEnTarjeta(nombre, categoria, precio) {
   const step = pasoProducto(nombre, categoria);
-  const idx = carrito.findIndex(i => i.nombre === nombre);
+  const idx = carrito.findIndex(i => i.nombre === nombre && !i.preparacion);
   if (idx === -1) return;
 
   carrito[idx].cantidad = Math.round((carrito[idx].cantidad - step) * 10) / 10;
@@ -614,9 +676,12 @@ function animarBadge() {
 }
 
 function cambiarCantidad(idx, delta) {
+  const item = carrito[idx] ? { ...carrito[idx] } : null;
+  if (!item) return;
   carrito[idx].cantidad = Math.round((carrito[idx].cantidad + delta) * 10) / 10;
   if (carrito[idx].cantidad <= 0) carrito.splice(idx, 1);
   actualizarCarrito();
+  actualizarControlTarjeta(item.nombre, item.categoria, item.precio);
 }
 
 function eliminarItem(idx) {
@@ -661,10 +726,10 @@ function finalizarPedido() {
         ? "1 unidad"
         : `${i.cantidad} unidades`;
 
-      return `• ${i.nombre}: ${textoUnidad} — $${formatPrecio(i.precio * i.cantidad)}`;
+      return `• ${i.nombre}${i.preparacion ? ` — ${i.preparacion}` : ""}: ${textoUnidad} — $${formatPrecio(i.precio * i.cantidad)}`;
     }
 
-    return `• ${i.nombre}: ${i.cantidad} kg — $${formatPrecio(i.precio * i.cantidad)}`;
+    return `• ${i.nombre}${i.preparacion ? ` — ${i.preparacion}` : ""}: ${i.cantidad} kg — $${formatPrecio(i.precio * i.cantidad)}`;
   }).join("\n");
 
   const totalNum = carrito.reduce((s, i) => {
@@ -741,6 +806,7 @@ function tarjetaProducto(p) {
   const imagenProducto = obtenerImagenProducto(p);
 
   const nombreEscapado = p.nombre.replace(/'/g, "\\'");
+  const nombreCodificado = encodeURIComponent(p.nombre).replace(/'/g, "%27");
   const id = "prod-" + p.nombre.replace(/[^a-zA-Z0-9]/g, "-");
   const unidadPrecio = esProductoPorUnidad(p.nombre, p.categoria) ? "/ unidad" : "/ kg";
   const recomendacion = vistaActual !== "list" ? RECOMENDACIONES_PRODUCTOS[p.nombre] : "";
@@ -749,7 +815,7 @@ function tarjetaProducto(p) {
     : "";
 
   return `
-  <div class="prod-card">
+  <div class="prod-card" onclick="if (!event.target.closest('button')) abrirProductoDetalle('${nombreCodificado}')">
     <div class="prod-thumb"><img src="${imagenProducto.src}" alt="${p.nombre}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${imagenProducto.fallback}'"></div>
     <div class="prod-info">
       <div class="cat">${p.categoria}</div>
@@ -757,12 +823,151 @@ function tarjetaProducto(p) {
       ${recomendacionHtml}
       <div class="prod-price"><span class="now">$ ${formatPrecio(p.precio)}</span><span class="kg">${unidadPrecio}</span></div>
       <div class="prod-cantidad" id="${id}">
-        <button class="btn-agregar" onclick="agregarAlCarrito(this, '${nombreEscapado}', '${p.categoria}', '${p.precio}')">
+        ${tieneMenuPreparacion(p.nombre) ? `<span class="prod-preparaciones-hint">Elegí cómo querés recibirlo</span>` : ""}
+        <button class="btn-agregar" onclick="event.stopPropagation(); agregarAlCarrito(this, '${nombreEscapado}', '${p.categoria}', '${p.precio}')">
           + Agregar al carrito
         </button>
       </div>
     </div>
   </div>`;
+}
+
+function abrirProductoDetalle(nombreCodificado) {
+  const nombre = decodeURIComponent(nombreCodificado);
+  const producto = todosLosProductos.find(p => p.nombre === nombre && p.categoria !== "Combos");
+  const overlay = document.getElementById("producto-modal-overlay");
+  if (!producto || !overlay) return;
+
+  productoModalActual = producto;
+  productoModalTrigger = document.activeElement;
+
+  const opcionesPreparacion = preparacionesProducto(producto.nombre);
+  const item = opcionesPreparacion.length
+    ? null
+    : carrito.find(i => i.nombre === producto.nombre && !i.preparacion);
+  preparacionProductoModal = "";
+  cantidadProductoModal = item ? item.cantidad : pasoProducto(producto.nombre, producto.categoria);
+
+  const imagenProducto = obtenerImagenProducto(producto);
+  const imagen = document.getElementById("producto-modal-imagen");
+  imagen.src = imagenProducto.src;
+  imagen.alt = producto.nombre;
+  imagen.onerror = () => {
+    imagen.onerror = null;
+    imagen.src = imagenProducto.fallback;
+  };
+
+  document.getElementById("producto-modal-categoria").textContent = producto.categoria;
+  document.getElementById("producto-modal-nombre").textContent = producto.nombre;
+
+  const recomendacion = document.getElementById("producto-modal-recomendacion");
+  recomendacion.textContent = RECOMENDACIONES_PRODUCTOS[producto.nombre] || "";
+  recomendacion.hidden = !recomendacion.textContent;
+
+  document.getElementById("producto-modal-precio").textContent = `$ ${formatPrecio(producto.precio)}`;
+  document.getElementById("producto-modal-unidad").textContent = esProductoPorUnidad(producto.nombre, producto.categoria) ? "/ unidad" : "/ kg";
+  document.getElementById("producto-modal-paso").textContent = esProductoPorUnidad(producto.nombre, producto.categoria)
+    ? "Podés sumar o restar de a 1 unidad."
+    : "Podés sumar o restar de a 0,5 kg.";
+  const preparacion = document.getElementById("producto-modal-preparacion");
+  const opciones = document.getElementById("producto-modal-preparacion-opciones");
+  preparacion.hidden = opcionesPreparacion.length === 0;
+  opciones.innerHTML = opcionesPreparacion.map(opcion => `
+    <label class="producto-modal-preparacion-opcion">
+      <input type="radio" name="producto-preparacion" value="${opcion}" onchange="seleccionarPreparacionProductoDetalle(this.value)">
+      <span>${opcion}</span>
+    </label>`).join("");
+
+  const botonAgregar = document.getElementById("producto-modal-agregar");
+  botonAgregar.textContent = item ? "Actualizar carrito" : "Agregar al carrito";
+  botonAgregar.disabled = opcionesPreparacion.length > 0;
+
+  actualizarCantidadProductoDetalle();
+  overlay.classList.add("open");
+  overlay.setAttribute("aria-hidden", "false");
+  document.body.classList.add("producto-modal-open");
+  document.querySelector(".producto-modal-cerrar")?.focus();
+}
+
+function seleccionarPreparacionProductoDetalle(preparacion) {
+  if (!productoModalActual) return;
+  preparacionProductoModal = preparacion;
+
+  const existente = carrito.find(i =>
+    i.nombre === productoModalActual.nombre && i.preparacion === preparacion
+  );
+
+  cantidadProductoModal = existente
+    ? existente.cantidad
+    : pasoProducto(productoModalActual.nombre, productoModalActual.categoria);
+
+  const botonAgregar = document.getElementById("producto-modal-agregar");
+  botonAgregar.disabled = false;
+  botonAgregar.textContent = existente ? "Actualizar carrito" : "Agregar al carrito";
+  actualizarCantidadProductoDetalle();
+}
+
+function cambiarCantidadProductoDetalle(direccion) {
+  if (!productoModalActual) return;
+  const paso = pasoProducto(productoModalActual.nombre, productoModalActual.categoria);
+  const nuevaCantidad = Math.round((cantidadProductoModal + direccion * paso) * 10) / 10;
+  cantidadProductoModal = Math.max(paso, nuevaCantidad);
+  actualizarCantidadProductoDetalle();
+}
+
+function actualizarCantidadProductoDetalle() {
+  if (!productoModalActual) return;
+  const paso = pasoProducto(productoModalActual.nombre, productoModalActual.categoria);
+  const texto = mostrarCantidad(cantidadProductoModal, productoModalActual.nombre, productoModalActual.categoria);
+  const total = Number(productoModalActual.precio) * cantidadProductoModal;
+
+  document.getElementById("producto-modal-cantidad-texto").textContent = texto;
+  document.getElementById("producto-modal-total").textContent = `$ ${formatPrecio(total)}`;
+  document.getElementById("producto-modal-restar").disabled = cantidadProductoModal <= paso;
+}
+
+function confirmarProductoDetalle() {
+  if (!productoModalActual) return;
+
+  const requierePreparacion = tieneMenuPreparacion(productoModalActual.nombre);
+  if (requierePreparacion && !preparacionProductoModal) return;
+
+  const existente = carrito.find(i =>
+    i.nombre === productoModalActual.nombre &&
+    (i.preparacion || "") === (preparacionProductoModal || "")
+  );
+  if (existente) {
+    existente.cantidad = cantidadProductoModal;
+  } else {
+    carrito.push({
+      nombre: productoModalActual.nombre,
+      categoria: productoModalActual.categoria,
+      precio: Number(productoModalActual.precio),
+      cantidad: cantidadProductoModal,
+      ...(preparacionProductoModal ? { preparacion: preparacionProductoModal } : {})
+    });
+  }
+
+  actualizarCarrito();
+  animarBadge();
+  actualizarControlTarjeta(productoModalActual.nombre, productoModalActual.categoria, productoModalActual.precio);
+  cerrarProductoDetalle();
+}
+
+function cerrarProductoDetalle() {
+  const overlay = document.getElementById("producto-modal-overlay");
+  if (!overlay?.classList.contains("open")) return;
+
+  overlay.classList.remove("open");
+  overlay.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("producto-modal-open");
+  productoModalActual = null;
+  preparacionProductoModal = "";
+
+  if (productoModalTrigger && typeof productoModalTrigger.focus === "function") {
+    productoModalTrigger.focus();
+  }
+  productoModalTrigger = null;
 }
 
 function renderFiltros(categorias, todos) {
@@ -1375,6 +1580,9 @@ document.addEventListener("DOMContentLoaded", () => {
   setFloatWhatsApp();
   initHeroDots();
   document.getElementById("carrito-overlay").addEventListener("click", cerrarCarrito);
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") cerrarProductoDetalle();
+  });
   ['banner-home','banner-mayorista'].forEach(initBanner);
 
   // ---- NAV ACTIVO ----
