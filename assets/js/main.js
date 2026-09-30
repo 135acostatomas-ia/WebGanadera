@@ -1009,7 +1009,7 @@ function renderCarrusel(productos) {
       : productos
   );
 
-  pintarCarrusel(track, seleccionados, p => `abrirCategoria('${encodeURIComponent(p.categoriaFiltro)}')`);
+  pintarCarrusel(track, seleccionados, p => `catalogo.html?cat=${encodeURIComponent(p.categoriaFiltro)}#productos`);
 }
 
 function barajarProductos(productos) {
@@ -1026,13 +1026,13 @@ function renderCarruselOfertas(combos) {
   if (!track) return;
   const seleccionados = [...combos].sort(() => Math.random() - 0.5);
 
-  pintarCarrusel(track, seleccionados, () => `abrirOfertas()`, true);
+  pintarCarrusel(track, seleccionados, p => `ofertas.html?producto=${encodeURIComponent(p.nombre)}`, true);
 }
 
 // Pinta un carrusel infinito a partir de una lista de productos.
-// onclickFn(p) debe devolver el string del atributo onclick para cada tarjeta.
+// enlaceProducto(p) devuelve el destino del producto para cada tarjeta.
 // esOferta=true muestra badge "OFERTA" y precio del pack en vez de categoría.
-function pintarCarrusel(track, productos, onclickFn, esOferta) {
+function pintarCarrusel(track, productos, enlaceProducto, esOferta) {
   if (!productos.length) return;
 
   const items = [...productos, ...productos];
@@ -1049,7 +1049,7 @@ function pintarCarrusel(track, productos, onclickFn, esOferta) {
       : "";
 
     return `
-      <div class="carrusel-card" onclick="${onclickFn(p)}">
+      <a class="carrusel-card" href="${enlaceProducto(p)}">
         <img class="carrusel-card-img" src="${imagenProducto.src}" alt="${p.nombre}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${imagenProducto.fallback}'">
         <div class="carrusel-card-body">
           ${catLabel}
@@ -1057,7 +1057,7 @@ function pintarCarrusel(track, productos, onclickFn, esOferta) {
           ${recomendacionHtml}
           ${esOferta ? `<div class="carrusel-card-precio">$ ${formatPrecio(p.precio)}</div>` : ""}
         </div>
-      </div>`;
+      </a>`;
   }).join("");
 
   iniciarCarruselInteractivo(track);
@@ -1164,7 +1164,6 @@ function iniciarCarruselInteractivo(track) {
     arrastreInicioX = e.clientX;
     scrollInicio = wrap.scrollLeft;
     wrap.classList.add("is-dragging");
-    wrap.setPointerCapture(e.pointerId);
     pausarAutoplay();
   });
 
@@ -1173,9 +1172,10 @@ function iniciarCarruselInteractivo(track) {
     const desplazamiento = e.clientX - arrastreInicioX;
     if (Math.abs(desplazamiento) > 5) {
       bloqueoClickHasta = Date.now() + 250;
+      if (!wrap.hasPointerCapture(e.pointerId)) wrap.setPointerCapture(e.pointerId);
+      wrap.scrollLeft = scrollInicio - desplazamiento;
+      e.preventDefault();
     }
-    wrap.scrollLeft = scrollInicio - desplazamiento;
-    e.preventDefault();
   });
 
   const terminarArrastre = e => {
