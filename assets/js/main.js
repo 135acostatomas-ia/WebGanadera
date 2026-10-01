@@ -1208,7 +1208,17 @@ function iniciarCarruselInteractivo(track) {
     normalizarTimer = setTimeout(normalizarPosicion, 140);
   }, { passive: true });
 
-  iniciarAutoplay();
+  requestAnimationFrame(() => {
+    if (window.matchMedia("(max-width:640px)").matches) {
+      const card = track.firstElementChild;
+      if (card) {
+        const halfGap = Math.round((wrap.clientWidth - card.offsetWidth) / 2);
+        const mitad = mitadCarrusel();
+        if (mitad > halfGap) wrap.scrollLeft = mitad - halfGap;
+      }
+    }
+    iniciarAutoplay();
+  });
 }
 
 function abrirOfertas() {
