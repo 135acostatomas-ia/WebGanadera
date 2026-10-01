@@ -1099,8 +1099,10 @@ function iniciarCarruselInteractivo(track) {
 
   const mitadCarrusel = () => track.scrollWidth / 2;
   const distanciaPaso = () => {
-    const visibles = Math.max(1, Math.floor(wrap.clientWidth / 280));
-    return Math.min(visibles, 3) * 280;
+    const card = track.firstElementChild;
+    const cardW = card ? card.offsetWidth + 20 : 280;
+    const visibles = Math.max(1, Math.floor(wrap.clientWidth / cardW));
+    return Math.min(visibles, 3) * cardW;
   };
 
   function normalizarPosicion() {

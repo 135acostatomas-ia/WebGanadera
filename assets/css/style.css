@@ -364,6 +364,9 @@ body.producto-modal-open{overflow:hidden}
   .carrusel-nav-btn{width:40px;height:40px;font-size:20px;top:60%}
   .carrusel-nav-prev{left:6px}
   .carrusel-nav-next{right:6px}
+  .carrusel-track-wrap{mask-image:none;-webkit-mask-image:none;scroll-snap-type:x mandatory}
+  .carrusel-card{scroll-snap-align:center;width:min(260px,80vw)}
+  .carrusel-card-img{width:100%}
 }
 .carrusel-card{width:260px;flex-shrink:0;border-radius:10px;overflow:hidden;background:#f7f7f5;border:1px solid rgba(3,19,67,.72);box-shadow:0 4px 14px rgba(0,0,0,.12);cursor:pointer;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column}
 .carrusel-card:hover{transform:translateY(-6px) scale(1.03);box-shadow:0 12px 28px rgba(0,0,0,.2)}
