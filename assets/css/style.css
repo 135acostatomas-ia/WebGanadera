@@ -531,8 +531,8 @@ body.producto-modal-open{overflow:hidden}
     height:100%;
     max-width:none;
     display:block;
-    object-fit:cover;
-    object-position:center top;
+    object-fit:contain;
+    object-position:center bottom;
   }
   .banner-slide-beneficios .banner-caption{
     z-index:2;
