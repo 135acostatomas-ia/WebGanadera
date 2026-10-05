@@ -924,12 +924,12 @@ function abrirProductoDetalle(nombreCodificado) {
     avisoUnidad = document.createElement("p");
     avisoUnidad.id = "producto-modal-aviso-unidad";
     avisoUnidad.className = "producto-modal-aviso-unidad";
-    document.querySelector(".producto-modal-precio")?.insertAdjacentElement("afterend", avisoUnidad);
+    document.querySelector(".producto-modal-compra")?.insertAdjacentElement("afterend", avisoUnidad);
   }
 
   const configuracionUnidad = configuracionUnidadPesoVariable(producto.nombre);
   if (configuracionUnidad) {
-    avisoUnidad.textContent = `Se vende por unidad. Cada pollo pesa aproximadamente ${configuracionUnidad.pesoEstimadoKg.toLocaleString("es-AR")} kg y su valor estimado es de $ ${formatPrecio(precioUnitarioCarrito(producto))}. El importe final se calcula según el peso real.`;
+    avisoUnidad.textContent = `Venta por unidad. Peso aprox.: ${configuracionUnidad.pesoEstimadoKg.toLocaleString("es-AR")} kg. El precio final depende del peso real.`;
     avisoUnidad.hidden = false;
   } else {
     avisoUnidad.hidden = true;
