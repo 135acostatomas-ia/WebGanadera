@@ -536,7 +536,9 @@ function actualizarCarrito() {
         : 0.5;
 
     const cantidadTexto = esUnidad
-      ? `${item.cantidad} un.`
+      ? item.cantidad === 1
+        ? "1 unidad"
+        : `${item.cantidad} unidades`
       : `${item.cantidad} kg`;
 
     const catLabel = esOferta
