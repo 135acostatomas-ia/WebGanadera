@@ -132,8 +132,7 @@ const PRODUCTOS_POR_UNIDAD = new Set([
 // Productos que se venden por unidad, aunque conservan el precio publicado por kilo.
 const PRODUCTOS_UNIDAD_PESO_VARIABLE = {
   "Pollo Entero": {
-    pesoEstimadoKg: 3.5,
-    precioEstimadoUnidad: 18200
+    pesoEstimadoKg: 3.5
   }
 };
 
@@ -356,7 +355,9 @@ function mostrarCantidad(cantidad, nombre, categoria) {
 
 function precioUnitarioCarrito(item) {
   const configuracion = configuracionUnidadPesoVariable(item.nombre);
-  return configuracion ? configuracion.precioEstimadoUnidad : Number(item.precio);
+  return configuracion
+    ? Math.round(Number(item.precio) * configuracion.pesoEstimadoKg)
+    : Number(item.precio);
 }
 
 function subtotalItemCarrito(item) {
@@ -926,7 +927,7 @@ function abrirProductoDetalle(nombreCodificado) {
 
   const configuracionUnidad = configuracionUnidadPesoVariable(producto.nombre);
   if (configuracionUnidad) {
-    avisoUnidad.textContent = `Se vende por unidad. Cada pollo pesa aproximadamente ${configuracionUnidad.pesoEstimadoKg.toLocaleString("es-AR")} kg y su valor estimado es de $ ${formatPrecio(configuracionUnidad.precioEstimadoUnidad)}. El importe final se calcula según el peso real.`;
+    avisoUnidad.textContent = `Se vende por unidad. Cada pollo pesa aproximadamente ${configuracionUnidad.pesoEstimadoKg.toLocaleString("es-AR")} kg y su valor estimado es de $ ${formatPrecio(precioUnitarioCarrito(producto))}. El importe final se calcula según el peso real.`;
     avisoUnidad.hidden = false;
   } else {
     avisoUnidad.hidden = true;
