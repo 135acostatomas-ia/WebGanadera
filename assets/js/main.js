@@ -138,28 +138,23 @@ const PRODUCTOS_UNIDAD_PESO_VARIABLE = {
     pesoEstimadoKg: 0.6
   },
   "Colita": {
-    pesoEstimadoKg: 1.4
+    pesoEstimadoKg: 1.5
   },
   "Picaña": {
-    pesoEstimadoKg: 1.4
+    pesoEstimadoKg: 1.5
   },
   "Matambre": {
-    pesoEstimadoKg: 1.5
+    pesoEstimadoKg: 2
   },
   "Tapa de nalga": {
-    pesoEstimadoKg: 1.5
+    pesoEstimadoKg: 2
   },
   "Entraña": {
     pesoEstimadoKg: 0.5
   },
   "Lomo": {
-    pesoEstimadoKg: 1.7
-  },
-  "Matambrito": {
-    pesoEstimadoKg: 1.5
-  },
-  "Solomillo": {
-    pesoEstimadoKg: 0.6
+    pesoEstimadoKg: 2,
+    preparacionesUnidad: ["Entero"]
   }
 };
 
@@ -354,34 +349,44 @@ function tieneMenuPreparacion(nombre) {
   return preparacionesProducto(nombre).length > 0;
 }
 
-function configuracionUnidadPesoVariable(nombre) {
+function configuracionProductoUnidadPesoVariable(nombre) {
   return PRODUCTOS_UNIDAD_PESO_VARIABLE[nombre] || null;
 }
 
-function esProductoUnidadPesoVariable(nombre) {
-  return Boolean(configuracionUnidadPesoVariable(nombre));
+function configuracionUnidadPesoVariable(nombre, preparacion = "") {
+  const configuracion = configuracionProductoUnidadPesoVariable(nombre);
+  if (!configuracion) return null;
+
+  const preparacionesUnidad = configuracion.preparacionesUnidad;
+  if (!preparacionesUnidad) return configuracion;
+
+  return preparacionesUnidad.includes(preparacion) ? configuracion : null;
 }
 
-function esProductoPorUnidad(nombre, categoria) {
+function esProductoUnidadPesoVariable(nombre, preparacion = "") {
+  return Boolean(configuracionUnidadPesoVariable(nombre, preparacion));
+}
+
+function esProductoPorUnidad(nombre, categoria, preparacion = "") {
   if (categoria === "⭐ OFERTA") return false;
-  return PRODUCTOS_POR_UNIDAD.has(nombre) || esProductoUnidadPesoVariable(nombre);
+  return PRODUCTOS_POR_UNIDAD.has(nombre) || esProductoUnidadPesoVariable(nombre, preparacion);
 }
 
-function pasoProducto(nombre, categoria) {
-  return esProductoPorUnidad(nombre, categoria) ? 1 : 0.5;
+function pasoProducto(nombre, categoria, preparacion = "") {
+  return esProductoPorUnidad(nombre, categoria, preparacion) ? 1 : 0.5;
 }
 
-function mostrarCantidad(cantidad, nombre, categoria) {
-  if (esProductoPorUnidad(nombre, categoria)) {
+function mostrarCantidad(cantidad, nombre, categoria, preparacion = "") {
+  if (esProductoPorUnidad(nombre, categoria, preparacion)) {
     const etiqueta = cantidad === 1 ? "unidad" : "unidades";
     return `${cantidad} ${etiqueta}`;
   }
 
-  return `${cantidad} kg`;
+  return `${cantidad.toLocaleString("es-AR")} kg`;
 }
 
 function precioUnitarioCarrito(item) {
-  const configuracion = configuracionUnidadPesoVariable(item.nombre);
+  const configuracion = configuracionUnidadPesoVariable(item.nombre, item.preparacion || "");
   return configuracion
     ? Math.round(Number(item.precio) * configuracion.pesoEstimadoKg)
     : Number(item.precio);
@@ -401,14 +406,38 @@ let carrito = JSON.parse(localStorage.getItem("carrito") || "[]");
 
 // Migra selecciones anteriores en kilos al nuevo formato por pieza.
 const MIGRACION_PRODUCTOS_POR_PIEZA = "productos-por-pieza-v1";
-if (localStorage.getItem(MIGRACION_PRODUCTOS_POR_PIEZA) !== "1") {
+const TENIA_MIGRACION_PRODUCTOS_POR_PIEZA = localStorage.getItem(MIGRACION_PRODUCTOS_POR_PIEZA) === "1";
+if (!TENIA_MIGRACION_PRODUCTOS_POR_PIEZA) {
   carrito.forEach(item => {
-    const configuracion = configuracionUnidadPesoVariable(item.nombre);
+    const configuracion = configuracionUnidadPesoVariable(item.nombre, item.preparacion || "");
     if (!configuracion || item.nombre === "Pollo Entero") return;
 
     item.cantidad = Math.max(1, Math.round(Number(item.cantidad) / configuracion.pesoEstimadoKg));
   });
   localStorage.setItem(MIGRACION_PRODUCTOS_POR_PIEZA, "1");
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+}
+
+// Repara carritos que llegaron a guardar por unidad productos o preparaciones que se venden por kilo.
+const MIGRACION_CORRECCION_PIEZAS = "correccion-piezas-por-preparacion-v1";
+if (localStorage.getItem(MIGRACION_CORRECCION_PIEZAS) !== "1") {
+  if (TENIA_MIGRACION_PRODUCTOS_POR_PIEZA) {
+    const pesosConfiguracionAnterior = {
+      "Matambrito": 1.5,
+      "Solomillo": 0.6,
+      "Lomo": 1.7
+    };
+
+    carrito.forEach(item => {
+      const pesoAnterior = pesosConfiguracionAnterior[item.nombre];
+      const siguePorUnidad = configuracionUnidadPesoVariable(item.nombre, item.preparacion || "");
+      if (!pesoAnterior || siguePorUnidad) return;
+
+      item.cantidad = Math.round(Number(item.cantidad) * pesoAnterior * 10) / 10;
+    });
+  }
+
+  localStorage.setItem(MIGRACION_CORRECCION_PIEZAS, "1");
   localStorage.setItem("carrito", JSON.stringify(carrito));
 }
 
@@ -557,7 +586,7 @@ function actualizarCarrito() {
 
   cont.innerHTML = carrito.map((item, idx) => {
     const esOferta = item.categoria === "⭐ OFERTA";
-    const esUnidad = esProductoPorUnidad(item.nombre, item.categoria);
+    const esUnidad = esProductoPorUnidad(item.nombre, item.categoria, item.preparacion || "");
 
     const step = esOferta
       ? kgDesdeNombre(item.nombre)
@@ -687,9 +716,18 @@ function actualizarControlTarjeta(nombre, categoria, precio) {
   const nombreEscapado = nombre.replace(/'/g, "\\'");
 
   if (tieneMenuPreparacion(nombre)) {
-    const cantidadTotal = items.reduce((total, actual) => total + actual.cantidad, 0);
-    const resumen = cantidadTotal > 0
-      ? `<span class="prod-preparaciones-resumen">${mostrarCantidad(cantidadTotal, nombre, categoria)} en el carrito</span>`
+    const unidades = items
+      .filter(actual => esProductoPorUnidad(nombre, categoria, actual.preparacion || ""))
+      .reduce((total, actual) => total + actual.cantidad, 0);
+    const kilos = items
+      .filter(actual => !esProductoPorUnidad(nombre, categoria, actual.preparacion || ""))
+      .reduce((total, actual) => total + actual.cantidad, 0);
+    const partesCantidad = [
+      unidades > 0 ? mostrarCantidad(unidades, nombre, categoria, "Entero") : "",
+      kilos > 0 ? `${kilos.toLocaleString("es-AR")} kg` : ""
+    ].filter(Boolean);
+    const resumen = partesCantidad.length
+      ? `<span class="prod-preparaciones-resumen">${partesCantidad.join(" + ")} en el carrito</span>`
       : `<span class="prod-preparaciones-hint">Elegí cómo querés recibirlo</span>`;
     cont.innerHTML = `${resumen}<button class="btn-agregar" onclick="event.stopPropagation(); abrirProductoDetalle('${encodeURIComponent(nombre)}')">+ Agregar al carrito</button>`;
     return;
@@ -796,13 +834,13 @@ function finalizarPedido() {
       return `• [OFERTA] ${i.nombre} x${packs} — $${formatPrecio(i.precio * packs)}`;
     }
 
-    if (esProductoPorUnidad(i.nombre, i.categoria)) {
+    if (esProductoPorUnidad(i.nombre, i.categoria, i.preparacion || "")) {
       const textoUnidad = i.cantidad === 1
         ? "1 unidad"
         : `${i.cantidad} unidades`;
 
       const precioLinea = precioUnitarioCarrito(i) * i.cantidad;
-      const sufijoEstimado = esProductoUnidadPesoVariable(i.nombre) ? " aprox." : "";
+      const sufijoEstimado = esProductoUnidadPesoVariable(i.nombre, i.preparacion || "") ? " aprox." : "";
       return `• ${i.nombre}${i.preparacion ? ` — ${i.preparacion}` : ""}: ${textoUnidad} — ${formatPrecio(precioLinea)}${sufijoEstimado}`;
     }
 
@@ -879,7 +917,7 @@ function tarjetaProducto(p) {
   const nombreEscapado = p.nombre.replace(/'/g, "\\'");
   const nombreCodificado = encodeURIComponent(p.nombre).replace(/'/g, "%27");
   const id = "prod-" + p.nombre.replace(/[^a-zA-Z0-9]/g, "-");
-  const unidadPrecio = esProductoUnidadPesoVariable(p.nombre)
+  const unidadPrecio = configuracionProductoUnidadPesoVariable(p.nombre)
     ? "/ kg"
     : esProductoPorUnidad(p.nombre, p.categoria)
       ? "/ unidad"
@@ -921,7 +959,7 @@ function abrirProductoDetalle(nombreCodificado) {
     ? null
     : carrito.find(i => i.nombre === producto.nombre && !i.preparacion);
   preparacionProductoModal = "";
-  cantidadProductoModal = item ? item.cantidad : pasoProducto(producto.nombre, producto.categoria);
+  cantidadProductoModal = item ? item.cantidad : pasoProducto(producto.nombre, producto.categoria, preparacionProductoModal);
 
   const imagenProducto = obtenerImagenProducto(producto);
   const imagen = document.getElementById("producto-modal-imagen");
@@ -940,15 +978,11 @@ function abrirProductoDetalle(nombreCodificado) {
   recomendacion.hidden = !recomendacion.textContent;
 
   document.getElementById("producto-modal-precio").textContent = `$ ${formatPrecio(producto.precio)}`;
-  document.getElementById("producto-modal-unidad").textContent = esProductoUnidadPesoVariable(producto.nombre)
+  document.getElementById("producto-modal-unidad").textContent = configuracionProductoUnidadPesoVariable(producto.nombre)
     ? "/ kg"
     : esProductoPorUnidad(producto.nombre, producto.categoria)
       ? "/ unidad"
       : "/ kg";
-  document.getElementById("producto-modal-paso").textContent = esProductoPorUnidad(producto.nombre, producto.categoria)
-    ? "Podés sumar o restar de a 1 unidad."
-    : "Podés sumar o restar de a 0,5 kg.";
-
   let avisoUnidad = document.getElementById("producto-modal-aviso-unidad");
   if (!avisoUnidad) {
     avisoUnidad = document.createElement("p");
@@ -957,13 +991,7 @@ function abrirProductoDetalle(nombreCodificado) {
     document.querySelector(".producto-modal-compra")?.insertAdjacentElement("afterend", avisoUnidad);
   }
 
-  const configuracionUnidad = configuracionUnidadPesoVariable(producto.nombre);
-  if (configuracionUnidad) {
-    avisoUnidad.textContent = `Venta por unidad. Peso aprox.: ${configuracionUnidad.pesoEstimadoKg.toLocaleString("es-AR")} kg. El precio final depende del peso real.`;
-    avisoUnidad.hidden = false;
-  } else {
-    avisoUnidad.hidden = true;
-  }
+  actualizarPresentacionCompraProductoDetalle();
   const preparacion = document.getElementById("producto-modal-preparacion");
   const opciones = document.getElementById("producto-modal-preparacion-opciones");
   preparacion.hidden = opcionesPreparacion.length === 0;
@@ -984,6 +1012,32 @@ function abrirProductoDetalle(nombreCodificado) {
   document.querySelector(".producto-modal-cerrar")?.focus();
 }
 
+function actualizarPresentacionCompraProductoDetalle() {
+  if (!productoModalActual) return;
+
+  const preparacion = preparacionProductoModal || "";
+  const porUnidad = esProductoPorUnidad(
+    productoModalActual.nombre,
+    productoModalActual.categoria,
+    preparacion
+  );
+  document.getElementById("producto-modal-paso").textContent = porUnidad
+    ? "Podés sumar o restar de a 1 unidad."
+    : "Podés sumar o restar de a 0,5 kg.";
+
+  const avisoUnidad = document.getElementById("producto-modal-aviso-unidad");
+  const configuracionUnidad = configuracionUnidadPesoVariable(
+    productoModalActual.nombre,
+    preparacion
+  );
+  if (configuracionUnidad) {
+    avisoUnidad.textContent = `Venta por unidad. Peso aprox.: ${configuracionUnidad.pesoEstimadoKg.toLocaleString("es-AR")} kg. El precio final depende del peso real.`;
+    avisoUnidad.hidden = false;
+  } else {
+    avisoUnidad.hidden = true;
+  }
+}
+
 function seleccionarPreparacionProductoDetalle(preparacion) {
   if (!productoModalActual) return;
   preparacionProductoModal = preparacion;
@@ -994,17 +1048,22 @@ function seleccionarPreparacionProductoDetalle(preparacion) {
 
   cantidadProductoModal = existente
     ? existente.cantidad
-    : pasoProducto(productoModalActual.nombre, productoModalActual.categoria);
+    : pasoProducto(productoModalActual.nombre, productoModalActual.categoria, preparacion);
 
   const botonAgregar = document.getElementById("producto-modal-agregar");
   botonAgregar.disabled = false;
   botonAgregar.textContent = existente ? "Actualizar carrito" : "Agregar al carrito";
+  actualizarPresentacionCompraProductoDetalle();
   actualizarCantidadProductoDetalle();
 }
 
 function cambiarCantidadProductoDetalle(direccion) {
   if (!productoModalActual) return;
-  const paso = pasoProducto(productoModalActual.nombre, productoModalActual.categoria);
+  const paso = pasoProducto(
+    productoModalActual.nombre,
+    productoModalActual.categoria,
+    preparacionProductoModal
+  );
   const nuevaCantidad = Math.round((cantidadProductoModal + direccion * paso) * 10) / 10;
   cantidadProductoModal = Math.max(paso, nuevaCantidad);
   actualizarCantidadProductoDetalle();
@@ -1012,9 +1071,21 @@ function cambiarCantidadProductoDetalle(direccion) {
 
 function actualizarCantidadProductoDetalle() {
   if (!productoModalActual) return;
-  const paso = pasoProducto(productoModalActual.nombre, productoModalActual.categoria);
-  const texto = mostrarCantidad(cantidadProductoModal, productoModalActual.nombre, productoModalActual.categoria);
-  const total = precioUnitarioCarrito(productoModalActual) * cantidadProductoModal;
+  const paso = pasoProducto(
+    productoModalActual.nombre,
+    productoModalActual.categoria,
+    preparacionProductoModal
+  );
+  const texto = mostrarCantidad(
+    cantidadProductoModal,
+    productoModalActual.nombre,
+    productoModalActual.categoria,
+    preparacionProductoModal
+  );
+  const total = precioUnitarioCarrito({
+    ...productoModalActual,
+    preparacion: preparacionProductoModal
+  }) * cantidadProductoModal;
 
   document.getElementById("producto-modal-cantidad-texto").textContent = texto;
   document.getElementById("producto-modal-total").textContent = `$ ${formatPrecio(total)}`;
