@@ -279,7 +279,7 @@ body.producto-modal-open{overflow:hidden}
 .producto-modal-precio{display:flex;align-items:baseline;gap:8px;margin-top:22px;padding-bottom:24px;border-bottom:1px solid var(--grey-300)}
 .producto-modal-precio strong{color:var(--color-store-font);font-size:30px;font-weight:900}
 .producto-modal-precio span{color:var(--grey-100);font-size:13px}
-.producto-modal-aviso-unidad{margin:14px 0 0;padding:11px 13px;border-left:3px solid var(--color-store);background:#eef2ff;color:var(--grey);font-size:12px;line-height:1.55}
+.producto-modal-aviso-unidad{margin:14px 0 0;padding:10px 12px;border-bottom:3px solid var(--color-store);background:#eef2ff;color:var(--grey);font-size:12px;line-height:1.5}
 .producto-modal-aviso-unidad[hidden]{display:none}
 .producto-modal-preparacion{min-width:0;margin:20px 0 0;padding:0;border:0}
 .producto-modal-preparacion[hidden]{display:none}
