@@ -133,6 +133,33 @@ const PRODUCTOS_POR_UNIDAD = new Set([
 const PRODUCTOS_UNIDAD_PESO_VARIABLE = {
   "Pollo Entero": {
     pesoEstimadoKg: 3.5
+  },
+  "Pata y Muslo": {
+    pesoEstimadoKg: 0.6
+  },
+  "Colita": {
+    pesoEstimadoKg: 1.4
+  },
+  "Picaña": {
+    pesoEstimadoKg: 1.4
+  },
+  "Matambre": {
+    pesoEstimadoKg: 1.5
+  },
+  "Tapa de nalga": {
+    pesoEstimadoKg: 1.5
+  },
+  "Entraña": {
+    pesoEstimadoKg: 0.5
+  },
+  "Lomo": {
+    pesoEstimadoKg: 1.7
+  },
+  "Matambrito": {
+    pesoEstimadoKg: 1.5
+  },
+  "Solomillo": {
+    pesoEstimadoKg: 0.6
   }
 };
 
@@ -372,13 +399,16 @@ function subtotalItemCarrito(item) {
 
 let carrito = JSON.parse(localStorage.getItem("carrito") || "[]");
 
-// Migra una selección anterior en kilos para que no quede medio pollo en carritos guardados.
-const MIGRACION_POLLO_ENTERO_UNIDAD = "pollo-entero-unidad-v1";
-if (localStorage.getItem(MIGRACION_POLLO_ENTERO_UNIDAD) !== "1") {
+// Migra selecciones anteriores en kilos al nuevo formato por pieza.
+const MIGRACION_PRODUCTOS_POR_PIEZA = "productos-por-pieza-v1";
+if (localStorage.getItem(MIGRACION_PRODUCTOS_POR_PIEZA) !== "1") {
   carrito.forEach(item => {
-    if (item.nombre === "Pollo Entero") item.cantidad = 1;
+    const configuracion = configuracionUnidadPesoVariable(item.nombre);
+    if (!configuracion || item.nombre === "Pollo Entero") return;
+
+    item.cantidad = Math.max(1, Math.round(Number(item.cantidad) / configuracion.pesoEstimadoKg));
   });
-  localStorage.setItem(MIGRACION_POLLO_ENTERO_UNIDAD, "1");
+  localStorage.setItem(MIGRACION_PRODUCTOS_POR_PIEZA, "1");
   localStorage.setItem("carrito", JSON.stringify(carrito));
 }
 
