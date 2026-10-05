@@ -153,8 +153,7 @@ const PRODUCTOS_UNIDAD_PESO_VARIABLE = {
     pesoEstimadoKg: 0.5
   },
   "Lomo": {
-    pesoEstimadoKg: 2,
-    preparacionesUnidad: ["Entero"]
+    pesoEstimadoKg: 2
   }
 };
 
@@ -438,6 +437,23 @@ if (localStorage.getItem(MIGRACION_CORRECCION_PIEZAS) !== "1") {
   }
 
   localStorage.setItem(MIGRACION_CORRECCION_PIEZAS, "1");
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+}
+
+// El Lomo se vende completo incluso cuando se entrega cortado en churrascos.
+const MIGRACION_LOMO_COMPLETO = "lomo-completo-todas-preparaciones-v1";
+if (localStorage.getItem(MIGRACION_LOMO_COMPLETO) !== "1") {
+  carrito.forEach(item => {
+    if (
+      item.nombre !== "Lomo" ||
+      !item.preparacion ||
+      item.preparacion === "Entero"
+    ) return;
+
+    item.cantidad = Math.max(1, Math.round(Number(item.cantidad) / 2));
+  });
+
+  localStorage.setItem(MIGRACION_LOMO_COMPLETO, "1");
   localStorage.setItem("carrito", JSON.stringify(carrito));
 }
 
