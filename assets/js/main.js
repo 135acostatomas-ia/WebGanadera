@@ -154,6 +154,12 @@ const PRODUCTOS_UNIDAD_PESO_VARIABLE = {
   },
   "Lomo": {
     pesoEstimadoKg: 2
+  },
+  "Matambrito": {
+    pesoEstimadoKg: 1.2
+  },
+  "Solomillo": {
+    pesoEstimadoKg: 0.5
   }
 };
 
@@ -454,6 +460,25 @@ if (localStorage.getItem(MIGRACION_LOMO_COMPLETO) !== "1") {
   });
 
   localStorage.setItem(MIGRACION_LOMO_COMPLETO, "1");
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+}
+
+// Matambrito y Solomillo se venden como piezas completas con precio publicado por kilo.
+const MIGRACION_MATAMBRITO_SOLOMILLO_UNIDAD = "matambrito-solomillo-unidad-v1";
+if (localStorage.getItem(MIGRACION_MATAMBRITO_SOLOMILLO_UNIDAD) !== "1") {
+  const pesosEstimados = {
+    "Matambrito": 1.2,
+    "Solomillo": 0.5
+  };
+
+  carrito.forEach(item => {
+    const pesoEstimado = pesosEstimados[item.nombre];
+    if (!pesoEstimado) return;
+
+    item.cantidad = Math.max(1, Math.round(Number(item.cantidad) / pesoEstimado));
+  });
+
+  localStorage.setItem(MIGRACION_MATAMBRITO_SOLOMILLO_UNIDAD, "1");
   localStorage.setItem("carrito", JSON.stringify(carrito));
 }
 
