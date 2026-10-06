@@ -2,6 +2,13 @@ const WHATSAPP_NUMERO = "5491121773350";
 
 const MINIMO_COMPRA = 60000;
 
+function escapeHtml(s) {
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+}
+function escapeArg(s) {
+  return String(s).replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/"/g,"&quot;").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vROVeMldIsOVsSeIQx_yBV7JFz_GaSDnlK1JuOTVnAmxtTHSBN4Q4oiFbelaHSQ_8dnynHz8yUo0PG1/pub?gid=1110466768&single=true&output=csv";
 
 // Imagen que se muestra cuando un producto todavia no tiene foto propia.
@@ -643,7 +650,7 @@ function actualizarCarrito() {
 
     const catLabel = esOferta
       ? `<span class="ci-cat" style="color:var(--red);font-weight:700">⭐ OFERTA</span>`
-      : `<span class="ci-cat">${item.categoria}</span>`;
+      : `<span class="ci-cat">${escapeHtml(item.categoria)}</span>`;
 
     let subtotal;
 
@@ -891,7 +898,7 @@ function finalizarPedido() {
   const totalNum = carrito.reduce((s, i) => s + subtotalItemCarrito(i), 0);
 
   const modalidadTexto = modalidadPedido === "retiro" ? "Retiro en tienda" : "Envío";
-  const texto = `Hola! Quiero hacer el siguiente pedido:\n\nModalidad: ${modalidadTexto}\n\n${lineas}\n\nTOTAL ESTIMADO: ${totalNum.toLocaleString("es-AR")}\n\nLos productos vendidos por peso pueden variar según el peso real al preparar el pedido.`;
+  const texto = `Hola! Quiero hacer el siguiente pedido:\n\nModalidad: ${modalidadTexto}\n\n${lineas}\n\nTOTAL ESTIMADO: $${totalNum.toLocaleString("es-AR")}\n\nEl importe final se confirma al preparar y pesar el pedido.`;
   window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(texto)}`, "_blank");
 }
 
@@ -1462,22 +1469,23 @@ function kgDesdeNombre(nombre) {
 
 function tarjetaOferta(p) {
   const kg = kgDesdeNombre(p.nombre);
-  const nombreEscapado = p.nombre.replace(/'/g, "\\'");
+  const nombreEscapado = escapeArg(p.nombre);
+  const precioEscapado = escapeArg(String(p.precio));
   const id = "oferta-" + p.nombre.replace(/[^a-zA-Z0-9]/g, "-");
   const item = carrito.find(i => i.nombre === p.nombre);
 
   const btnHtml = item
     ? `<div class="oferta-controles" id="${id}">
-        <button onclick="restarOferta('${nombreEscapado}', '${p.precio}', ${kg})">−</button>
+        <button onclick="restarOferta('${nombreEscapado}', '${precioEscapado}', ${kg})">−</button>
         <span>${item.cantidad} kg</span>
-        <button onclick="sumarOferta('${nombreEscapado}', '${p.precio}', ${kg})">+</button>
+        <button onclick="sumarOferta('${nombreEscapado}', '${precioEscapado}', ${kg})">+</button>
        </div>`
-    : `<button class="btn-oferta" id="${id}" onclick="agregarOferta('${nombreEscapado}', '${p.precio}', ${kg})">+ Agregar al carrito</button>`;
+    : `<button class="btn-oferta" id="${id}" onclick="agregarOferta('${nombreEscapado}', '${precioEscapado}', ${kg})">+ Agregar al carrito</button>`;
 
   return `
   <div class="oferta-item">
     <span class="oferta-badge">🔥 OFERTA</span>
-    <div class="oferta-nombre">${p.nombre}</div>
+    <div class="oferta-nombre">${escapeHtml(p.nombre)}</div>
     <div class="oferta-detalle">Pack de ${kg} kg</div>
     <div class="oferta-precio">$ ${formatPrecio(p.precio)} <span>/ pack</span></div>
     ${btnHtml}
@@ -1511,15 +1519,16 @@ function actualizarControlOferta(nombre, precio, kg) {
   const id = "oferta-" + nombre.replace(/[^a-zA-Z0-9]/g, "-");
   const cont = document.getElementById(id);
   if (!cont) return;
-  const nombreEscapado = nombre.replace(/'/g, "\\'");
+  const nombreEscapado = escapeArg(nombre);
+  const precioEscapado = escapeArg(String(precio));
   const item = carrito.find(i => i.nombre === nombre);
   if (!item) {
-    cont.outerHTML = `<button class="btn-oferta" id="${id}" onclick="agregarOferta('${nombreEscapado}', '${precio}', ${kg})">+ Agregar al carrito</button>`;
+    cont.outerHTML = `<button class="btn-oferta" id="${id}" onclick="agregarOferta('${nombreEscapado}', '${precioEscapado}', ${kg})">+ Agregar al carrito</button>`;
   } else {
     cont.outerHTML = `<div class="oferta-controles" id="${id}">
-      <button onclick="restarOferta('${nombreEscapado}', '${precio}', ${kg})">−</button>
+      <button onclick="restarOferta('${nombreEscapado}', '${precioEscapado}', ${kg})">−</button>
       <span>${item.cantidad} kg</span>
-      <button onclick="sumarOferta('${nombreEscapado}', '${precio}', ${kg})">+</button>
+      <button onclick="sumarOferta('${nombreEscapado}', '${precioEscapado}', ${kg})">+</button>
     </div>`;
   }
 }
@@ -1717,8 +1726,8 @@ function initBuscador(productos) {
         const esCombo = p.categoria === "Combos";
         const label = esCombo ? "Oferta" : ({ "EmbutidosAchuras": "Embutidos y Achuras", "FiambreriaAlmacen": "Fiambrería y Almacén" }[p.categoriaFiltro] || p.categoriaFiltro || p.categoria);
         return `<div class="search-item" onclick="irAProducto('${encodeURIComponent(p.nombre)}','${encodeURIComponent(p.categoriaFiltro || p.categoria)}',${esCombo})">
-          <span class="search-item-nombre">${p.nombre}</span>
-          <span class="search-item-cat">${label}</span>
+          <span class="search-item-nombre">${escapeHtml(p.nombre)}</span>
+          <span class="search-item-cat">${escapeHtml(label)}</span>
         </div>`;
       }).join("");
       dropdown.style.display = "block";
