@@ -1955,6 +1955,7 @@ function enviarLocalidad(form) {
 
   enviarAPlanilla({ tipo: "localidad", localidad, pagina: location.pathname.split("/").pop() || "index.html" })
     .then(() => {
+      metaTrack('SugerenciaLocalidad', {}, true);
       form.querySelector(".localidad-ask-row").style.display = "none";
       msg.textContent = "¡Gracias! Anotamos " + localidad + ". Lo tenemos en cuenta para ampliar la cobertura.";
       msg.hidden = false;

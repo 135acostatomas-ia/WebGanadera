@@ -228,6 +228,7 @@ function enviarMayorista() {
     productos: productos.join(", "),
     otros, info
   }).then(() => {
+    metaTrack('Lead', { currency: 'ARS' });
     document.querySelector(".mayorista-form").innerHTML = `
       <div style="text-align:center;padding:40px 20px;display:flex;flex-direction:column;align-items:center;gap:16px">
         <div style="font-size:56px">&#9989;</div>
