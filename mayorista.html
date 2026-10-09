@@ -101,7 +101,7 @@ src="https://www.facebook.com/tr?id=908177125563954&ev=PageView&noscript=1"
       </div>
 
       <div class="mayorista-form">
-        <input class="hp-field" type="text" id="m-web" name="web" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <input class="hp-field" type="text" id="campo-extra-x" name="campo_extra_x" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="form-field">
           <label for="m-nombre">Nombre y apellido *</label>
           <input type="text" id="m-nombre" placeholder="Ej: Juan García" maxlength="100">
@@ -179,7 +179,7 @@ src="https://www.facebook.com/tr?id=908177125563954&ev=PageView&noscript=1"
 <button class="carrito-float" onclick="abrirCarrito()">🛒<span class="float-badge" id="float-carrito-badge" style="display:none">0</span></button>
 
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
-<script src="assets/js/main.js?v=20261009-anti-spam"></script>
+<script src="assets/js/main.js?v=20261009-anti-spam-2"></script>
 <script>
 /* ---- MENU DE PRODUCTOS ---- */
 (function initMenuProductos(){
@@ -208,7 +208,7 @@ function enviarMayorista() {
   const productos = productosElegidos();
   const otros     = document.getElementById("m-otros").value.trim();
   const info      = document.getElementById("m-info").value.trim();
-  const web       = (document.getElementById("m-web")?.value || "").trim();
+  const web       = (document.getElementById("campo-extra-x")?.value || "").trim();
   const btn       = document.getElementById("m-enviar");
 
   if (!nombre || !localidad || !telefono || !productos.length) {

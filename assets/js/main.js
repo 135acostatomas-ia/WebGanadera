@@ -1944,7 +1944,7 @@ function enviarLocalidad(form) {
   const btn   = form.querySelector('button');
   const msg   = form.querySelector('.localidad-ask-msg');
   const localidad = input.value.trim();
-  const web    = (form.querySelector('input[name="web"]')?.value || '').trim();
+  const web    = (form.querySelector('input[name="campo_extra_x"]')?.value || '').trim();
 
   msg.hidden = true;
   msg.classList.remove("error");
