@@ -60,6 +60,7 @@ const IMAGENES_PRODUCTOS = {
   "Panceta Ahumada": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/panceta-ahumada-nueva.webp?v=20260922-1",
   "Queso Provolin": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/queso-provolin.webp?v=20260922-1",
   "Jamón Cocido Natural": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/jamon-cocido-natural.webp?v=20260922-1",
+  "Jamón cocido Los Calvos 42": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/jamon-cocido-los-calvos-42.png?v=20261009-1",
   "Maderitas (iniciador de fuego)": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/maderitas-iniciador-de-fuego.webp?v=20260922-1",
   "Miel La Colmena x 1 kg": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/miel-la-colmena-1kg.jpg?v=20260929-1",
   "Dulce de Batata Esnaola Lata": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/dulce-de-batata-esnaola-lata.webp?v=20260928-2",
