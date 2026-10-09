@@ -1944,6 +1944,7 @@ function enviarLocalidad(form) {
   const btn   = form.querySelector('button');
   const msg   = form.querySelector('.localidad-ask-msg');
   const localidad = input.value.trim();
+  const web    = (form.querySelector('input[name="web"]')?.value || '').trim();
 
   msg.hidden = true;
   msg.classList.remove("error");
@@ -1953,7 +1954,7 @@ function enviarLocalidad(form) {
   const textoOriginal = btn.textContent;
   btn.textContent = "Enviando...";
 
-  enviarAPlanilla({ tipo: "localidad", localidad, pagina: location.pathname.split("/").pop() || "index.html" })
+  enviarAPlanilla({ tipo: "localidad", localidad, web, pagina: location.pathname.split("/").pop() || "index.html" })
     .then(() => {
       metaTrack('SugerenciaLocalidad', {}, true);
       form.querySelector(".localidad-ask-row").style.display = "none";

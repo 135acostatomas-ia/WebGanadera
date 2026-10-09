@@ -208,6 +208,7 @@ function enviarMayorista() {
   const productos = productosElegidos();
   const otros     = document.getElementById("m-otros").value.trim();
   const info      = document.getElementById("m-info").value.trim();
+  const web       = (document.getElementById("m-web")?.value || "").trim();
   const btn       = document.getElementById("m-enviar");
 
   if (!nombre || !localidad || !telefono || !productos.length) {
@@ -227,7 +228,7 @@ function enviarMayorista() {
     tipo: "mayorista",
     nombre, localidad, telefono,
     productos: productos.join(", "),
-    otros, info
+    otros, info, web
   }).then(() => {
     metaTrack('Lead', { currency: 'ARS' });
     document.querySelector(".mayorista-form").innerHTML = `
