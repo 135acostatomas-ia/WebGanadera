@@ -892,6 +892,14 @@ function eliminarItem(idx) {
 function abrirCarrito() {
   document.getElementById("carrito-drawer").classList.add("open");
   document.getElementById("carrito-overlay").classList.add("open");
+  if (carrito.length > 0) {
+    metaTrack('InitiateCheckout', {
+      contents: carrito.map(i => ({ id: i.nombre, quantity: i.cantidad })),
+      num_items: carrito.reduce((s, i) => s + i.cantidad, 0),
+      value: obtenerTotalCarrito(),
+      currency: 'ARS'
+    });
+  }
 }
 
 function cerrarCarrito() {
@@ -930,6 +938,7 @@ function finalizarPedido() {
 
   const modalidadTexto = modalidadPedido === "retiro" ? "Retiro en tienda" : "Envío";
   const texto = `Hola! Quiero hacer el siguiente pedido:\n\nModalidad: ${modalidadTexto}\n\n${lineas}\n\nTOTAL ESTIMADO: $${totalNum.toLocaleString("es-AR")}\n\nEl importe final se confirma al preparar y pesar el pedido.`;
+  metaTrack('Lead', { value: totalNum, currency: 'ARS' });
   window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(texto)}`, "_blank");
 }
 
