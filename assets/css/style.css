@@ -491,7 +491,9 @@ body.producto-modal-open{overflow:hidden}
 .banner-slide-caption-right .banner-caption{inset:0 0 0 auto;width:640px;box-sizing:border-box;align-items:flex-end;text-align:right}
 .banner-slide-caption-right .banner-caption p{margin-left:auto}
 .banner-slide:first-child .banner-caption h2,
-.banner-slide:first-child .banner-caption p{transform:scaleY(1.08);transform-origin:left center}
+.banner-slide:first-child .banner-caption p,
+.banner-slide-match-first .banner-caption h2,
+.banner-slide-match-first .banner-caption p{transform:scaleY(1.08);transform-origin:left center}
 .banner-caption .btn-cta{margin-top:24px;align-self:flex-start}
 .banner-slide-beneficios>.banner-beneficios-desktop{object-fit:cover;object-position:center}
 .banner-beneficios-mobile{display:none}
