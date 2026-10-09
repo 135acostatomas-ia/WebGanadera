@@ -9,6 +9,17 @@ function escapeArg(s) {
   return String(s).replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/"/g,"&quot;").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
 
+function metaTrack(evento, datos, custom) {
+  if (!window.fbq) return;
+  try {
+    if (custom) {
+      fbq('trackCustom', evento, datos);
+    } else {
+      fbq('track', evento, datos);
+    }
+  } catch (e) {}
+}
+
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vROVeMldIsOVsSeIQx_yBV7JFz_GaSDnlK1JuOTVnAmxtTHSBN4Q4oiFbelaHSQ_8dnynHz8yUo0PG1/pub?gid=1110466768&single=true&output=csv";
 
 // Imagen que se muestra cuando un producto todavia no tiene foto propia.
@@ -752,6 +763,15 @@ function agregarAlCarrito(btn, nombre, categoria, precio) {
   }
 
   actualizarCarrito();
+  metaTrack('AddToCart', {
+    content_name: nombre,
+    content_category: categoria,
+    content_ids: [nombre],
+    content_type: 'product',
+    value: precioUnitarioCarrito({ nombre, categoria, precio: Number(precio), preparacion: '' }) * step,
+    quantity: step,
+    currency: 'ARS'
+  });
   animarBadge();
   actualizarControlTarjeta(nombre, categoria, precio);
 }
@@ -814,6 +834,15 @@ function sumarEnTarjeta(nombre, categoria, precio) {
   }
 
   actualizarCarrito();
+  metaTrack('AddToCart', {
+    content_name: nombre,
+    content_category: categoria,
+    content_ids: [nombre],
+    content_type: 'product',
+    value: precioUnitarioCarrito({ nombre, categoria, precio: Number(precio), preparacion: '' }) * step,
+    quantity: step,
+    currency: 'ARS'
+  });
   animarBadge();
   actualizarControlTarjeta(nombre, categoria, precio);
 }
@@ -863,6 +892,14 @@ function eliminarItem(idx) {
 function abrirCarrito() {
   document.getElementById("carrito-drawer").classList.add("open");
   document.getElementById("carrito-overlay").classList.add("open");
+  if (carrito.length > 0) {
+    metaTrack('InitiateCheckout', {
+      contents: carrito.map(i => ({ id: i.nombre, quantity: i.cantidad })),
+      num_items: carrito.reduce((s, i) => s + i.cantidad, 0),
+      value: obtenerTotalCarrito(),
+      currency: 'ARS'
+    });
+  }
 }
 
 function cerrarCarrito() {
@@ -901,6 +938,7 @@ function finalizarPedido() {
 
   const modalidadTexto = modalidadPedido === "retiro" ? "Retiro en tienda" : "Envío";
   const texto = `Hola! Quiero hacer el siguiente pedido:\n\nModalidad: ${modalidadTexto}\n\n${lineas}\n\nTOTAL ESTIMADO: $${totalNum.toLocaleString("es-AR")}\n\nEl importe final se confirma al preparar y pesar el pedido.`;
+  metaTrack('Lead', { value: totalNum, currency: 'ARS' });
   window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(texto)}`, "_blank");
 }
 
@@ -1502,6 +1540,15 @@ function agregarOferta(nombre, precio, kg) {
     carrito.push({ nombre, categoria: "⭐ OFERTA", precio: Number(precio), cantidad: kg });
   }
   actualizarCarrito();
+  metaTrack('AddToCart', {
+    content_name: nombre,
+    content_category: 'Oferta',
+    content_ids: [nombre],
+    content_type: 'product',
+    value: Number(precio),
+    quantity: 1,
+    currency: 'ARS'
+  });
   animarBadge();
   actualizarControlOferta(nombre, precio, kg);
 }
@@ -1908,6 +1955,7 @@ function enviarLocalidad(form) {
 
   enviarAPlanilla({ tipo: "localidad", localidad, pagina: location.pathname.split("/").pop() || "index.html" })
     .then(() => {
+      metaTrack('SugerenciaLocalidad', {}, true);
       form.querySelector(".localidad-ask-row").style.display = "none";
       msg.textContent = "¡Gracias! Anotamos " + localidad + ". Lo tenemos en cuenta para ampliar la cobertura.";
       msg.hidden = false;
