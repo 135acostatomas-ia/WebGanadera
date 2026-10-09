@@ -486,7 +486,6 @@ body.producto-modal-open{overflow:hidden}
 .banner-caption h2{font-family:var(--font-title);color:#fff;font-size:var(--banner-title-size);font-weight:900;line-height:1.05;text-shadow:0 2px 20px rgba(0,0,0,.4)}
 .banner-title-three-lines span,
 .banner-title-two-lines span{display:block;white-space:nowrap}
-@media(min-width:561px){#banner-mayorista .banner-title-two-lines{font-size:clamp(36px,3.6vw,48px)}}
 .banner-caption p{color:rgba(255,255,255,.85);font-size:17px;margin-top:14px;line-height:1.6;max-width:440px}
 .banner-slide-caption-right .banner-overlay{background:linear-gradient(to left,rgba(3,19,67,.72) 0%,rgba(3,19,67,.22) 60%,transparent 100%)}
 .banner-slide-caption-right .banner-caption{inset:0 0 0 auto;width:640px;box-sizing:border-box;align-items:flex-end;text-align:right}
