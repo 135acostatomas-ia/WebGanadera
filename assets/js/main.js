@@ -107,6 +107,7 @@ const IMAGENES_PRODUCTOS = {
   "Matambrito 1kg": "assets/img/cerdo/matambrito_1.jpg",
   "Lomo 1kg": "assets/img/vacuno/lomo.jpg",
   "Asado 1kg": "assets/img/vacuno/asado.jpg",
+  "Asado 5 costillas": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/vacuno/asado-5-costillas.png?v=20261009-1",
   "Colita de cuadril 1kg": "assets/img/vacuno/colita_de_cuadril.jpg",
   "Matambre 1kg": "assets/img/vacuno/matambre_1.jpg",
   "Paleta 1kg": "assets/img/vacuno/paleta.jpg",
