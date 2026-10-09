@@ -763,6 +763,15 @@ function agregarAlCarrito(btn, nombre, categoria, precio) {
   }
 
   actualizarCarrito();
+  metaTrack('AddToCart', {
+    content_name: nombre,
+    content_category: categoria,
+    content_ids: [nombre],
+    content_type: 'product',
+    value: precioUnitarioCarrito({ nombre, categoria, precio: Number(precio), preparacion: '' }) * step,
+    quantity: step,
+    currency: 'ARS'
+  });
   animarBadge();
   actualizarControlTarjeta(nombre, categoria, precio);
 }
@@ -825,6 +834,15 @@ function sumarEnTarjeta(nombre, categoria, precio) {
   }
 
   actualizarCarrito();
+  metaTrack('AddToCart', {
+    content_name: nombre,
+    content_category: categoria,
+    content_ids: [nombre],
+    content_type: 'product',
+    value: precioUnitarioCarrito({ nombre, categoria, precio: Number(precio), preparacion: '' }) * step,
+    quantity: step,
+    currency: 'ARS'
+  });
   animarBadge();
   actualizarControlTarjeta(nombre, categoria, precio);
 }
@@ -1513,6 +1531,15 @@ function agregarOferta(nombre, precio, kg) {
     carrito.push({ nombre, categoria: "⭐ OFERTA", precio: Number(precio), cantidad: kg });
   }
   actualizarCarrito();
+  metaTrack('AddToCart', {
+    content_name: nombre,
+    content_category: 'Oferta',
+    content_ids: [nombre],
+    content_type: 'product',
+    value: Number(precio),
+    quantity: 1,
+    currency: 'ARS'
+  });
   animarBadge();
   actualizarControlOferta(nombre, precio, kg);
 }
