@@ -69,6 +69,7 @@ const IMAGENES_PRODUCTOS = {
   "Morcilla Asturiana": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/embutidos/morcilla-asturiana.webp?v=20260922-1",
   "Panceta Salada": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/panceta-salada-nueva.webp?v=20260922-1",
   "Panceta Ahumada": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/panceta-ahumada-nueva.webp?v=20260922-1",
+  "Panceta Ahumada Cuero Mangiarotti": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/panceta-ahumada-cuero-mangiarotti.png?v=20261009-1",
   "Queso Provolin": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/queso-provolin.webp?v=20260922-1",
   "Jamón Cocido Natural": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/jamon-cocido-natural.webp?v=20260922-1",
   "Jamón cocido Los Calvos 42": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/jamon-cocido-los-calvos-42.png?v=20261009-1",
