@@ -159,9 +159,10 @@ src="https://www.facebook.com/tr?id=908177125563954&ev=PageView&noscript=1"
       </div>
       <!-- ===== SUGERENCIA DE LOCALIDAD ===== -->
       <form class="localidad-ask" onsubmit="return enviarLocalidad(this)">
+        <input class="hp-field" type="text" name="web" tabindex="-1" autocomplete="off" aria-hidden="true">
         <label for="localidad-home">¿A qué localidad te gustaría que lleguemos?</label>
         <div class="localidad-ask-row">
-          <input type="text" id="localidad-home" name="localidad" placeholder="Escribí tu localidad o barrio" maxlength="80" autocomplete="address-level2" required>
+          <input type="text" id="localidad-home" name="localidad" placeholder="Escribí tu localidad o barrio" maxlength="100" autocomplete="address-level2" required>
           <button type="submit">Enviar sugerencia</button>
         </div>
         <p class="localidad-ask-msg" role="status" hidden></p>
