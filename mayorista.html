@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mayorista — Ganadera Panamericana</title>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Libre+Franklin:wght@400;700&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20261005-pollo-unidad">
+<link rel="stylesheet" href="assets/css/style.css?v=20261009-anti-spam">
 <!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
@@ -101,19 +101,20 @@ src="https://www.facebook.com/tr?id=908177125563954&ev=PageView&noscript=1"
       </div>
 
       <div class="mayorista-form">
+        <input class="hp-field" type="text" id="campo-extra-x" name="campo_extra_x" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="form-field">
           <label for="m-nombre">Nombre y apellido *</label>
-          <input type="text" id="m-nombre" placeholder="Ej: Juan García" maxlength="80">
+          <input type="text" id="m-nombre" placeholder="Ej: Juan García" maxlength="100">
         </div>
 
         <div class="form-field">
           <label for="m-localidad">Localidad *</label>
-          <input type="text" id="m-localidad" placeholder="Ej: Palermo, Buenos Aires" maxlength="80">
+          <input type="text" id="m-localidad" placeholder="Ej: Palermo, Buenos Aires" maxlength="100">
         </div>
 
         <div class="form-field">
           <label for="m-telefono">WhatsApp *</label>
-          <input type="tel" id="m-telefono" placeholder="Ej: 1155554444" maxlength="20">
+          <input type="tel" id="m-telefono" placeholder="Ej: 1155554444" maxlength="30">
         </div>
 
         <div class="form-field">
@@ -134,12 +135,12 @@ src="https://www.facebook.com/tr?id=908177125563954&ev=PageView&noscript=1"
 
         <div class="form-field" id="m-otros-wrap" hidden>
           <label for="m-otros">Contanos qué otros productos buscás *</label>
-          <textarea id="m-otros" placeholder="Ej: bondiola de cerdo por cantidad, chorizos por caja" style="min-height:80px"></textarea>
+          <textarea id="m-otros" placeholder="Ej: bondiola de cerdo por cantidad, chorizos por caja" maxlength="500" style="min-height:80px"></textarea>
         </div>
 
         <div class="form-field">
           <label for="m-info">Información adicional</label>
-          <textarea id="m-info" placeholder="Ej: Soy carnicero, necesito pedidos semanales de aprox. 50kg" style="min-height:80px"></textarea>
+          <textarea id="m-info" placeholder="Ej: Soy carnicero, necesito pedidos semanales de aprox. 50kg" maxlength="500" style="min-height:80px"></textarea>
         </div>
 
         <p class="mayorista-aviso">
@@ -178,7 +179,7 @@ src="https://www.facebook.com/tr?id=908177125563954&ev=PageView&noscript=1"
 <button class="carrito-float" onclick="abrirCarrito()">🛒<span class="float-badge" id="float-carrito-badge" style="display:none">0</span></button>
 
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
-<script src="assets/js/main.js?v=20261011-catalogo-local-1"></script>
+<script src="assets/js/main.js?v=20261011-anti-spam"></script>
 <script>
 /* ---- MENU DE PRODUCTOS ---- */
 (function initMenuProductos(){
@@ -207,6 +208,7 @@ function enviarMayorista() {
   const productos = productosElegidos();
   const otros     = document.getElementById("m-otros").value.trim();
   const info      = document.getElementById("m-info").value.trim();
+  const web       = (document.getElementById("campo-extra-x")?.value || "").trim();
   const btn       = document.getElementById("m-enviar");
 
   if (!nombre || !localidad || !telefono || !productos.length) {
@@ -226,7 +228,7 @@ function enviarMayorista() {
     tipo: "mayorista",
     nombre, localidad, telefono,
     productos: productos.join(", "),
-    otros, info
+    otros, info, web
   }).then(() => {
     metaTrack('Lead', { currency: 'ARS' });
     document.querySelector(".mayorista-form").innerHTML = `

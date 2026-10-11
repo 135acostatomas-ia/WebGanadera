@@ -669,3 +669,5 @@ body.producto-modal-open{overflow:hidden}
   .catalogo-info-icon{font-size:16px}
   .carrusel-section{padding-bottom:24px}
 }
+/* Honeypot anti-spam: fuera de pantalla, invisible para humanos */
+.hp-field{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden}
