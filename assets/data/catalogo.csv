@@ -1,0 +1,165 @@
+nombre,categoria,precio,imagen
+Asado,Vacuno,13900,asado.jpg
+Vacío,Vacuno,22500,vac_o_1.jpg
+Falda parrillera,Vacuno,13700,falda_parrillera.jpg
+Tapa de asado,Vacuno,18400,tapa_de_asado_1.jpg
+Asado americano,Vacuno,19500,asado_americano.jpg
+Costillar,Vacuno,17999,
+Nalga,Vacuno,21600,nalga.jpg
+Bola de lomo,Vacuno,16500,bola_de_lomo.jpg
+Cuadrada,Vacuno,16500,cuadrada.jpg
+Peceto,Vacuno,22500,peceto.jpg
+Palomita,Vacuno,17600,palomita_1.jpg
+Roast beef,Vacuno,17600,roast_beef.jpg
+Paleta,Vacuno,17600,paleta.jpg
+Colita,Vacuno,23500,colita_de_cuadril.jpg
+Matambre,Vacuno,16600,matambre_1.jpg
+Osobuco del Rey,Vacuno,10999,osobuco-del-rey.png
+Tomahawk,Vacuno,19500,tomahawk.jpg
+Lomo,Vacuno,29500,lomo.jpg
+Cuadril,Vacuno,20600,cuadril.jpg
+Ojo de bife,Vacuno,24590,ojo_de_bife.jpg
+Arañita,Vacuno,17600,arañita.png
+Picaña,Vacuno,22500,pica_a_1_3.jpg
+Riñonada,Vacuno,20600,ri_onada_de_cuadril.jpg
+Bife de chorizo,Vacuno,24590,bife_de_chorizo.jpg
+Bife ancho,Vacuno,17800,bife_ancho.jpg
+Bife angosto,Vacuno,17900,bife_angosto.jpg
+Entraña,Vacuno,29500,entrana.jpg
+Tapa de nalga,Vacuno,18400,tapa_de_nalga.jpg
+Marucha,Vacuno,16900,marucha.jpg
+Tortuguita,Vacuno,17600,tortuguita_1.jpg
+Osobuco,Vacuno,10999,osobuco_1.jpg
+Espinazo,Vacuno,5500,espinazo.jpg
+Picada Especial,Vacuno,17600,carne-picada.jpg
+Falda Puchero,Vacuno,13700,falda_puchero.jpg
+Chiquizuela,Vacuno,10999,
+Carre,Cerdo,8999,carre_de_cerdo.jpg
+Carre americano,Cerdo,8999,
+Carre deshuesado,Cerdo,11100,carr_deshuesado_1_-_en_alta_1_.jpg
+Pechito,Cerdo,8999,pechito_de_cerdo_1.jpg
+Bondiola,Cerdo,7999,
+Matambrito,Cerdo,10900,matambrito_1.jpg
+Churrasquito,Cerdo,15400,churrasquito_de_cerdo_1.jpg
+Solomillo,Cerdo,11600,solomillo_1.jpg
+Ribs de cerdo,Cerdo,12900,
+Paleta de cerdo,Cerdo,6900,
+Jamon,Cerdo,7500,jam_n_de_cerdo_1.jpg
+Nalga de cerdo,Cerdo,9500,nalga-cerdo.png
+Peceto de cerdo,Cerdo,9500,peceto-cerdo.png
+Bola de lomo de cerdo,Cerdo,9500,bola_de_lomo_de_cerdo2.jpg
+Cuadril de cerdo,Cerdo,9500,cuadril-cerdo.png
+Colita de cuadril de cerdo,Cerdo,9500,colita_de_cuadril.jpg
+Cuadrada de cerdo,Cerdo,9500,cuadrada_cerdo.jpg
+Tortuguita de cerdo,Cerdo,9500,
+Osobuco de cerdo,Cerdo,10990,osobuco-de-cerdo.png
+Pollo Entero,Pollo,5200,pollo_entero_1.jpg
+Pata y Muslo,Pollo,5200,pata_muslo_1.jpg
+Pata y muslo deshuesado,Pollo,11000,pata-muslo-desg.png
+Suprema,Pollo,12500,suprema.jpg
+Alitas,Pollo,2900,alas_pollo.png
+Mollejas,Achuras,34300,molleja_1.jpg
+Chinchulín,Achuras,6300,chinchulin_1.jpg
+Rueda,Achuras,5750,
+Riñón,Achuras,6000,ganadera_panamericana_ri_n_2_-_en_alta_1.jpg
+Tripa gorda,Achuras,5750,
+Lengua,Achuras,12150,lengua_1.jpg
+Hígado,Achuras,5450,h_gado.jpg
+Corazón,Achuras,7428,corazon.jpg
+Centro,Achuras,11750,
+Mondongo,Achuras,11000,ganadera_panamericana_mondongo_1_-_en_alta.jpg
+Seso,Achuras,2900,
+Rabo,Achuras,11000,
+Quijada,Achuras,7750,
+Rebozadas de carne,Elaborados,10900,milanesa_de_carne_1.jpg
+Rebozadas de pollo,Elaborados,9999,milanesa_de_pollo_1.jpg
+Hamburguesa de carne,Elaborados,17600,hamburguesas_de_carne.jpg
+Hamburguesa de pollo,Elaborados,17600,hamburguesas_de_pollo_1.jpg
+Hamburguesa de cerdo,Elaborados,17600,
+Salchichas viena con piel,Embutidos,13500,
+Chorizos de carne,Embutidos,15500,
+Salchichas Parrilleras,Embutidos,17200,salchicha_parrillera_1.jpg
+Chorizo Puro cerdo,Embutidos,15500,chorizos_de_cerdo_1.jpg
+Morcilla rosca,Embutidos,9500,morcilla_rosca_1.jpg
+Morcilla atada,Embutidos,9500,morcilla_atada_1.jpg
+Morcilla vasca,Embutidos,12500,morcilla_vasca_1.jpg
+Morcilla Asturiana,Embutidos,30850,
+Chorizo colorado,Embutidos,29500,
+Nuggets,Elaborados,13500,
+Provoletta Parrillera en cazuela,Elaborados,4500,
+Panceta Salada,Embutidos,27900,
+Panceta Ahumada,Embutidos,27000,
+Espinazo 3kg,Combos,14999,
+Pata y Muslo 3kg,Combos,12900,
+Rebozadas de carne 2kg,Combos,20000,
+Rebozadas de pollo 2kg,Combos,15999,
+Suprema 2kg,Combos,23500,
+Picada Especial 2kg,Combos,31400,
+Osobuco 2kg,Combos,20900,
+Paleta 1kg,Combos,15770,
+Cuadrada 1kg,Combos,16500,
+Nalga 1kg,Combos,20520,
+Bola de lomo 1kg,Combos,16500,
+Roast beef 1kg,Combos,15770,
+Bife ancho 1kg,Combos,16900,
+Bife de chorizo 1kg,Combos,23360,
+Ojo de bife 1kg,Combos,23360,
+Bife angosto 1kg,Combos,17000,
+Cuadril 1kg,Combos,19600,
+Marucha 1kg,Combos,16900,
+Bolsa Sazón Knorr (varios),Almacén,2900,bolsa-sazon-knorr.png
+Bolsa Sazón Barbacoa,Almacén,2990,bolsa-sazon-barbacoa.png
+"Bolsa de Carbón Chico (3,5 kg)",Almacén,5800,carbon-chico.png
+Bolsa de Carbón Grande (6 kg),Almacén,9450,carbon-grande.png
+Leña x 10kg,Almacén,7300,lena-10kg.png
+Maderitas (iniciador de fuego),Almacén,900,
+Maple de Huevos N°1,Almacén,6300,maple-huevo-n1.png
+Huevos cajita x 1/2 doc,Almacén,1700,huevos-media.png
+Pan Baguetin (cong p hornear),Almacén,3600,pan.png
+Miel Pura x 500,Almacén,6160,miel-500.jpg
+Miel Pura x 250,Almacén,3915,miel-250.jpg
+Queso Barra Punta del Agua,Fiambrería,17900,dambo-punta-de-agua.jpg
+Queso Cremoso Punta,Fiambrería,12400,punta-de-agua-cremoso.jpg
+Queso Cremoso Clarita,Fiambrería,8500,queso-cremoso-clarita.png
+Queso Sardo Cremoso Fresco Itati,Fiambrería,16350,sardo-itati.png
+Muzzarella Dom Tin,Fiambrería,10500,muzza-don-tim.png
+Queso de Cerdo Mangiarotti,Fiambrería,6990,queso-de-cerdo-mangiarotti.png
+Queso Roquefort La Quesera,Fiambrería,21900,queso-azul-la-quesera.jpg
+Queso Sardo Est. La Quesera,Fiambrería,29500,queso-sardo-laquesera.png
+Queso Rallado Suelto La Quesera,Fiambrería,19500,queso-rallado-suelto.png
+Provoletta La Quesera,Fiambrería,28500,provoletta-la-quesera.png
+Queso Sardo Fresco La Quesera,Fiambrería,22800,sardo-fresco-laquesera.png
+Queso Romanito La Quesera,Fiambrería,29600,queso-romanito-laquesera.png
+Queso Rallado Sobre x2 La Quesera,Fiambrería,1650,queso-rallado-laquesera.png
+Queso Mar del Plata,Fiambrería,21999,queso-mar-del-plata.png
+Queso Provolin,Fiambrería,23900,
+Jamón Crudo Pino Dorado,Fiambrería,26550,crudo-pino-dorado.png
+Jamón Cocido Junior Mangiarotti,Fiambrería,14900,cocido-mangiarotti.png
+Jamón Cocido Natural,Fiambrería,21900,
+Longaniza Puro Cerdo Mangiarotti,Fiambrería,23500,cocido-mangiarotti.png
+Paleta Sandwich Mangiarotti,Fiambrería,8900,
+Panceta Ahumada Cuero Mangiarotti,Fiambrería,27000,
+Panceta Salada Mangiarotti,Fiambrería,27900,panceta-salada.jpg
+Chorizo Colorado,Fiambrería,29500,
+Longaniza Bastón para Fetear,Fiambrería,29500,
+Dulce de Batata Esnaola Lata,Fiambrería,4899,
+Dulce Choco Esnaola Lata,Fiambrería,4899,
+Dulce de Membrillo Esnaola Lata,Fiambrería,7350,
+Aceite Girasol Leira 900,Fiambrería,3100,
+Arroz Ala 500gr,Fiambrería,950,
+Puré de Tomate Marolio 520gr,Fiambrería,1000,
+Puré Molto 520,Fiambrería,990,
+Queso gouda Melincue,Fiambrería,28900,
+Aceite girasol Natura 900 cc,Fiambrería,4970,
+Salamín picado fino Los Calvos,Fiambrería,29000,
+Matambritos caseros de carne,Fiambrería,29000,
+Matambritos caseros de pollo,Fiambrería,33900,
+Jamón cocido Los Calvos 42,Fiambrería,24500,
+Miel La Colmena x 1 kg,Almacén,5800,
+Carre 1kg,Combos,8600,
+Matambrito 1kg,Combos,10900,
+Lomo 1kg,Combos,29500,
+Asado 1kg,Combos,13900,
+Colita de cuadril 1kg,Combos,23500,
+Matambre 1kg,Combos,16600,
+Asado 5 costillas,Vacuno,9900,

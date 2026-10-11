@@ -20,7 +20,7 @@ function metaTrack(evento, datos, custom) {
   } catch (e) {}
 }
 
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vROVeMldIsOVsSeIQx_yBV7JFz_GaSDnlK1JuOTVnAmxtTHSBN4Q4oiFbelaHSQ_8dnynHz8yUo0PG1/pub?gid=1110466768&single=true&output=csv";
+const CSV_URL = "assets/data/catalogo.csv";
 
 // Imagen que se muestra cuando un producto todavia no tiene foto propia.
 // Antes apuntaba a archivos cat-*.png que no existen en el repo, asi que las
@@ -69,6 +69,7 @@ const IMAGENES_PRODUCTOS = {
   "Morcilla Asturiana": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/embutidos/morcilla-asturiana.webp?v=20260922-1",
   "Panceta Salada": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/panceta-salada-nueva.webp?v=20260922-1",
   "Panceta Ahumada": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/panceta-ahumada-nueva.webp?v=20260922-1",
+  "Panceta Ahumada Cuero Mangiarotti": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/panceta-ahumada-cuero-mangiarotti.png?v=20261009-1",
   "Queso Provolin": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/queso-provolin.webp?v=20260922-1",
   "Jamón Cocido Natural": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/jamon-cocido-natural.webp?v=20260922-1",
   "Jamón cocido Los Calvos 42": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/almacen-y-fiambreria/jamon-cocido-los-calvos-42.png?v=20261009-1",
@@ -106,6 +107,7 @@ const IMAGENES_PRODUCTOS = {
   "Matambrito 1kg": "assets/img/cerdo/matambrito_1.jpg",
   "Lomo 1kg": "assets/img/vacuno/lomo.jpg",
   "Asado 1kg": "assets/img/vacuno/asado.jpg",
+  "Asado 5 costillas": "https://raw.githubusercontent.com/135acostatomas-ia/WebGanadera/main/assets/img/vacuno/asado-5-costillas.png?v=20261009-1",
   "Colita de cuadril 1kg": "assets/img/vacuno/colita_de_cuadril.jpg",
   "Matambre 1kg": "assets/img/vacuno/matambre_1.jpg",
   "Paleta 1kg": "assets/img/vacuno/paleta.jpg",
