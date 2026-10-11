@@ -154,6 +154,12 @@ const PRODUCTOS_POR_UNIDAD = new Set([
 
 // Productos que se venden por unidad, aunque conservan el precio publicado por kilo.
 const PRODUCTOS_UNIDAD_PESO_VARIABLE = {
+  // Fabricante: horma de 3,9 a 4,5 kg; referencia: punto medio.
+  // https://www.puntadelagua.com.ar/productos/queso-cremoso-horma/
+  "Queso cremoso Punta de Agua (por horma)": {
+    pesoEstimadoKg: 4.2,
+    avisoPresentacion: "1 unidad equivale a una horma completa. Si la elegís cortada, recibís las 6 partes."
+  },
   "Pollo Entero": {
     pesoEstimadoKg: 3.5
   },
@@ -338,6 +344,7 @@ const RECOMENDACIONES_PRODUCTOS = {
 // Preparaciones disponibles para los productos que requieren elección de corte.
 // Las claves coinciden con los nombres publicados en la hoja de productos.
 const PREPARACIONES_PRODUCTOS = {
+  "Queso cremoso Punta de Agua (por horma)": ["Entera", "Cortada en 6 partes"],
   "Asado": ["Tira", "Banderita", "Marcado", "En una pieza"],
   "Colita": ["Entera", "Entera mechada"],
   "Lomo": ["Entero", "Churrasco grueso", "Churrasco fino"],
@@ -438,7 +445,7 @@ const TENIA_MIGRACION_PRODUCTOS_POR_PIEZA = localStorage.getItem(MIGRACION_PRODU
 if (!TENIA_MIGRACION_PRODUCTOS_POR_PIEZA) {
   carrito.forEach(item => {
     const configuracion = configuracionUnidadPesoVariable(item.nombre, item.preparacion || "");
-    if (!configuracion || item.nombre === "Pollo Entero") return;
+    if (!configuracion || item.nombre === "Pollo Entero" || item.nombre === "Queso cremoso Punta de Agua (por horma)") return;
 
     item.cantidad = Math.max(1, Math.round(Number(item.cantidad) / configuracion.pesoEstimadoKg));
   });
@@ -502,6 +509,19 @@ if (localStorage.getItem(MIGRACION_MATAMBRITO_SOLOMILLO_UNIDAD) !== "1") {
   });
 
   localStorage.setItem(MIGRACION_MATAMBRITO_SOLOMILLO_UNIDAD, "1");
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+}
+
+// Convierte las selecciones anteriores del queso por horma de kilos a hormas completas.
+const MIGRACION_QUESO_POR_HORMA = "queso-punta-agua-por-horma-v1";
+if (localStorage.getItem(MIGRACION_QUESO_POR_HORMA) !== "1") {
+  carrito.forEach(item => {
+    if (item.nombre !== "Queso cremoso Punta de Agua (por horma)") return;
+    const configuracion = configuracionProductoUnidadPesoVariable(item.nombre);
+    item.cantidad = Math.max(1, Math.round(Number(item.cantidad) / configuracion.pesoEstimadoKg));
+    item.preparacion = item.preparacion || "Entera";
+  });
+  localStorage.setItem(MIGRACION_QUESO_POR_HORMA, "1");
   localStorage.setItem("carrito", JSON.stringify(carrito));
 }
 
@@ -1123,6 +1143,9 @@ function actualizarPresentacionCompraProductoDetalle() {
   );
   if (configuracionUnidad) {
     avisoUnidad.textContent = `Venta por unidad. Peso aprox.: ${configuracionUnidad.pesoEstimadoKg.toLocaleString("es-AR")} kg. El precio final depende del peso real.`;
+    if (configuracionUnidad.avisoPresentacion) {
+      avisoUnidad.textContent += ` ${configuracionUnidad.avisoPresentacion}`;
+    }
     avisoUnidad.hidden = false;
   } else {
     avisoUnidad.hidden = true;
