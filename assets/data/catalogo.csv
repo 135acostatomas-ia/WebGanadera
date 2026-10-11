@@ -1,5 +1,5 @@
 nombre,categoria,precio,imagen
-Asado,Vacuno,13900,asado.jpg
+Asado,Vacuno,15900,asado.jpg
 Vacío,Vacuno,22500,vac_o_1.jpg
 Falda parrillera,Vacuno,13700,falda_parrillera.jpg
 Tapa de asado,Vacuno,18400,tapa_de_asado_1.jpg
@@ -38,8 +38,8 @@ Carre,Cerdo,8999,carre_de_cerdo.jpg
 Carre americano,Cerdo,8999,
 Carre deshuesado,Cerdo,11100,carr_deshuesado_1_-_en_alta_1_.jpg
 Pechito,Cerdo,8999,pechito_de_cerdo_1.jpg
-Bondiola,Cerdo,7999,
-Matambrito,Cerdo,10900,matambrito_1.jpg
+Bondiola,Cerdo,8400,
+Matambrito,Cerdo,11600,matambrito_1.jpg
 Churrasquito,Cerdo,15400,churrasquito_de_cerdo_1.jpg
 Solomillo,Cerdo,11600,solomillo_1.jpg
 Ribs de cerdo,Cerdo,12900,
@@ -52,7 +52,7 @@ Cuadril de cerdo,Cerdo,9500,cuadril-cerdo.png
 Colita de cuadril de cerdo,Cerdo,9500,colita_de_cuadril.jpg
 Cuadrada de cerdo,Cerdo,9500,cuadrada_cerdo.jpg
 Tortuguita de cerdo,Cerdo,9500,
-Osobuco de cerdo,Cerdo,10990,osobuco-de-cerdo.png
+Osobuco de cerdo,Cerdo,5000,osobuco-de-cerdo.png
 Pollo Entero,Pollo,5200,pollo_entero_1.jpg
 Pata y Muslo,Pollo,5200,pata_muslo_1.jpg
 Pata y muslo deshuesado,Pollo,11000,pata-muslo-desg.png
@@ -77,20 +77,20 @@ Hamburguesa de carne,Elaborados,17600,hamburguesas_de_carne.jpg
 Hamburguesa de pollo,Elaborados,17600,hamburguesas_de_pollo_1.jpg
 Hamburguesa de cerdo,Elaborados,17600,
 Salchichas viena con piel,Embutidos,13500,
-Chorizos de carne,Embutidos,15500,
-Salchichas Parrilleras,Embutidos,17200,salchicha_parrillera_1.jpg
-Chorizo Puro cerdo,Embutidos,15500,chorizos_de_cerdo_1.jpg
-Morcilla rosca,Embutidos,9500,morcilla_rosca_1.jpg
-Morcilla atada,Embutidos,9500,morcilla_atada_1.jpg
-Morcilla vasca,Embutidos,12500,morcilla_vasca_1.jpg
-Morcilla Asturiana,Embutidos,30850,
+Chorizos de carne,Embutidos,16000,
+Salchichas Parrilleras,Embutidos,17800,salchicha_parrillera_1.jpg
+Chorizo Puro cerdo,Embutidos,16000,chorizos_de_cerdo_1.jpg
+Morcilla rosca,Embutidos,9800,morcilla_rosca_1.jpg
+Morcilla atada,Embutidos,9800,morcilla_atada_1.jpg
+Morcilla vasca,Embutidos,12900,morcilla_vasca_1.jpg
+Morcilla Asturiana,Embutidos,32000,
 Chorizo colorado,Embutidos,29500,
 Nuggets,Elaborados,13500,
 Provoletta Parrillera en cazuela,Elaborados,4500,
 Panceta Salada,Embutidos,27900,
 Panceta Ahumada,Embutidos,27000,
 Espinazo 3kg,Combos,14999,
-Pata y Muslo 3kg,Combos,12900,
+Pata y Muslo 3kg,Combos,10500,
 Rebozadas de carne 2kg,Combos,20000,
 Rebozadas de pollo 2kg,Combos,15999,
 Suprema 2kg,Combos,23500,
@@ -112,6 +112,7 @@ Bolsa Sazón Barbacoa,Almacén,2990,bolsa-sazon-barbacoa.png
 "Bolsa de Carbón Chico (3,5 kg)",Almacén,5800,carbon-chico.png
 Bolsa de Carbón Grande (6 kg),Almacén,9450,carbon-grande.png
 Leña x 10kg,Almacén,7300,lena-10kg.png
+Leña quebracho/espinillo 8 kg,Almacén,7990,
 Maderitas (iniciador de fuego),Almacén,900,
 Maple de Huevos N°1,Almacén,6300,maple-huevo-n1.png
 Huevos cajita x 1/2 doc,Almacén,1700,huevos-media.png
@@ -119,7 +120,8 @@ Pan Baguetin (cong p hornear),Almacén,3600,pan.png
 Miel Pura x 500,Almacén,6160,miel-500.jpg
 Miel Pura x 250,Almacén,3915,miel-250.jpg
 Queso Barra Punta del Agua,Fiambrería,17900,dambo-punta-de-agua.jpg
-Queso Cremoso Punta,Fiambrería,12400,punta-de-agua-cremoso.jpg
+Queso cremoso Punta de Agua (por kg),Fiambrería,12400,punta-de-agua-cremoso.jpg
+Queso cremoso Punta de Agua (por horma),Fiambrería,11500,punta-de-agua-cremoso.jpg
 Queso Cremoso Clarita,Fiambrería,8500,queso-cremoso-clarita.png
 Queso Sardo Cremoso Fresco Itati,Fiambrería,16350,sardo-itati.png
 Muzzarella Dom Tin,Fiambrería,10500,muzza-don-tim.png
@@ -132,7 +134,7 @@ Queso Sardo Fresco La Quesera,Fiambrería,22800,sardo-fresco-laquesera.png
 Queso Romanito La Quesera,Fiambrería,29600,queso-romanito-laquesera.png
 Queso Rallado Sobre x2 La Quesera,Fiambrería,1650,queso-rallado-laquesera.png
 Queso Mar del Plata,Fiambrería,21999,queso-mar-del-plata.png
-Queso Provolin,Fiambrería,23900,
+Queso provolone Castelar,Fiambrería,23900,
 Jamón Crudo Pino Dorado,Fiambrería,26550,crudo-pino-dorado.png
 Jamón Cocido Junior Mangiarotti,Fiambrería,14900,cocido-mangiarotti.png
 Jamón Cocido Natural,Fiambrería,21900,
@@ -157,9 +159,9 @@ Matambritos caseros de pollo,Fiambrería,33900,
 Jamón cocido Los Calvos 42,Fiambrería,24500,
 Miel La Colmena x 1 kg,Almacén,5800,
 Carre 1kg,Combos,8600,
-Matambrito 1kg,Combos,10900,
+Matambrito 1kg,Combos,11600,
 Lomo 1kg,Combos,29500,
-Asado 1kg,Combos,13900,
+Asado 1kg,Combos,15900,
 Colita de cuadril 1kg,Combos,23500,
 Matambre 1kg,Combos,16600,
 Asado 5 costillas,Vacuno,9900,
