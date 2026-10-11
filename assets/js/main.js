@@ -20,7 +20,7 @@ function metaTrack(evento, datos, custom) {
   } catch (e) {}
 }
 
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vROVeMldIsOVsSeIQx_yBV7JFz_GaSDnlK1JuOTVnAmxtTHSBN4Q4oiFbelaHSQ_8dnynHz8yUo0PG1/pub?gid=1110466768&single=true&output=csv";
+const CSV_URL = "assets/data/catalogo.csv";
 
 // Imagen que se muestra cuando un producto todavia no tiene foto propia.
 // Antes apuntaba a archivos cat-*.png que no existen en el repo, asi que las
