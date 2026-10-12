@@ -929,13 +929,7 @@ function cerrarCarrito() {
   document.getElementById("carrito-overlay").classList.remove("open");
 }
 
-function finalizarPedido() {
-  if (carrito.length === 0) return;
-
-  const totalActual = carrito.reduce((s, i) => s + subtotalItemCarrito(i), 0);
-
-  if (modalidadPedido === "envio" && totalActual < MINIMO_COMPRA) return;
-
+function enviarPedidoConfirmado() {
   const lineas = carrito.map(i => {
     if (i.categoria === "⭐ OFERTA") {
       const kg = kgDesdeNombre(i.nombre);
@@ -962,6 +956,75 @@ function finalizarPedido() {
   const texto = `Hola! Quiero hacer el siguiente pedido:\n\nModalidad: ${modalidadTexto}\n\n${lineas}\n\nTOTAL ESTIMADO: $${totalNum.toLocaleString("es-AR")}\n\nEl importe final se confirma al preparar y pesar el pedido.`;
   metaTrack('Lead', { value: totalNum, currency: 'ARS' });
   window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(texto)}`, "_blank");
+}
+
+function finalizarPedido() {
+  if (carrito.length === 0) return;
+
+  const totalActual = carrito.reduce((s, i) => s + subtotalItemCarrito(i), 0);
+
+  if (modalidadPedido === "envio" && totalActual < MINIMO_COMPRA) return;
+
+  if (todosLosProductos.length > 0) {
+    const cambios = [];
+    carrito.forEach(item => {
+      const productoActual = todosLosProductos.find(p => p.nombre === item.nombre);
+      if (!productoActual) return;
+      const precioActual = Number(productoActual.precio);
+      if (precioActual !== Number(item.precio)) {
+        cambios.push({ nombre: item.nombre, precioViejo: Number(item.precio), precioNuevo: precioActual });
+        item.precio = precioActual;
+      }
+    });
+
+    if (cambios.length > 0) {
+      localStorage.setItem("carrito", JSON.stringify(carrito));
+      actualizarCarrito();
+      mostrarModalCambioPrecios(cambios);
+      return;
+    }
+  }
+
+  enviarPedidoConfirmado();
+}
+
+function mostrarModalCambioPrecios(cambios) {
+  let overlay = document.getElementById("precios-modal-overlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "precios-modal-overlay";
+    overlay.className = "precios-modal-overlay";
+    overlay.innerHTML = `
+      <div class="precios-modal" role="dialog" aria-modal="true">
+        <h3 class="precios-modal-titulo">Precios actualizados</h3>
+        <p class="precios-modal-desc">Algunos precios cambiaron desde que armaste el carrito. El carrito fue actualizado con los valores vigentes.</p>
+        <ul class="precios-modal-lista" id="precios-modal-lista"></ul>
+        <div class="precios-modal-acciones">
+          <button class="precios-modal-btn-cancelar" onclick="cerrarModalCambioPrecios()">Cancelar</button>
+          <button class="precios-modal-btn-confirmar" onclick="cerrarModalCambioPrecios();enviarPedidoConfirmado()">Confirmar y enviar</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    overlay.addEventListener("click", e => { if (e.target === overlay) cerrarModalCambioPrecios(); });
+  }
+
+  const lista = document.getElementById("precios-modal-lista");
+  lista.innerHTML = cambios.map(c => `
+    <li>
+      <span class="precios-modal-nombre">${escapeHtml(c.nombre)}</span>
+      <span class="precios-modal-precios"><s>$${formatPrecio(c.precioViejo)}</s><strong>$${formatPrecio(c.precioNuevo)}</strong></span>
+    </li>
+  `).join("");
+
+  overlay.classList.add("open");
+  document.body.classList.add("producto-modal-open");
+}
+
+function cerrarModalCambioPrecios() {
+  const overlay = document.getElementById("precios-modal-overlay");
+  if (overlay) overlay.classList.remove("open");
+  document.body.classList.remove("producto-modal-open");
 }
 
 // ---- VISTA GRID / LIST ----
