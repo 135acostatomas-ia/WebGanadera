@@ -1,0 +1,45 @@
+/* Capa Halloween v2 — todo bajo .hw-on */
+.hw-layer{position:fixed;inset:0;pointer-events:none;z-index:997;overflow:hidden}
+
+/* Telarañas en esquinas */
+.hw-web{position:absolute;top:0;transform-origin:0 0;animation:hw-web-sway 7s ease-in-out infinite alternate}
+.hw-web-l{left:0}
+.hw-web-r{right:0;transform-origin:100% 0;animation-direction:alternate-reverse}
+@keyframes hw-web-sway{from{rotate:-1.2deg}to{rotate:1.2deg}}
+
+/* Sombrero de bruja sobre la G (el punto de anclaje es el centro-arriba de la G) */
+.hw-hat{--w:44px;position:absolute;width:0;height:0;pointer-events:none;z-index:2;transform:rotate(-14deg);animation:hw-hat 3.4s ease-in-out infinite}
+.hw-hat-cone,.hw-hat-brim{position:absolute}
+.hw-hat-cone{left:calc(var(--w) * -.22);top:calc(var(--w) * -.5);width:calc(var(--w) * .44);height:calc(var(--w) * .54);background:linear-gradient(180deg,#2a1d38 0,#1a1222 66%,#ff7a1a 66%,#ff7a1a 80%,#1a1222 80%);clip-path:polygon(12% 100%,88% 100%,66% 40%,98% 4%,46% 26%);filter:drop-shadow(0 2px 2px rgba(0,0,0,.3))}
+.hw-hat-brim{left:calc(var(--w) * -.36);top:calc(var(--w) * -.02);width:calc(var(--w) * .72);height:calc(var(--w) * .13);border-radius:50%;background:#1a1222;box-shadow:0 2px 3px rgba(0,0,0,.25)}
+@keyframes hw-hat{0%,100%{rotate:0deg}50%{rotate:5deg}}
+
+/* Murciélagos (canvas) */
+.hw-batcv{position:absolute;inset:0;filter:drop-shadow(0 0 1px rgba(205,215,255,.4)) drop-shadow(0 8px 6px rgba(0,0,0,.18))}
+
+/* Arañas (silueta CSS) */
+.hw-sp{position:absolute;left:-9px;top:-11px;width:18px;height:22px;will-change:transform;filter:drop-shadow(0 3px 3px rgba(0,0,0,.3))}
+.hw-sp-body{position:absolute;left:4px;top:8px;width:10px;height:13px;border-radius:50% 50% 48% 48%;background:#141218}
+.hw-sp-head{position:absolute;left:5.5px;top:2px;width:7px;height:7px;border-radius:50%;background:#141218}
+.hw-sp i{position:absolute;left:9px;top:11px;width:11px;height:1.6px;background:#141218;border-radius:2px;transform-origin:0 50%;transform:rotate(var(--a))}
+.hw-sp i::after{content:"";position:absolute;left:10px;top:0;width:9px;height:1.4px;background:#141218;border-radius:2px;transform-origin:0 50%;transform:rotate(38deg)}
+.hw-sp i:nth-child(n+5)::after{transform:rotate(-38deg)}
+.hw-sp.walk i{animation:hw-leg .16s ease-in-out infinite alternate}
+.hw-sp.walk.fast i{animation-duration:.07s}
+.hw-sp.walk i:nth-child(odd){animation-delay:-.08s}
+@keyframes hw-leg{from{rotate:-9deg}to{rotate:9deg}}
+
+/* Fantasmas translúcidos (CSS) */
+.hw-gh{position:absolute;left:-26px;top:-34px;opacity:0;will-change:transform,opacity;pointer-events:auto;cursor:pointer;filter:drop-shadow(0 0 16px rgba(220,235,255,.95)) drop-shadow(0 14px 18px rgba(3,19,67,.22))}
+.hw-gh-i{--s:1;position:relative;display:block;width:calc(52px * var(--s));height:calc(66px * var(--s));border-radius:50% 50% 0 0 / 42% 42% 0 0;background:linear-gradient(180deg,rgba(255,255,255,.97) 0%,rgba(240,246,255,.9) 60%,rgba(225,236,255,.55) 100%);
+  -webkit-mask:radial-gradient(circle at 50% 100%,transparent calc(5px * var(--s)),#000 calc(5.6px * var(--s))) 0 100%/calc(13px * var(--s)) calc(9px * var(--s)) repeat-x,linear-gradient(#000,#000) 0 0/100% calc(100% - 8px * var(--s)) no-repeat;
+  mask:radial-gradient(circle at 50% 100%,transparent calc(5px * var(--s)),#000 calc(5.6px * var(--s))) 0 100%/calc(13px * var(--s)) calc(9px * var(--s)) repeat-x,linear-gradient(#000,#000) 0 0/100% calc(100% - 8px * var(--s)) no-repeat;
+  animation:hw-hem .9s linear infinite,hw-sway 2.2s ease-in-out infinite alternate;transform-origin:50% 15%}
+.hw-gh-face{position:absolute;left:50%;top:32%;width:calc(22px * var(--s));height:calc(16px * var(--s));transform:translateX(-50%);
+  background:radial-gradient(ellipse calc(3.2px * var(--s)) calc(4.6px * var(--s)) at 18% 30%,#1b1d2b 95%,transparent 100%),radial-gradient(ellipse calc(3.2px * var(--s)) calc(4.6px * var(--s)) at 82% 30%,#1b1d2b 95%,transparent 100%),radial-gradient(ellipse calc(3px * var(--s)) calc(3.8px * var(--s)) at 50% 88%,#1b1d2b 95%,transparent 100%);
+  animation:hw-blink 4.5s infinite}
+@keyframes hw-hem{to{-webkit-mask-position:calc(13px * var(--s)) 100%,0 0;mask-position:calc(13px * var(--s)) 100%,0 0}}
+@keyframes hw-sway{from{rotate:-4deg;scale:1 1}to{rotate:4deg;scale:.97 1.04}}
+@keyframes hw-blink{0%,92%,100%{scale:1 1}95%{scale:1 .15}}
+
+@media(prefers-reduced-motion:reduce){.hw-web,.hw-gh-i,.hw-sp i{animation:none}}
