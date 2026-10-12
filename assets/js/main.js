@@ -98,7 +98,6 @@ const IMAGENES_PRODUCTOS = {
   // Combos y ofertas: reutilizan la foto del corte base (no hay carpeta propia).
   "Espinazo 3kg": "assets/img/vacuno/espinazo.jpg",
   "Pata y Muslo 3kg": "assets/img/pollo/pata_muslo_1.jpg",
-  "Rebozadas de carne 2kg": "assets/img/elaborados/milanesa_de_carne_1.jpg",
   "Rebozadas de pollo 2kg": "assets/img/elaborados/milanesa_de_pollo_1.jpg",
   "Suprema 2kg": "assets/img/pollo/suprema.jpg",
   "Picada Especial 2kg": "assets/img/vacuno/carne-picada.jpg",
@@ -267,7 +266,7 @@ const RECOMENDACIONES_PRODUCTOS = {
   "Seso": "Ideal para buñuelos, frituras, tortillas o preparaciones suaves.",
   "Rabo": "Excelente para guisos, estofados y caldos de cocción prolongada.",
   "Quijada": "Ideal para guisos, braseados y carne desmechada.",
-  "Rebozadas de carne": "Prácticas para horno o fritura, ideales con puré, ensalada o en sándwich.",
+  "Rebozadas de peceto": "Prácticas para horno o fritura, ideales con puré, ensalada o en sándwich.",
   "Rebozadas de pollo": "Ideales para horno o fritura, acompañadas con ensalada o papas.",
   "Hamburguesa de carne": "Ideal para plancha, parrilla o sartén, en pan o al plato.",
   "Hamburguesa de pollo": "Buena para plancha, parrilla o sartén, en pan o al plato.",
@@ -317,7 +316,7 @@ const RECOMENDACIONES_PRODUCTOS = {
   "Longaniza Bastón para Fetear": "Ideal para picadas, tablas de fiambres, sándwiches y aperitivos."
   ,"Espinazo 3kg": "Ideal para preparar caldos, pucheros, sopas y guisos abundantes."
   ,"Pata y Muslo 3kg": "Rinde para horno, parrilla, guisos o comidas familiares."
-  ,"Rebozadas de carne 2kg": "Opción práctica y rendidora para horno o fritura."
+
   ,"Rebozadas de pollo 2kg": "Opción práctica y rendidora para horno o fritura."
   ,"Suprema 2kg": "Ideal para milanesas, plancha, horno o preparaciones rellenas."
   ,"Carre 1kg": "Ideal para parrilla, plancha u horno, entero o cortado en chuletas."
