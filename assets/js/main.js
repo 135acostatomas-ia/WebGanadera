@@ -629,7 +629,63 @@ function renderAvisoPreciosCarrito() {
   aviso.hidden = carrito.length === 0;
 }
 
+
+// GA4 uses the same subtotals as the visible cart (kg, pieces and offer packs).
+let gaCarritoAnterior = null;
+function gaItemCarrito(item) {
+  const oferta = item.categoria === "⭐ OFERTA";
+  const quantity = oferta
+    ? Number(item.cantidad) / kgDesdeNombre(item.nombre)
+    : Number(item.cantidad);
+  return {
+    item_id: item.nombre,
+    item_name: item.nombre,
+    item_category: oferta ? "Combos" : item.categoria,
+    item_variant: item.preparacion || "",
+    price: quantity > 0 ? subtotalItemCarrito(item) / quantity : 0,
+    quantity,
+    sale_unit: oferta ? "pack" : esProductoPorUnidad(item.nombre, item.categoria, item.preparacion || "") ? "unidad" : "kg"
+  };
+}
+function gaTrackCarrito(evento, items = carrito.map(gaItemCarrito), extra = {}) {
+  if (!window.ganaderaTrack) return;
+  try {
+    window.ganaderaTrack(evento, {
+      currency: "ARS",
+      value: Math.round(items.reduce((sum, item) => sum + item.price * item.quantity, 0) * 100) / 100,
+      items,
+      modalidad: modalidadPedido,
+      ...extra
+    });
+  } catch (_) {}
+}
+function gaRegistrarCambiosCarrito() {
+  try {
+    const actual = carrito.map(gaItemCarrito);
+    // Loading an existing cart or repricing it is not a new addition.
+    if (gaCarritoAnterior !== null) {
+      const clave = item => JSON.stringify([item.item_id, item.item_variant]);
+      const antes = new Map(gaCarritoAnterior.map(item => [clave(item), item]));
+      const despues = new Map(actual.map(item => [clave(item), item]));
+      const agregados = [], quitados = [];
+      for (const [key, item] of despues) {
+        const delta = Math.round((item.quantity - (antes.get(key)?.quantity || 0)) * 1000) / 1000;
+        if (delta > 0) agregados.push({ ...item, quantity: delta });
+      }
+      for (const [key, item] of antes) {
+        const delta = Math.round((item.quantity - (despues.get(key)?.quantity || 0)) * 1000) / 1000;
+        if (delta > 0) quitados.push({ ...item, quantity: delta });
+      }
+      if (agregados.length) gaTrackCarrito("add_to_cart", agregados);
+      if (quitados.length) gaTrackCarrito("remove_from_cart", quitados);
+      if (agregados.length && !gaCarritoAnterior.length) gaTrackCarrito("cart_created", actual);
+    }
+    gaCarritoAnterior = actual;
+  } catch (_) {}
+}
+
 function actualizarCarrito() {
+  gaRegistrarCambiosCarrito();
   const cont = document.getElementById("carrito-items");
   const total = document.getElementById("carrito-total");
   const empty = document.getElementById("carrito-empty");
@@ -912,6 +968,7 @@ function eliminarItem(idx) {
 }
 
 function abrirCarrito() {
+  if (!document.getElementById("carrito-drawer").classList.contains("open")) gaTrackCarrito("view_cart");
   document.getElementById("carrito-drawer").classList.add("open");
   document.getElementById("carrito-overlay").classList.add("open");
   if (carrito.length > 0) {
@@ -930,6 +987,7 @@ function cerrarCarrito() {
 }
 
 function enviarPedidoConfirmado() {
+  if (!carrito.length || (modalidadPedido === "envio" && obtenerTotalCarrito() < MINIMO_COMPRA)) return;
   const lineas = carrito.map(i => {
     if (i.categoria === "⭐ OFERTA") {
       const kg = kgDesdeNombre(i.nombre);
@@ -954,6 +1012,7 @@ function enviarPedidoConfirmado() {
 
   const modalidadTexto = modalidadPedido === "retiro" ? "Retiro en tienda" : "Envío";
   const texto = `Hola! Quiero hacer el siguiente pedido:\n\nModalidad: ${modalidadTexto}\n\n${lineas}\n\nTOTAL ESTIMADO: $${totalNum.toLocaleString("es-AR")}\n\nEl importe final se confirma al preparar y pesar el pedido.`;
+  gaTrackCarrito("whatsapp_click", undefined, { source: "cart_checkout", has_cart: true });
   metaTrack('Lead', { value: totalNum, currency: 'ARS' });
   window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(texto)}`, "_blank");
 }
@@ -1124,6 +1183,7 @@ function abrirProductoDetalle(nombreCodificado) {
   const overlay = document.getElementById("producto-modal-overlay");
   if (!producto || !overlay) return;
 
+  gaTrackCarrito("view_item", [gaItemCarrito({ ...producto, cantidad: pasoProducto(producto.nombre, producto.categoria) })]);
   productoModalActual = producto;
   productoModalTrigger = document.activeElement;
 
