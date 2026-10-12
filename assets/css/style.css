@@ -671,3 +671,21 @@ body.producto-modal-open{overflow:hidden}
 }
 /* Honeypot anti-spam: fuera de pantalla, invisible para humanos */
 .hp-field{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden}
+/* Modal de precios actualizados */
+.precios-modal-overlay{position:fixed;inset:0;z-index:1300;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(3,19,67,.72);opacity:0;visibility:hidden;transition:opacity .2s ease,visibility .2s ease}
+.precios-modal-overlay.open{opacity:1;visibility:visible}
+.precios-modal{background:#fff;border-radius:12px;box-shadow:0 28px 80px rgba(0,0,0,.32);padding:28px 28px 24px;max-width:400px;width:100%;transform:translateY(14px) scale(.985);transition:transform .2s ease}
+.precios-modal-overlay.open .precios-modal{transform:translateY(0) scale(1)}
+.precios-modal-titulo{margin:0 0 8px;color:var(--color-store-font);font-family:var(--font-title);font-size:21px;font-weight:900}
+.precios-modal-desc{margin:0 0 18px;color:var(--grey);font-size:13px;line-height:1.55}
+.precios-modal-lista{margin:0 0 22px;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.precios-modal-lista li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;background:var(--grey-500);border-radius:6px}
+.precios-modal-nombre{color:var(--color-store-font);font-weight:700;font-size:13px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.precios-modal-precios{display:flex;align-items:center;gap:8px;white-space:nowrap;flex-shrink:0}
+.precios-modal-precios s{color:var(--grey-100);font-size:12px}
+.precios-modal-precios strong{color:var(--color-store-font);font-size:14px;font-weight:900}
+.precios-modal-acciones{display:flex;gap:10px}
+.precios-modal-btn-cancelar{flex:1;padding:13px;border:2px solid var(--grey-300);border-radius:4px;background:#fff;color:var(--grey);font-size:13px;font-weight:700;cursor:pointer;transition:border-color .2s}
+.precios-modal-btn-cancelar:hover{border-color:var(--grey-100)}
+.precios-modal-btn-confirmar{flex:1;padding:13px;border:0;border-radius:4px;background:#25D366;color:#fff;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;cursor:pointer;transition:filter .2s}
+.precios-modal-btn-confirmar:hover{filter:brightness(.95)}
