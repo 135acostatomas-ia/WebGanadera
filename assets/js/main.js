@@ -1839,6 +1839,7 @@ function initHeroDots() {
 
 
 function toggleMenu() {
+  cerrarBuscadorMobile();
   const nav = document.getElementById("main-nav");
   if (nav) nav.classList.toggle("nav-open");
 }
@@ -1964,6 +1965,7 @@ function initBuscador(productos) {
 }
 
 function irAProducto(nombreEnc, catEnc, esCombo) {
+  cerrarBuscadorMobile();
   const nombre = decodeURIComponent(nombreEnc);
   const cat = decodeURIComponent(catEnc);
 
@@ -2119,3 +2121,40 @@ function enviarLocalidad(form) {
 
   return false; // no recarga la pagina
 }
+
+
+function cerrarBuscadorMobile(devolverFoco = false) {
+  const header = document.querySelector(".page-header");
+  const toggle = header?.querySelector(".mobile-search-toggle");
+  if (!header?.classList.contains("search-open")) return;
+  header.classList.remove("search-open");
+  toggle?.setAttribute("aria-expanded", "false");
+  toggle?.setAttribute("aria-label", "Abrir buscador");
+  header.querySelectorAll(".search-dropdown").forEach(d => { d.innerHTML = ""; d.style.display = "none"; });
+  if (devolverFoco) toggle?.focus();
+}
+
+function toggleBuscadorMobile() {
+  const header = document.querySelector(".page-header");
+  if (!header) return;
+  if (header.classList.contains("search-open")) {
+    cerrarBuscadorMobile(true);
+    return;
+  }
+  document.getElementById("main-nav")?.classList.remove("nav-open");
+  header.classList.add("search-open");
+  const toggle = header.querySelector(".mobile-search-toggle");
+  toggle?.setAttribute("aria-expanded", "true");
+  toggle?.setAttribute("aria-label", "Cerrar buscador");
+  const input = header.querySelector(".search input");
+  input?.focus();
+  input?.dispatchEvent(new Event("input", { bubbles: true }));
+}
+
+document.addEventListener("click", event => {
+  if (!event.target.closest(".page-header")) cerrarBuscadorMobile();
+});
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") cerrarBuscadorMobile(true);
+});
+window.matchMedia("(max-width:980px)").addEventListener("change", () => cerrarBuscadorMobile());
