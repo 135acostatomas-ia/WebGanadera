@@ -151,6 +151,21 @@ const PRODUCTOS_POR_UNIDAD = new Set([
   "Puré Molto 520"
 ]);
 
+// Productos de Almacén/Fiambrería que conservan su modalidad actual de venta.
+const PRODUCTOS_FIAMBRERIA_ALMACEN_SIN_CAMBIOS = new Set([
+  "Queso Rallado Suelto La Quesera",
+  "Provoletta La Quesera",
+  "Jamón Crudo Pino Dorado",
+  "Chorizo Colorado",
+  "Longaniza Bastón para Fetear",
+  "Dulce de Batata Esnaola Lata",
+  "Dulce Choco Esnaola Lata",
+  "Dulce de Membrillo Esnaola Lata",
+  "Salamín picado fino Los Calvos",
+  "Matambritos caseros de carne",
+  "Matambritos caseros de pollo"
+]);
+
 // Productos que se venden por unidad, aunque conservan el precio publicado por kilo.
 const PRODUCTOS_UNIDAD_PESO_VARIABLE = {
   // Fabricante: horma de 3,9 a 4,5 kg; referencia: punto medio.
@@ -407,7 +422,14 @@ function esProductoPorUnidad(nombre, categoria, preparacion = "") {
 }
 
 function pasoProducto(nombre, categoria, preparacion = "") {
-  return esProductoPorUnidad(nombre, categoria, preparacion) ? 1 : 0.5;
+  if (esProductoPorUnidad(nombre, categoria, preparacion)) return 1;
+
+  const esFiambreriaOAlmacen = categoria === "Fiambrería" || categoria === "Almacén";
+  if (esFiambreriaOAlmacen && !PRODUCTOS_FIAMBRERIA_ALMACEN_SIN_CAMBIOS.has(nombre)) {
+    return 0.1;
+  }
+
+  return 0.5;
 }
 
 function mostrarCantidad(cantidad, nombre, categoria, preparacion = "") {
@@ -729,9 +751,7 @@ function actualizarCarrito() {
 
     const step = esOferta
       ? kgDesdeNombre(item.nombre)
-      : esUnidad
-        ? 1
-        : 0.5;
+      : pasoProducto(item.nombre, item.categoria, item.preparacion || "");
 
     const cantidadTexto = esUnidad
       ? item.cantidad === 1
