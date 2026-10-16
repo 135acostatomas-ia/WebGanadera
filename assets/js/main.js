@@ -135,36 +135,49 @@ const PRODUCTOS_POR_UNIDAD = new Set([
   "Maderitas (iniciador de fuego)",
   "Maple de Huevos N°1",
   "Huevos cajita x 1/2 doc",
-  "Pan Baguetin (cong p hornear)",
   "Miel Pura x 500",
   "Miel Pura x 250",
   "Miel La Colmena x 1 kg",
 
   "Queso Rallado Sobre x2 La Quesera",
-  "Dulce de Batata Esnaola Lata",
-  "Dulce Choco Esnaola Lata",
-  "Dulce de Membrillo Esnaola Lata",
   "Aceite Girasol Leira 900",
   "Aceite girasol Natura 900 cc",
   "Arroz Ala 500gr",
   "Puré de Tomate Marolio 520gr",
-  "Puré Molto 520"
-]);
+  "Puré Molto 520",
 
-// Productos de Almacén/Fiambrería que conservan su modalidad actual de venta.
-const PRODUCTOS_FIAMBRERIA_ALMACEN_SIN_CAMBIOS = new Set([
-  "Queso Rallado Suelto La Quesera",
-  "Provoletta La Quesera",
-  "Jamón Crudo Pino Dorado",
+  "Chorizo colorado",
   "Chorizo Colorado",
-  "Longaniza Bastón para Fetear",
-  "Dulce de Batata Esnaola Lata",
-  "Dulce Choco Esnaola Lata",
-  "Dulce de Membrillo Esnaola Lata",
   "Salamín picado fino Los Calvos",
   "Matambritos caseros de carne",
-  "Matambritos caseros de pollo"
+  "Matambritos caseros de pollo",
+  "Lengua",
+  "Centro",
+  "Seso",
+  "Rabo",
+  "Morcilla rosca",
+  "Morcilla atada",
+  "Morcilla vasca",
+  "Morcilla Asturiana"
 ]);
+
+// Productos de Almacén/Fiambrería que conservan su modalidad anterior.
+const PRODUCTOS_FIAMBRERIA_ALMACEN_SIN_CAMBIOS = new Set([
+  "Queso Rallado Suelto La Quesera",
+  "Jamón Crudo Pino Dorado"
+]);
+
+// Pasos de venta específicos para productos vendidos por peso.
+const PASOS_PERSONALIZADOS_POR_KG = {
+  "Pan Baguetin (cong p hornear)": 0.5,
+  "Provoletta La Quesera": 0.15,
+  "Longaniza Bastón para Fetear": 0.1,
+  "Dulce de Batata Esnaola Lata": 0.2,
+  "Dulce Choco Esnaola Lata": 0.2,
+  "Dulce de Membrillo Esnaola Lata": 0.2,
+  "Panceta Salada": 0.1,
+  "Panceta Ahumada": 0.1
+};
 
 // Productos que se venden por unidad, aunque conservan el precio publicado por kilo.
 const PRODUCTOS_UNIDAD_PESO_VARIABLE = {
@@ -387,7 +400,10 @@ const PREPARACIONES_PRODUCTOS = {
   "Tortuguita de cerdo": ["Cortadas finas", "Cortadas gruesas", "En un trozo"],
   "Suprema": ["Fileteada", "Entera", "Cortada mariposa"],
   "Pata y Muslo": ["Unidad con piel", "Unidad sin piel"],
-  "Pollo Entero": ["Entero con piel", "Entero sin piel", "En 4 con piel", "En 4 sin piel", "En 8 con piel", "En 8 sin piel", "Rana"]
+  "Pollo Entero": ["Entero con piel", "Entero sin piel", "En 4 con piel", "En 4 sin piel", "En 8 con piel", "En 8 sin piel", "Rana"],
+  "Longaniza Bastón para Fetear": ["En trozo", "Feteada"],
+  "Panceta Salada": ["Por trozo", "Feteada"],
+  "Panceta Ahumada": ["Por trozo", "Feteada"]
 };
 
 function preparacionesProducto(nombre) {
@@ -423,6 +439,9 @@ function esProductoPorUnidad(nombre, categoria, preparacion = "") {
 
 function pasoProducto(nombre, categoria, preparacion = "") {
   if (esProductoPorUnidad(nombre, categoria, preparacion)) return 1;
+
+  const pasoPersonalizado = PASOS_PERSONALIZADOS_POR_KG[nombre];
+  if (pasoPersonalizado) return pasoPersonalizado;
 
   const esFiambreriaOAlmacen = categoria === "Fiambrería" || categoria === "Almacén";
   if (esFiambreriaOAlmacen && !PRODUCTOS_FIAMBRERIA_ALMACEN_SIN_CAMBIOS.has(nombre)) {
@@ -722,7 +741,7 @@ function actualizarCarrito() {
   renderSelectorModalidad();
   renderAvisoPreciosCarrito();
 
-  const totalUnidades = Math.round(carrito.reduce((s, i) => s + i.cantidad, 0) * 10) / 10;
+  const totalUnidades = Math.round(carrito.reduce((s, i) => s + i.cantidad, 0) * 100) / 100;
   const totalNum = carrito.reduce((s, i) => s + subtotalItemCarrito(i), 0);
 
   badges.forEach(badge => {
@@ -850,7 +869,7 @@ function agregarAlCarrito(btn, nombre, categoria, precio) {
   const existente = carrito.find(i => i.nombre === nombre && !i.preparacion);
 
   if (existente) {
-    existente.cantidad = Math.round((existente.cantidad + step) * 10) / 10;
+    existente.cantidad = Math.round((existente.cantidad + step) * 100) / 100;
   } else {
     carrito.push({
       nombre,
@@ -921,7 +940,7 @@ function sumarEnTarjeta(nombre, categoria, precio) {
   const existente = carrito.find(i => i.nombre === nombre && !i.preparacion);
 
   if (existente) {
-    existente.cantidad = Math.round((existente.cantidad + step) * 10) / 10;
+    existente.cantidad = Math.round((existente.cantidad + step) * 100) / 100;
   } else {
     carrito.push({
       nombre,
@@ -950,7 +969,7 @@ function restarEnTarjeta(nombre, categoria, precio) {
   const idx = carrito.findIndex(i => i.nombre === nombre && !i.preparacion);
   if (idx === -1) return;
 
-  carrito[idx].cantidad = Math.round((carrito[idx].cantidad - step) * 10) / 10;
+  carrito[idx].cantidad = Math.round((carrito[idx].cantidad - step) * 100) / 100;
 
   if (carrito[idx].cantidad <= 0) {
     carrito.splice(idx, 1);
@@ -974,7 +993,7 @@ function animarBadge() {
 function cambiarCantidad(idx, delta) {
   const item = carrito[idx] ? { ...carrito[idx] } : null;
   if (!item) return;
-  carrito[idx].cantidad = Math.round((carrito[idx].cantidad + delta) * 10) / 10;
+  carrito[idx].cantidad = Math.round((carrito[idx].cantidad + delta) * 100) / 100;
   if (carrito[idx].cantidad <= 0) carrito.splice(idx, 1);
   actualizarCarrito();
   actualizarControlTarjeta(item.nombre, item.categoria, item.precio);
@@ -1274,9 +1293,14 @@ function actualizarPresentacionCompraProductoDetalle() {
     productoModalActual.categoria,
     preparacion
   );
+  const paso = pasoProducto(
+    productoModalActual.nombre,
+    productoModalActual.categoria,
+    preparacion
+  );
   document.getElementById("producto-modal-paso").textContent = porUnidad
     ? "Podés sumar o restar de a 1 unidad."
-    : "Podés sumar o restar de a 0,5 kg.";
+    : `Podés sumar o restar de a ${paso.toLocaleString("es-AR")} kg.`;
 
   const avisoUnidad = document.getElementById("producto-modal-aviso-unidad");
   const configuracionUnidad = configuracionUnidadPesoVariable(
@@ -1320,7 +1344,7 @@ function cambiarCantidadProductoDetalle(direccion) {
     productoModalActual.categoria,
     preparacionProductoModal
   );
-  const nuevaCantidad = Math.round((cantidadProductoModal + direccion * paso) * 10) / 10;
+  const nuevaCantidad = Math.round((cantidadProductoModal + direccion * paso) * 100) / 100;
   cantidadProductoModal = Math.max(paso, nuevaCantidad);
   actualizarCantidadProductoDetalle();
 }
