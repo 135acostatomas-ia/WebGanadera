@@ -722,7 +722,7 @@ function actualizarCarrito() {
   renderSelectorModalidad();
   renderAvisoPreciosCarrito();
 
-  const totalUnidades = carrito.reduce((s, i) => s + i.cantidad, 0);
+  const totalUnidades = Math.round(carrito.reduce((s, i) => s + i.cantidad, 0) * 10) / 10;
   const totalNum = carrito.reduce((s, i) => s + subtotalItemCarrito(i), 0);
 
   badges.forEach(badge => {
