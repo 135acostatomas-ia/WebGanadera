@@ -102,7 +102,7 @@ const IMAGENES_PRODUCTOS = {
   "Suprema 2kg": "assets/img/pollo/suprema.jpg",
   "Picada Especial 2kg": "assets/img/vacuno/carne-picada.jpg",
   "Osobuco 2kg": "assets/img/vacuno/osobuco_1.jpg",
-  "Carre 1kg": "assets/img/cerdo/carre_de_cerdo.jpg",
+  "Carre 2kg": "assets/img/cerdo/carre_de_cerdo.jpg",
   "Matambrito 1kg": "assets/img/cerdo/matambrito_1.jpg",
   "Lomo 1kg": "assets/img/vacuno/lomo.jpg",
   "Asado 1kg": "assets/img/vacuno/asado.jpg",
@@ -347,7 +347,7 @@ const RECOMENDACIONES_PRODUCTOS = {
 
   ,"Rebozadas de pollo 2kg": "Opción práctica y rendidora para horno o fritura."
   ,"Suprema 2kg": "Ideal para milanesas, plancha, horno o preparaciones rellenas."
-  ,"Carre 1kg": "Ideal para parrilla, plancha u horno, entero o cortado en chuletas."
+  ,"Carre 2kg": "Ideal para parrilla, plancha u horno, entero o cortado en chuletas."
   ,"Matambrito 1kg": "Ideal para parrilla o plancha; fino, sabroso y de cocción rápida."
   ,"Lomo 1kg": "Muy tierno y magro; ideal para medallones, plancha, horno o con salsa."
   ,"Asado 1kg": "Ideal para parrilla u horno, con cocción lenta para lograr una carne tierna."
