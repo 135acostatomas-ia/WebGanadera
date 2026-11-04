@@ -175,7 +175,7 @@ a.corte-card{color:inherit}
 .social-title{margin-bottom:30px}
 .social-profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;max-width:920px;margin:0 auto}
 .social-profile-card{background:#fff;border:1px solid var(--grey-300);border-radius:10px;box-shadow:0 8px 28px rgba(3,19,67,.08);overflow:hidden;display:flex;flex-direction:column;min-height:360px}
-.social-cover{height:112px;display:flex;align-items:center;justify-content:flex-end;padding:22px;color:#fff}
+.social-cover{height:112px;display:flex;align-items:center;justify-content:center;padding:22px;color:#fff}
 .instagram-cover{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)}
 .facebook-cover{background:#1877f2}
 .social-brand-icon{width:46px;height:46px;display:block}
