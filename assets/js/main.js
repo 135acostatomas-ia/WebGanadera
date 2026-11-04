@@ -433,7 +433,7 @@ function esProductoUnidadPesoVariable(nombre, preparacion = "") {
 }
 
 function esProductoPorUnidad(nombre, categoria, preparacion = "") {
-  if (categoria === "⭐ OFERTA") return false;
+  if (categoria === "OFERTA") return false;
   return PRODUCTOS_POR_UNIDAD.has(nombre) || esProductoUnidadPesoVariable(nombre, preparacion);
 }
 
@@ -468,7 +468,7 @@ function precioUnitarioCarrito(item) {
 }
 
 function subtotalItemCarrito(item) {
-  if (item.categoria === "⭐ OFERTA") {
+  if (item.categoria === "OFERTA") {
     const kg = kgDesdeNombre(item.nombre);
     return Number(item.precio) * Math.round(item.cantidad / kg);
   }
@@ -478,6 +478,16 @@ function subtotalItemCarrito(item) {
 
 
 let carrito = JSON.parse(localStorage.getItem("carrito") || "[]");
+
+// Normaliza la etiqueta anterior para que pedidos guardados no vuelvan a mostrar el emoji.
+const ETIQUETA_OFERTA_ANTERIOR = "\u2B50\uFE0F OFERTA";
+const ofertasConEtiquetaAnterior = carrito.some(item => item.categoria === ETIQUETA_OFERTA_ANTERIOR);
+if (ofertasConEtiquetaAnterior) {
+  carrito.forEach(item => {
+    if (item.categoria === ETIQUETA_OFERTA_ANTERIOR) item.categoria = "OFERTA";
+  });
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+}
 
 // Migra selecciones anteriores en kilos al nuevo formato por pieza.
 const MIGRACION_PRODUCTOS_POR_PIEZA = "productos-por-pieza-v1";
@@ -674,7 +684,7 @@ function renderAvisoPreciosCarrito() {
 // GA4 uses the same subtotals as the visible cart (kg, pieces and offer packs).
 let gaCarritoAnterior = null;
 function gaItemCarrito(item) {
-  const oferta = item.categoria === "⭐ OFERTA";
+  const oferta = item.categoria === "OFERTA";
   const quantity = oferta
     ? Number(item.cantidad) / kgDesdeNombre(item.nombre)
     : Number(item.cantidad);
@@ -765,7 +775,7 @@ function actualizarCarrito() {
   empty.style.display = "none";
 
   cont.innerHTML = carrito.map((item, idx) => {
-    const esOferta = item.categoria === "⭐ OFERTA";
+    const esOferta = item.categoria === "OFERTA";
     const esUnidad = esProductoPorUnidad(item.nombre, item.categoria, item.preparacion || "");
 
     const step = esOferta
@@ -779,7 +789,7 @@ function actualizarCarrito() {
       : `${item.cantidad} kg`;
 
     const catLabel = esOferta
-      ? `<span class="ci-cat" style="color:var(--red);font-weight:700">⭐ OFERTA</span>`
+      ? `<span class="ci-cat" style="color:var(--red);font-weight:700">OFERTA</span>`
       : `<span class="ci-cat">${escapeHtml(item.categoria)}</span>`;
 
     let subtotal;
@@ -1028,7 +1038,7 @@ function cerrarCarrito() {
 function enviarPedidoConfirmado() {
   if (!carrito.length || (modalidadPedido === "envio" && obtenerTotalCarrito() < MINIMO_COMPRA)) return;
   const lineas = carrito.map(i => {
-    if (i.categoria === "⭐ OFERTA") {
+    if (i.categoria === "OFERTA") {
       const kg = kgDesdeNombre(i.nombre);
       const packs = Math.round(i.cantidad / kg);
       return `• [OFERTA] ${i.nombre} x${packs} — $${formatPrecio(i.precio * packs)}`;
@@ -1487,7 +1497,7 @@ function pintarCarrusel(track, productos, enlaceProducto, esOferta) {
   track.innerHTML = items.map(p => {
     const imagenProducto = obtenerImagenProducto(p);
     const catLabel = esOferta
-      ? `<span class="carrusel-badge-oferta">🔥 OFERTA</span>`
+      ? `<span class="carrusel-badge-oferta">OFERTA</span>`
       : (mostrarCategoria ? `<div class="carrusel-card-cat">${p.categoria}</div>` : "");
     const recomendacion = RECOMENDACIONES_PRODUCTOS[p.nombre];
     const recomendacionHtml = recomendacion
@@ -1716,7 +1726,7 @@ function tarjetaOferta(p) {
 
   return `
   <div class="oferta-item">
-    <span class="oferta-badge">🔥 OFERTA</span>
+    <span class="oferta-badge">OFERTA</span>
     <div class="oferta-nombre">${escapeHtml(p.nombre)}</div>
     <div class="oferta-detalle">Pack de ${kg} kg</div>
     <div class="oferta-precio">$ ${formatPrecio(p.precio)} <span>/ pack</span></div>
@@ -1729,7 +1739,7 @@ function agregarOferta(nombre, precio, kg) {
   if (existente) {
     existente.cantidad = Math.round((existente.cantidad + kg) * 10) / 10;
   } else {
-    carrito.push({ nombre, categoria: "⭐ OFERTA", precio: Number(precio), cantidad: kg });
+    carrito.push({ nombre, categoria: "OFERTA", precio: Number(precio), cantidad: kg });
   }
   actualizarCarrito();
   metaTrack('AddToCart', {
