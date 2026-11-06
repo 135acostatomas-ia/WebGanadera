@@ -130,7 +130,6 @@ const PRODUCTOS_POR_UNIDAD = new Set([
   "Bolsa Sazón Barbacoa",
   "Bolsa de Carbón Chico (3,5 kg)",
   "Bolsa de Carbón Grande (6 kg)",
-  "Leña x 10kg",
   "Leña quebracho/espinillo 8 kg",
   "Maderitas (iniciador de fuego)",
   "Maple de Huevos N°1",
