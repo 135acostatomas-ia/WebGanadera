@@ -139,6 +139,7 @@ const PRODUCTOS_POR_UNIDAD = new Set([
   "Miel Pura x 250",
   "Miel La Colmena x 1 kg",
 
+  "Queso Rallado Sobre 40g La Quesera",
   "Queso Rallado Sobre x2 La Quesera",
   "Aceite Girasol Leira 900",
   "Aceite girasol Natura 900 cc",
@@ -330,6 +331,7 @@ const RECOMENDACIONES_PRODUCTOS = {
   "Provoletta La Quesera": "Ideal para parrilla o plancha, con o sin condimentos.",
   "Queso Sardo Fresco La Quesera": "Ideal para picadas, pastas, gratinados o rallado suave.",
   "Queso Romanito La Quesera": "Perfecto para rallar, gratinar y sumar sabor a pastas o risottos.",
+  "Queso Rallado Sobre 40g La Quesera": "Práctico para pastas, sopas, salsas y gratinados.",
   "Queso Rallado Sobre x2 La Quesera": "Práctico para pastas, sopas, salsas y gratinados.",
   "Queso Mar del Plata": "Ideal para picadas, sándwiches, tostados y gratinados.",
   "Queso provolone Castelar": "Ideal para parrilla, picadas, pastas, pizzas o gratinados.",
