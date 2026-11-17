@@ -1,10 +1,10 @@
 nombre,categoria,precio,imagen
-Asado,Vacuno,15900,asado.jpg
+Asado,Vacuno,16900,asado.jpg
 Vacío,Vacuno,22500,vac_o_1.jpg
 Falda parrillera,Vacuno,13700,falda_parrillera.jpg
 Tapa de asado,Vacuno,18400,tapa_de_asado_1.jpg
 Asado americano,Vacuno,19500,asado_americano.jpg
-Costillar,Vacuno,15900,
+Costillar,Vacuno,16900,
 Nalga,Vacuno,21600,nalga.jpg
 Bola de lomo,Vacuno,16900,bola_de_lomo.jpg
 Cuadrada,Vacuno,16900,cuadrada.jpg
@@ -104,7 +104,7 @@ Puré Molto 520,Fiambrería,990,
 Bolsa de Carbón Grande (6 kg),Almacén,9450,carbon-grande.png
 Leña quebracho/espinillo 8 kg,Almacén,7990,lena-10kg.png
 Maderitas (iniciador de fuego),Almacén,900,
-Maple de Huevos N°1,Almacén,6100,maple-huevo-n1.png
+Maple de Huevos N°1,Almacén,5900,maple-huevo-n1.png
 Huevos cajita x 1/2 doc,Almacén,1500,huevos-media.png
 Pan Baguetin (cong p hornear),Almacén,3600,pan.png
 Miel Pura x 500,Almacén,6160,miel-500.jpg
