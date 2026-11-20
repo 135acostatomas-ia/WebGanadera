@@ -1,0 +1,314 @@
+/* Capa Navidad 2026 — Ganadera Panamericana
+   Se activa sola entre DESDE y HASTA. No modifica el código original.
+   Forzar: ?navidad=on  ·  Apagar: ?navidad=off  ·  Animaciones aunque el sistema pida menos movimiento: ?movimiento=on */
+(function () {
+  var DESDE = '2026-12-01', HASTA = '2027-01-07'; // HASTA no incluido (cubre Reyes, 6 de enero)
+  var CFG = { copos: 70, luces: true, gorro: true, trineo: true };
+
+  var params = new URLSearchParams(location.search);
+  var forzar = params.get('navidad');
+  if (forzar === 'off') return;
+  var hoy = new Date();
+  if (forzar !== 'on' && (hoy < new Date(DESDE + 'T00:00:00') || hoy >= new Date(HASTA + 'T00:00:00'))) return;
+
+  var script = document.currentScript;
+  var base = script && script.src ? script.src.replace(/[^\/]*(\?.*)?$/, '') : 'assets/navidad/';
+  var link = document.querySelector('[data-nv-css]');
+  if (!link) {
+    link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = base + 'navidad.css';
+    document.head.appendChild(link);
+  }
+  document.documentElement.classList.add('nv-on');
+
+  var forzarMov = params.get('movimiento') === 'on';
+  if (forzarMov) document.documentElement.classList.add('nv-force-motion');
+  var reduce = !forzarMov && window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mobile = window.innerWidth < 700;
+  var dpr = Math.min(devicePixelRatio || 1, 2);
+  var rnd = function (a, b) { return a + Math.random() * (b - a); };
+  var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+  var W = innerWidth, H = innerHeight;
+  addEventListener('resize', function () { W = innerWidth; H = innerHeight; });
+
+  var mouse = { x: -9999, y: -9999 }, touchTimer;
+  addEventListener('pointermove', function (e) { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
+  addEventListener('pointerdown', function (e) { mouse.x = e.clientX; mouse.y = e.clientY; clearTimeout(touchTimer); }, { passive: true });
+  addEventListener('pointerup', function (e) {
+    if (e.pointerType !== 'mouse') touchTimer = setTimeout(function () { mouse.x = mouse.y = -9999; }, 900);
+  }, { passive: true });
+  document.addEventListener('mouseleave', function () { mouse.x = mouse.y = -9999; });
+
+  function el(tag, cls, parent, txt) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (txt) e.textContent = txt;
+    e.setAttribute('aria-hidden', 'true');
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function fitCanvas(cv) {
+    var fit = function () { cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + 'px'; cv.style.height = H + 'px'; };
+    fit(); addEventListener('resize', fit);
+  }
+
+  var layer;
+
+  /* ---------- Guirnalda de luces colgando del header ---------- */
+  function luces() {
+    var hdr = document.querySelector('.page-header');
+    if (!hdr) return;
+    var NS = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('class', 'nv-lights');
+    svg.setAttribute('aria-hidden', 'true');
+    var COLORS = ['#ff3b30', '#ffc83d', '#2fd16b', '#3aa0ff', '#fff0b8'];
+    // Cuelga del borde inferior del menú azul; si el menú está oculto (mobile), del header
+    function anfitrion() {
+      var nav = document.querySelector('.main-nav');
+      return nav && nav.offsetParent ? nav : hdr;
+    }
+    function build() {
+      var host = anfitrion();
+      if (svg.parentNode !== host) host.appendChild(svg);
+      var w = host.clientWidth, h = 46, seg = mobile ? 74 : 104, n = Math.max(1, Math.round(w / seg)), sw = w / n, sag = mobile ? 9 : 12, k = mobile ? 3 : 4;
+      svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+      var html = '<defs>';
+      COLORS.forEach(function (c, i) {
+        html += '<radialGradient id="nvg' + i + '"><stop offset="0" stop-color="' + c + '" stop-opacity=".85"/><stop offset="1" stop-color="' + c + '" stop-opacity="0"/></radialGradient>';
+      });
+      html += '</defs>';
+      var wire = 'M0 2', bulbs = '', idx = 0;
+      for (var i = 0; i < n; i++) {
+        var x0 = i * sw, x1 = x0 + sw, cxm = (x0 + x1) / 2, cy = 2 + sag * 2;
+        wire += ' Q' + cxm.toFixed(1) + ' ' + cy + ' ' + x1.toFixed(1) + ' 2';
+        for (var j = 0; j < k; j++) {
+          var t = (j + 1) / (k + 1), u = 1 - t;
+          var x = u * u * x0 + 2 * u * t * cxm + t * t * x1;
+          var y = u * u * 2 + 2 * u * t * cy + t * t * 2;
+          var c = COLORS[idx % COLORS.length], cls = ['a', 'b', 'c'][idx % 3];
+          var delay = -((idx * 0.41) % 3).toFixed(2);
+          bulbs += '<g><circle class="nv-glow ' + cls + '" style="animation-delay:' + delay + 's" cx="' + x.toFixed(1) + '" cy="' + (y + 8).toFixed(1) + '" r="11" fill="url(#nvg' + (idx % COLORS.length) + ')"/>' +
+            '<rect class="nv-sock" x="' + (x - 1.8).toFixed(1) + '" y="' + (y + 0.5).toFixed(1) + '" width="3.6" height="3.4" rx="1"/>' +
+            '<ellipse cx="' + x.toFixed(1) + '" cy="' + (y + 8).toFixed(1) + '" rx="3.1" ry="4.6" fill="' + c + '"/>' +
+            '<ellipse cx="' + (x - 1).toFixed(1) + '" cy="' + (y + 6.4).toFixed(1) + '" rx="0.9" ry="1.5" fill="#fff" opacity=".55"/></g>';
+          idx++;
+        }
+      }
+      svg.innerHTML = html + '<path class="nv-wire" d="' + wire + '"/>' + bulbs;
+    }
+    build();
+    var timer;
+    addEventListener('resize', function () { clearTimeout(timer); timer = setTimeout(build, 120); });
+    // al bajar con scroll el header queda fijo: la guirnalda se desvanece para no tapar el contenido
+    var tick = false;
+    addEventListener('scroll', function () {
+      if (tick) return; tick = true;
+      requestAnimationFrame(function () { tick = false; svg.classList.toggle('nv-off', (window.scrollY || pageYOffset) > 90); });
+    }, { passive: true });
+  }
+
+  /* ---------- Gorro de Papá Noel sobre la G del logo ---------- */
+  var HAT_SVG = '<svg viewBox="0 0 100 86" xmlns="http://www.w3.org/2000/svg">' +
+    '<path d="M12 66C14 40 36 16 64 13C78 11 90 18 93 31C80 25 68 30 64 42C61 52 67 60 78 66Z" fill="#d7262e"/>' +
+    '<path d="M12 66C14 40 36 16 64 13C58 30 46 50 38 66Z" fill="#b51a23" opacity=".55"/>' +
+    '<rect x="6" y="60" width="78" height="19" rx="9.5" fill="#fff" stroke="#d7e0ef" stroke-width="1.5"/>' +
+    '<circle cx="93" cy="32" r="8.5" fill="#fff" stroke="#d7e0ef" stroke-width="1.5"/>' +
+    '</svg>';
+  function gorro() {
+    var txt = document.querySelector('.page-header .logo-text'), box = document.querySelector('.page-header .header-content');
+    if (!txt || !box) return;
+    var wrap = document.createElement('span');
+    wrap.innerHTML = HAT_SVG;
+    var hat = wrap.firstChild;
+    hat.setAttribute('class', 'nv-hat');
+    hat.setAttribute('aria-hidden', 'true');
+    box.appendChild(hat);
+    // la "G" ocupa ~4%–15% del ancho de la imagen y arranca al 8% de su alto
+    var fit = function () {
+      var r = txt.getBoundingClientRect(), br = box.getBoundingClientRect();
+      var w = (r.height || 44) * (innerWidth < 700 ? 0.82 : 1);
+      hat.style.setProperty('--w', w + 'px');
+      hat.style.left = (r.left - br.left + r.width * 0.095) + 'px';
+      // que la punta del gorro no se salga por arriba de la pantalla
+      hat.style.top = Math.max(r.top - br.top - r.height * 0.08, w * 0.72 + 1 - br.top) + 'px';
+    };
+    fit(); addEventListener('resize', fit); addEventListener('load', fit); link.addEventListener('load', fit);
+    if (!txt.complete) txt.addEventListener('load', fit);
+  }
+
+  /* ---------- Nieve (con parallax, viento y esquive del cursor) ---------- */
+  var flakes = [], sc, sg;
+  function nuevoCopo(inicio) {
+    var d = rnd(0.25, 1);
+    return { x: rnd(0, W), y: inicio ? rnd(0, H) : rnd(-30, -4), d: d, r: 1 + d * 2.5, vy: 20 + d * 46, ph: rnd(0, 6.28), sw: rnd(0.6, 1.4),
+      a: 0.55 + d * 0.45, rot: rnd(0, 6.28), vr: rnd(-0.9, 0.9) };
+  }
+  function prepararNieve() {
+    sc = el('canvas', 'nv-snow', layer);
+    sg = sc.getContext('2d');
+    fitCanvas(sc);
+    var n = mobile ? Math.round(CFG.copos / 2) : CFG.copos;
+    for (var i = 0; i < n; i++) flakes.push(nuevoCopo(true));
+  }
+  function tickNieve(dt, t) {
+    sg.setTransform(dpr, 0, 0, dpr, 0, 0);
+    sg.clearRect(0, 0, W, H);
+    var wind = Math.sin(t * 0.23) * 16 + Math.sin(t * 0.61) * 7;
+    for (var i = 0; i < flakes.length; i++) {
+      var f = flakes[i];
+      f.y += f.vy * dt;
+      f.x += (wind * (0.4 + f.d * 0.6) + Math.sin(t * f.sw + f.ph) * 13) * dt;
+      f.rot += f.vr * dt;
+      var dx = f.x - mouse.x, dy = f.y - mouse.y, dd = Math.hypot(dx, dy);
+      if (dd < 95 && dd > 0) { var k = (1 - dd / 95) * 170 * dt; f.x += dx / dd * k; f.y += dy / dd * k; }
+      if (f.y > H + 12) { flakes[i] = f = nuevoCopo(false); }
+      if (f.x < -14) f.x = W + 12; else if (f.x > W + 14) f.x = -12;
+      // halo azulado para que se vea sobre fondo claro + centro blanco
+      sg.globalAlpha = f.a;
+      sg.fillStyle = 'rgba(112,152,214,.34)';
+      sg.beginPath(); sg.arc(f.x, f.y, f.r + 1, 0, 6.2832); sg.fill();
+      if (f.d > 0.8) {
+        sg.save(); sg.translate(f.x, f.y); sg.rotate(f.rot);
+        var L = f.r * 2.5;
+        sg.lineCap = 'round';
+        sg.strokeStyle = 'rgba(112,152,214,.45)'; sg.lineWidth = 3;
+        sg.beginPath(); for (var a = 0; a < 3; a++) { sg.moveTo(-L * Math.cos(a * 1.0472), -L * Math.sin(a * 1.0472)); sg.lineTo(L * Math.cos(a * 1.0472), L * Math.sin(a * 1.0472)); } sg.stroke();
+        sg.strokeStyle = '#fff'; sg.lineWidth = 1.3;
+        sg.beginPath(); for (var b = 0; b < 3; b++) { sg.moveTo(-L * Math.cos(b * 1.0472), -L * Math.sin(b * 1.0472)); sg.lineTo(L * Math.cos(b * 1.0472), L * Math.sin(b * 1.0472)); } sg.stroke();
+        sg.restore();
+      }
+      sg.fillStyle = '#fff';
+      sg.beginPath(); sg.arc(f.x, f.y, f.r, 0, 6.2832); sg.fill();
+    }
+    sg.globalAlpha = 1;
+  }
+
+  /* ---------- Trineo de Papá Noel con renos (dibujado por código) ---------- */
+  var fcv, fx, sleigh = null, nextSleigh = 7, spark = [], sparkT = 0;
+  function circ(g, x, y, r) { g.beginPath(); g.arc(x, y, r, 0, 6.2832); g.fill(); }
+  function reno(g, ph, nariz) {
+    var piel = '#7b4a2a';
+    g.lineCap = 'round'; g.lineJoin = 'round';
+    // patas (galope)
+    g.strokeStyle = piel; g.lineWidth = 2.3;
+    [[-9, 0], [-5, 0.9], [8, 3.1], [12, 4]].forEach(function (L) {
+      var a = Math.sin(ph + L[1]) * 0.75, y0 = 4;
+      g.beginPath(); g.moveTo(L[0], y0); g.lineTo(L[0] + Math.sin(a) * 9, y0 + Math.cos(a) * 9); g.stroke();
+    });
+    g.fillStyle = piel;
+    g.beginPath(); g.ellipse(0, 0, 14, 6.5, 0, 0, 6.2832); g.fill();           // cuerpo
+    g.beginPath(); g.moveTo(8, -3); g.lineTo(17, -13); g.lineTo(21.5, -9.5); g.lineTo(12.5, 3); g.closePath(); g.fill(); // cuello
+    g.beginPath(); g.ellipse(21.5, -12, 4.6, 3.4, 0.45, 0, 6.2832); g.fill();   // cabeza
+    g.beginPath(); g.ellipse(25.5, -10.2, 2.6, 2, 0.45, 0, 6.2832); g.fill();   // hocico
+    g.beginPath(); g.moveTo(18.5, -14.5); g.lineTo(17, -19); g.lineTo(21, -15.5); g.closePath(); g.fill(); // oreja
+    circ(g, -14.5, -2, 2.3);                                                      // cola
+    // astas
+    g.strokeStyle = '#e0cfa6'; g.lineWidth = 1.4;
+    g.beginPath(); g.moveTo(20.5, -15); g.lineTo(18, -23); g.moveTo(19.2, -19); g.lineTo(23, -22); g.moveTo(18.6, -21.4); g.lineTo(15, -23.5); g.stroke();
+    // nariz
+    if (nariz) {
+      var gr = g.createRadialGradient(27.4, -10, 0, 27.4, -10, 9);
+      gr.addColorStop(0, 'rgba(255,60,60,.9)'); gr.addColorStop(1, 'rgba(255,60,60,0)');
+      g.fillStyle = gr; circ(g, 27.4, -10, 9);
+      g.fillStyle = '#ff2a2a';
+    } else g.fillStyle = '#2b1a10';
+    circ(g, 27.4, -10, 1.6);
+    g.fillStyle = '#16100c'; circ(g, 22.4, -12.6, 0.8);                           // ojo
+  }
+  function trineo(g, ph) {
+    // riendas
+    g.strokeStyle = 'rgba(90,60,30,.8)'; g.lineWidth = 0.9;
+    g.beginPath(); g.moveTo(-50, -4); g.quadraticCurveTo(0, -8, 62, -8); g.stroke();
+    // renos (3, el de adelante con nariz roja)
+    [[-22, 0, false], [20, 1.1, false], [62, 2.3, true]].forEach(function (R) {
+      g.save(); g.translate(R[0], 6 + Math.sin(ph + R[1]) * 1.6); g.rotate(Math.sin(ph + R[1]) * 0.05); reno(g, ph * 1.0 + R[1], R[2]); g.restore();
+    });
+    g.save(); g.translate(-78, 0);
+    // patines dorados
+    g.strokeStyle = '#d4a72c'; g.lineWidth = 2.2; g.lineCap = 'round';
+    g.beginPath(); g.moveTo(-28, 13); g.lineTo(22, 13); g.quadraticCurveTo(33, 13, 33, 4); g.stroke();
+    g.lineWidth = 1.4; g.beginPath(); g.moveTo(-18, 13); g.lineTo(-18, 5); g.moveTo(8, 13); g.lineTo(8, 5); g.stroke();
+    // casco
+    g.fillStyle = '#c4262e';
+    g.beginPath(); g.moveTo(-28, -9); g.quadraticCurveTo(-31, 6, -18, 7); g.lineTo(24, 7); g.quadraticCurveTo(34, 7, 34, -5); g.lineTo(28, -5); g.quadraticCurveTo(26, 1, 18, 1); g.lineTo(-20, 1); g.quadraticCurveTo(-23, -4, -21, -9); g.closePath(); g.fill();
+    g.fillStyle = '#e8b93c'; g.fillRect(-18, 3, 40, 1.4);
+    // bolsa de regalos
+    g.fillStyle = '#2a8a4a'; circ(g, -13, -7, 8);
+    g.fillStyle = '#e8b93c'; g.fillRect(-14, -16, 2, 5);
+    // Papá Noel
+    g.fillStyle = '#d7262e'; circ(g, -1, -6, 6);
+    g.fillStyle = '#f2c9a0'; circ(g, -1, -14, 3.2);
+    g.fillStyle = '#fff'; g.beginPath(); g.ellipse(-0.5, -11.6, 3.4, 2.6, 0, 0, 6.2832); g.fill();
+    g.fillStyle = '#d7262e'; g.beginPath(); g.moveTo(-4.4, -15.4); g.lineTo(-3, -21); g.lineTo(2.6, -15.8); g.closePath(); g.fill();
+    g.fillStyle = '#fff'; circ(g, -3, -21.4, 1.5); g.fillRect(-4.6, -16.2, 7, 1.6);
+    g.restore();
+  }
+  function estrella(g, x, y, r) {
+    g.beginPath(); g.moveTo(x, y - r); g.lineTo(x + r * 0.28, y - r * 0.28); g.lineTo(x + r, y); g.lineTo(x + r * 0.28, y + r * 0.28);
+    g.lineTo(x, y + r); g.lineTo(x - r * 0.28, y + r * 0.28); g.lineTo(x - r, y); g.lineTo(x - r * 0.28, y - r * 0.28); g.closePath(); g.fill();
+  }
+  function lanzarTrineo() {
+    var dir = Math.random() < 0.5 ? 1 : -1;
+    sleigh = { dir: dir, t: 0, x0: dir > 0 ? -260 : W + 260, y0: rnd(H * 0.16, H * 0.32), sp: mobile ? 95 : 125, amp: rnd(14, 26), f: rnd(0.5, 0.8), p: rnd(0, 6.28), sc: mobile ? 0.7 : 1 };
+  }
+  function tickTrineo(dt) {
+    if (!sleigh && !spark.length) { nextSleigh -= dt; if (nextSleigh <= 0) { lanzarTrineo(); nextSleigh = rnd(26, 40); } return; }
+    fx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    fx.clearRect(0, 0, W, H);
+    if (sleigh) {
+      var s = sleigh;
+      s.t += dt;
+      var x = s.x0 + s.dir * s.sp * s.t;
+      var prog = clamp((x - (s.dir > 0 ? 0 : W)) * s.dir / W, 0, 1);
+      var y = s.y0 + Math.sin(s.t * s.f + s.p) * s.amp + Math.sin(prog * Math.PI) * H * 0.05;
+      var vy = Math.cos(s.t * s.f + s.p) * s.amp * s.f;
+      // chispas detrás del trineo
+      sparkT -= dt;
+      if (sparkT <= 0) {
+        sparkT = 0.035;
+        spark.push({ x: x - s.dir * s.sc * 108, y: y + 8 * s.sc + rnd(-4, 4), vx: -s.dir * rnd(8, 28), vy: rnd(6, 26), life: 0, max: rnd(0.9, 1.7), r: rnd(1.4, 3.2), c: ['#ffd54a', '#fff', '#ff8a7a'][(Math.random() * 3) | 0] });
+      }
+      fx.save();
+      fx.translate(x, y); fx.scale(s.dir * s.sc, s.sc); fx.rotate(Math.atan2(vy, s.sp) * 0.9);
+      trineo(fx, s.t * 9);
+      fx.restore();
+      if (x < -300 || x > W + 300) sleigh = null;
+    }
+    for (var i = spark.length - 1; i >= 0; i--) {
+      var p = spark[i];
+      p.life += dt; p.x += p.vx * dt; p.y += p.vy * dt;
+      if (p.life >= p.max) { spark.splice(i, 1); continue; }
+      var al = 1 - p.life / p.max;
+      fx.globalAlpha = al * 0.95;
+      fx.fillStyle = p.c;
+      estrella(fx, p.x, p.y, p.r * (0.6 + al * 0.6));
+    }
+    fx.globalAlpha = 1;
+    if (!sleigh && !spark.length) fx.clearRect(0, 0, W, H);
+  }
+
+  /* ---------- Montaje + loop único ---------- */
+  function montar() {
+    layer = el('div', 'nv-layer', document.body);
+    if (CFG.gorro) gorro();
+    if (CFG.luces) luces();
+    if (reduce) return;                       // sin movimiento: solo gorro, luces fijas y adornos CSS
+    prepararNieve();
+    if (CFG.trineo) { fcv = el('canvas', 'nv-flycv', layer); fx = fcv.getContext('2d'); fitCanvas(fcv); }
+    var last = performance.now(), t = 0;
+    (function loop(now) {
+      var dt = Math.min(0.05, (now - last) / 1000); last = now;
+      if (!document.hidden) {
+        t += dt;
+        tickNieve(dt, t);
+        if (CFG.trineo) tickTrineo(dt);
+      }
+      requestAnimationFrame(loop);
+    })(last);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', montar);
+  else montar();
+})();

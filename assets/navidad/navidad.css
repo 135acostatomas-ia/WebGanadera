@@ -1,0 +1,34 @@
+/* Capa Navidad 2026 — todo bajo .nv-on (se saca borrando assets/navidad/ y la línea <script> de cada HTML) */
+.nv-layer{position:fixed;inset:0;pointer-events:none;z-index:997;overflow:hidden}
+.nv-snow,.nv-flycv{position:absolute;inset:0}
+
+/* Guirnalda de luces colgando del header (SVG generado por código) */
+.nv-lights{position:absolute;left:0;top:100%;width:100%;height:46px;pointer-events:none;z-index:3;overflow:visible}
+.nv-lights{transition:opacity .35s ease}
+.nv-lights.nv-off{opacity:0}
+.nv-lights .nv-wire{fill:none;stroke:#1f4d33;stroke-width:1.5;stroke-linecap:round}
+.nv-lights .nv-sock{fill:#26332c}
+.nv-lights .nv-glow{animation:nv-twinkle 2.6s ease-in-out infinite}
+.nv-lights .nv-glow.b{animation-duration:3.1s}
+.nv-lights .nv-glow.c{animation-duration:2.1s}
+@keyframes nv-twinkle{0%,100%{opacity:1}50%{opacity:.25}}
+
+/* Gorro de Papá Noel sobre la G del logo */
+.nv-hat{--w:44px;position:absolute;width:calc(var(--w) * 1.05);height:auto;pointer-events:none;z-index:2;translate:-46% -78%;transform:rotate(-10deg);transform-origin:46% 82%;animation:nv-hat 3.6s ease-in-out infinite;filter:drop-shadow(0 2px 2px rgba(3,19,67,.28))}
+@keyframes nv-hat{0%,100%{rotate:0deg}50%{rotate:4deg}}
+
+/* Pestañas de Navidad en las etiquetas OFERTA: rayado "bastón de caramelo" */
+.nv-on .oferta-badge,.nv-on .carrusel-badge-oferta{background:repeating-linear-gradient(135deg,#d92b2f 0 6px,#a8181f 6px 12px);text-shadow:0 1px 0 rgba(0,0,0,.25)}
+
+/* Nieve sobre las tarjetas de producto */
+.nv-on .prod-card{position:relative}
+.nv-on .prod-card::before{content:"";position:absolute;left:0;right:0;top:0;height:9px;z-index:2;pointer-events:none;
+  background:radial-gradient(circle at 12px 0,#fff 0 7px,transparent 7.6px) 0 0/24px 9px repeat-x,radial-gradient(circle at 20px 0,#fff 0 5px,transparent 5.6px) 0 0/34px 8px repeat-x;
+  filter:drop-shadow(0 1px 0 rgba(110,150,210,.55))}
+
+/* Nieve "cayendo" desde el borde superior del footer */
+.nv-on .page-footer{position:relative}
+.nv-on .page-footer::before{content:"";position:absolute;left:0;right:0;top:0;height:20px;pointer-events:none;
+  background:linear-gradient(#fff,#fff) 0 0/100% 4px no-repeat,radial-gradient(circle at 16px 4px,#fff 0 12px,transparent 12.6px) 0 0/40px 20px repeat-x,radial-gradient(circle at 31px 4px,#fff 0 8px,transparent 8.6px) 0 0/58px 14px repeat-x}
+
+@media(prefers-reduced-motion:reduce){html:not(.nv-force-motion) .nv-hat,html:not(.nv-force-motion) .nv-lights .nv-glow{animation:none}}
