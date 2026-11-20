@@ -32,14 +32,6 @@
   var W = innerWidth, H = innerHeight;
   addEventListener('resize', function () { W = innerWidth; H = innerHeight; });
 
-  var mouse = { x: -9999, y: -9999 }, touchTimer;
-  addEventListener('pointermove', function (e) { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
-  addEventListener('pointerdown', function (e) { mouse.x = e.clientX; mouse.y = e.clientY; clearTimeout(touchTimer); }, { passive: true });
-  addEventListener('pointerup', function (e) {
-    if (e.pointerType !== 'mouse') touchTimer = setTimeout(function () { mouse.x = mouse.y = -9999; }, 900);
-  }, { passive: true });
-  document.addEventListener('mouseleave', function () { mouse.x = mouse.y = -9999; });
-
   function el(tag, cls, parent, txt) {
     var e = document.createElement(tag);
     if (cls) e.className = cls;
@@ -55,7 +47,7 @@
 
   var layer;
 
-  /* ---------- Guirnalda de luces colgando del header ---------- */
+  /* ---------- Guirnalda de pino con moños, bolas, bayas y luces (colgada del menú) ---------- */
   function luces() {
     var hdr = document.querySelector('.page-header');
     if (!hdr) return;
@@ -69,34 +61,72 @@
       var nav = document.querySelector('.main-nav');
       return nav && nav.offsetParent ? nav : hdr;
     }
+    // pseudo-azar con semilla: la guirnalda no cambia de forma al redimensionar
+    function prng(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+    function moño(x, y, s) {
+      var o = '<g transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ') scale(' + s + ')">';
+      o += '<path d="M-1 3 L-7 17 L-2.4 13.6 L-0.4 18.4 L1 4Z" fill="#a8181f"/><path d="M1 3 L7 17 L2.4 13.6 L0.4 18.4 L-1 4Z" fill="#c4202a"/>';
+      o += '<path d="M0 0 C-4 -7 -12 -6 -12 -1 C-12 4 -5 4 0 0Z" fill="#d7262e"/><path d="M0 0 C4 -7 12 -6 12 -1 C12 4 5 4 0 0Z" fill="#d7262e"/>';
+      o += '<path d="M-1 0 C-4 -4 -9 -4 -10 -1" fill="none" stroke="#f2656b" stroke-width="1" opacity=".7"/><path d="M1 0 C4 -4 9 -4 10 -1" fill="none" stroke="#f2656b" stroke-width="1" opacity=".7"/>';
+      o += '<circle cx="0" cy="0" r="3" fill="#a8181f"/><circle cx="-.7" cy="-.8" r="1" fill="#f2656b" opacity=".8"/></g>';
+      return o;
+    }
     function build() {
       var host = anfitrion();
       if (svg.parentNode !== host) host.appendChild(svg);
-      var w = host.clientWidth, h = 46, seg = mobile ? 74 : 104, n = Math.max(1, Math.round(w / seg)), sw = w / n, sag = mobile ? 9 : 12, k = mobile ? 3 : 4;
+      var w = host.clientWidth, h = 56, seg = mobile ? 92 : 128, n = Math.max(1, Math.round(w / seg)), sw = w / n, sag = mobile ? 10 : 14, k = 4;
       svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+      var R = prng(7);
       var html = '<defs>';
       COLORS.forEach(function (c, i) {
         html += '<radialGradient id="nvg' + i + '"><stop offset="0" stop-color="' + c + '" stop-opacity=".85"/><stop offset="1" stop-color="' + c + '" stop-opacity="0"/></radialGradient>';
       });
-      html += '</defs>';
-      var wire = 'M0 2', bulbs = '', idx = 0;
+      html += '<radialGradient id="nvbR" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#ff7a7f"/><stop offset=".55" stop-color="#d7262e"/><stop offset="1" stop-color="#8f1219"/></radialGradient>';
+      html += '<radialGradient id="nvbG" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#fff0a8"/><stop offset=".55" stop-color="#e2b13c"/><stop offset="1" stop-color="#8f6a14"/></radialGradient></defs>';
+      var base = '', needA = '', needB = '', needC = '', berries = '', balls = '', bulbs = '', bows = '', idx = 0;
       for (var i = 0; i < n; i++) {
         var x0 = i * sw, x1 = x0 + sw, cxm = (x0 + x1) / 2, cy = 2 + sag * 2;
-        wire += ' Q' + cxm.toFixed(1) + ' ' + cy + ' ' + x1.toFixed(1) + ' 2';
-        for (var j = 0; j < k; j++) {
-          var t = (j + 1) / (k + 1), u = 1 - t;
-          var x = u * u * x0 + 2 * u * t * cxm + t * t * x1;
-          var y = u * u * 2 + 2 * u * t * cy + t * t * 2;
-          var c = COLORS[idx % COLORS.length], cls = ['a', 'b', 'c'][idx % 3];
-          var delay = -((idx * 0.41) % 3).toFixed(2);
-          bulbs += '<g><circle class="nv-glow ' + cls + '" style="animation-delay:' + delay + 's" cx="' + x.toFixed(1) + '" cy="' + (y + 8).toFixed(1) + '" r="11" fill="url(#nvg' + (idx % COLORS.length) + ')"/>' +
-            '<rect class="nv-sock" x="' + (x - 1.8).toFixed(1) + '" y="' + (y + 0.5).toFixed(1) + '" width="3.6" height="3.4" rx="1"/>' +
-            '<ellipse cx="' + x.toFixed(1) + '" cy="' + (y + 8).toFixed(1) + '" rx="3.1" ry="4.6" fill="' + c + '"/>' +
-            '<ellipse cx="' + (x - 1).toFixed(1) + '" cy="' + (y + 6.4).toFixed(1) + '" rx="0.9" ry="1.5" fill="#fff" opacity=".55"/></g>';
-          idx++;
+        base += (i === 0 ? 'M' + x0.toFixed(1) + ' 2' : '') + ' Q' + cxm.toFixed(1) + ' ' + cy + ' ' + x1.toFixed(1) + ' 2';
+        var pt = function (t) {
+          var u = 1 - t;
+          return { x: u * u * x0 + 2 * u * t * cxm + t * t * x1, y: u * u * 2 + 2 * u * t * cy + t * t * 2,
+            tx: 2 * u * (cxm - x0) + 2 * t * (x1 - cxm), ty: 2 * u * (cy - 2) + 2 * t * (2 - cy) };
+        };
+        // agujas de pino a lo largo de la curva
+        var steps = Math.round(sw / 2.6);
+        for (var s = 0; s <= steps; s++) {
+          var p = pt(s / steps), a0 = Math.atan2(p.ty, p.tx);
+          for (var q = 0; q < 3; q++) {
+            var side = R() < 0.5 ? -1 : 1, ang = a0 + side * (0.5 + R() * 0.95), len = 4.5 + R() * 5;
+            var seg1 = 'M' + p.x.toFixed(1) + ' ' + p.y.toFixed(1) + 'l' + (Math.cos(ang) * len).toFixed(1) + ' ' + (Math.sin(ang) * len).toFixed(1);
+            var r = R();
+            if (r < 0.45) needA += seg1; else if (r < 0.85) needB += seg1; else needC += seg1;
+          }
         }
+        // bayas rojas, bola (alterna roja/dorada) y luces
+        [0.27, 0.73].forEach(function (t) {
+          var b = pt(t);
+          berries += '<circle cx="' + (b.x - 2.2).toFixed(1) + '" cy="' + (b.y + 0.5).toFixed(1) + '" r="2.1" fill="#d7262e"/><circle cx="' + (b.x + 1.8).toFixed(1) + '" cy="' + (b.y - 1.4).toFixed(1) + '" r="2.1" fill="#d7262e"/><circle cx="' + (b.x + 0.4).toFixed(1) + '" cy="' + (b.y + 2.4).toFixed(1) + '" r="2.1" fill="#b51a23"/>';
+        });
+        var m = pt(0.5), gold = i % 2 === 1;
+        balls += '<rect x="' + (m.x - 1.4).toFixed(1) + '" y="' + (m.y - 1).toFixed(1) + '" width="2.8" height="3" fill="#caa24a"/><circle cx="' + m.x.toFixed(1) + '" cy="' + (m.y + 6).toFixed(1) + '" r="5.6" fill="url(#' + (gold ? 'nvbG' : 'nvbR') + ')"/><circle cx="' + (m.x - 1.8).toFixed(1) + '" cy="' + (m.y + 4).toFixed(1) + '" r="1.5" fill="#fff" opacity=".6"/>';
+        [0.125, 0.375, 0.625, 0.875].forEach(function (t) {
+          var b = pt(t), c = COLORS[idx % COLORS.length], cls = ['a', 'b', 'c'][idx % 3], delay = -((idx * 0.41) % 3).toFixed(2);
+          bulbs += '<g><circle class="nv-glow ' + cls + '" style="animation-delay:' + delay + 's" cx="' + b.x.toFixed(1) + '" cy="' + (b.y + 13).toFixed(1) + '" r="11" fill="url(#nvg' + (idx % COLORS.length) + ')"/>' +
+            '<rect class="nv-sock" x="' + (b.x - 1.8).toFixed(1) + '" y="' + (b.y + 4).toFixed(1) + '" width="3.6" height="3.4" rx="1"/>' +
+            '<ellipse cx="' + b.x.toFixed(1) + '" cy="' + (b.y + 12).toFixed(1) + '" rx="3.1" ry="4.6" fill="' + c + '"/>' +
+            '<ellipse cx="' + (b.x - 1).toFixed(1) + '" cy="' + (b.y + 10.4).toFixed(1) + '" rx="0.9" ry="1.5" fill="#fff" opacity=".55"/></g>';
+          idx++;
+        });
       }
-      svg.innerHTML = html + '<path class="nv-wire" d="' + wire + '"/>' + bulbs;
+      // un moño en cada punto de enganche (también en los bordes), parejo y simétrico
+      for (var j = 0; j <= n; j++) bows += moño(j * sw, 3, mobile ? 0.8 : 1);
+      svg.innerHTML = html +
+        '<path d="' + base + '" fill="none" stroke="#16482a" stroke-width="9" stroke-linecap="round"/>' +
+        '<path d="' + needA + '" stroke="#1f6b3d" stroke-width="1.6" stroke-linecap="round" fill="none"/>' +
+        '<path d="' + needB + '" stroke="#2f8a50" stroke-width="1.5" stroke-linecap="round" fill="none"/>' +
+        '<path d="' + needC + '" stroke="#5fb77a" stroke-width="1.3" stroke-linecap="round" fill="none"/>' +
+        berries + balls + bulbs + bows;
     }
     build();
     var timer;
@@ -107,6 +137,15 @@
       if (tick) return; tick = true;
       requestAnimationFrame(function () { tick = false; svg.classList.toggle('nv-off', (window.scrollY || pageYOffset) > 90); });
     }, { passive: true });
+  }
+
+  /* ---------- Bastones de caramelo flanqueando los títulos de sección ---------- */
+  function bastones() {
+    var t = document.querySelectorAll('.sec-title:not(.sec-title-frase) h2, .carrusel-header h2');
+    for (var i = 0; i < t.length; i++) {
+      t[i].insertBefore(el('span', 'nv-cane', null), t[i].firstChild);
+      t[i].appendChild(el('span', 'nv-cane nv-cane-r', null));
+    }
   }
 
   /* ---------- Gorro de Papá Noel sobre la G del logo ---------- */
@@ -128,27 +167,67 @@
     // la "G" ocupa ~4%–15% del ancho de la imagen y arranca al 8% de su alto
     var fit = function () {
       var r = txt.getBoundingClientRect(), br = box.getBoundingClientRect();
-      var w = (r.height || 44) * (innerWidth < 700 ? 0.82 : 1);
+      var w = (r.height || 44) * (innerWidth < 700 ? 0.9 : 1);
       hat.style.setProperty('--w', w + 'px');
-      hat.style.left = (r.left - br.left + r.width * 0.095) + 'px';
-      // que la punta del gorro no se salga por arriba de la pantalla
-      hat.style.top = Math.max(r.top - br.top - r.height * 0.08, w * 0.72 + 1 - br.top) + 'px';
+      hat.style.left = (r.left - br.left + r.width * 0.085) + 'px';
+      // el borde de piel del gorro apoya justo sobre la G (apenas la roza); la punta no se sale por arriba de la pantalla
+      var alto = w * 0.8 * 0.86;
+      hat.style.top = Math.max(r.top - br.top + r.height * 0.11, alto * 0.92 + 1 - br.top) + 'px';
     };
     fit(); addEventListener('resize', fit); addEventListener('load', fit); link.addEventListener('load', fit);
     if (!txt.complete) txt.addEventListener('load', fit);
   }
 
-  /* ---------- Nieve (con parallax, viento y esquive del cursor) ---------- */
-  var flakes = [], sc, sg;
+  /* ---------- Nieve: cristales de seis puntas (sprites) + puntitos lejanos, con parallax y viento ---------- */
+  var flakes = [], sc, sg, sprites = [];
+  // Dibuja un cristal: 6 brazos con ramas, contorno azulado para que se vea sobre fondo claro y trazo blanco encima
+  function dibujarCristal(g, R, tipo) {
+    function brazos(ancho, color) {
+      g.strokeStyle = color; g.lineWidth = ancho; g.lineCap = 'round'; g.lineJoin = 'round';
+      for (var a = 0; a < 6; a++) {
+        g.save(); g.rotate(a * Math.PI / 3);
+        g.beginPath(); g.moveTo(0, 0); g.lineTo(R, 0);
+        if (tipo === 0) {            // dendrita: dos pares de ramas
+          g.moveTo(R * 0.42, 0); g.lineTo(R * 0.42 + R * 0.26, R * 0.26); g.moveTo(R * 0.42, 0); g.lineTo(R * 0.42 + R * 0.26, -R * 0.26);
+          g.moveTo(R * 0.68, 0); g.lineTo(R * 0.68 + R * 0.2, R * 0.2); g.moveTo(R * 0.68, 0); g.lineTo(R * 0.68 + R * 0.2, -R * 0.2);
+        } else if (tipo === 1) {     // brazo con horquilla en la punta
+          g.moveTo(R * 0.55, 0); g.lineTo(R * 0.8, R * 0.3); g.moveTo(R * 0.55, 0); g.lineTo(R * 0.8, -R * 0.3);
+          g.moveTo(R * 0.3, 0); g.lineTo(R * 0.42, R * 0.17); g.moveTo(R * 0.3, 0); g.lineTo(R * 0.42, -R * 0.17);
+        } else {                     // estrella simple con ramas cortas
+          g.moveTo(R * 0.5, 0); g.lineTo(R * 0.72, R * 0.22); g.moveTo(R * 0.5, 0); g.lineTo(R * 0.72, -R * 0.22);
+        }
+        g.stroke(); g.restore();
+      }
+      if (tipo !== 2) {              // hexágono central
+        g.beginPath();
+        for (var v = 0; v < 6; v++) { var an = v * Math.PI / 3 + Math.PI / 6; g.lineTo(Math.cos(an) * R * 0.2, Math.sin(an) * R * 0.2); }
+        g.closePath(); g.stroke();
+      }
+    }
+    brazos(R * 0.34, 'rgba(112,152,214,.55)');
+    brazos(R * 0.15, '#ffffff');
+  }
+  function prepararSprites() {
+    var R = 15, size = Math.ceil((R + 4) * 2 * dpr);
+    for (var t = 0; t < 3; t++) {
+      var c = document.createElement('canvas');
+      c.width = c.height = size;
+      var g = c.getContext('2d');
+      g.translate(size / 2, size / 2); g.scale(dpr, dpr);
+      dibujarCristal(g, R, t);
+      sprites.push({ c: c, r: R + 4 });
+    }
+  }
   function nuevoCopo(inicio) {
-    var d = rnd(0.25, 1);
-    return { x: rnd(0, W), y: inicio ? rnd(0, H) : rnd(-30, -4), d: d, r: 1 + d * 2.5, vy: 20 + d * 46, ph: rnd(0, 6.28), sw: rnd(0.6, 1.4),
-      a: 0.55 + d * 0.45, rot: rnd(0, 6.28), vr: rnd(-0.9, 0.9) };
+    var d = rnd(0.2, 1);
+    return { x: rnd(0, W), y: inicio ? rnd(0, H) : rnd(-30, -4), d: d, r: 1 + d * 1.5, vy: 20 + d * 46, ph: rnd(0, 6.28), sw: rnd(0.6, 1.4),
+      a: 0.5 + d * 0.5, rot: rnd(0, 6.28), vr: rnd(-0.7, 0.7), cristal: d > 0.68, tipo: (Math.random() * 3) | 0, size: 11 + d * 13 };
   }
   function prepararNieve() {
     sc = el('canvas', 'nv-snow', layer);
     sg = sc.getContext('2d');
     fitCanvas(sc);
+    prepararSprites();
     var n = mobile ? Math.round(CFG.copos / 2) : CFG.copos;
     for (var i = 0; i < n; i++) flakes.push(nuevoCopo(true));
   }
@@ -161,26 +240,20 @@
       f.y += f.vy * dt;
       f.x += (wind * (0.4 + f.d * 0.6) + Math.sin(t * f.sw + f.ph) * 13) * dt;
       f.rot += f.vr * dt;
-      var dx = f.x - mouse.x, dy = f.y - mouse.y, dd = Math.hypot(dx, dy);
-      if (dd < 95 && dd > 0) { var k = (1 - dd / 95) * 170 * dt; f.x += dx / dd * k; f.y += dy / dd * k; }
-      if (f.y > H + 12) { flakes[i] = f = nuevoCopo(false); }
-      if (f.x < -14) f.x = W + 12; else if (f.x > W + 14) f.x = -12;
-      // halo azulado para que se vea sobre fondo claro + centro blanco
+      if (f.y > H + 20) { flakes[i] = f = nuevoCopo(false); }
+      if (f.x < -24) f.x = W + 20; else if (f.x > W + 24) f.x = -20;
       sg.globalAlpha = f.a;
-      sg.fillStyle = 'rgba(112,152,214,.34)';
-      sg.beginPath(); sg.arc(f.x, f.y, f.r + 1, 0, 6.2832); sg.fill();
-      if (f.d > 0.8) {
-        sg.save(); sg.translate(f.x, f.y); sg.rotate(f.rot);
-        var L = f.r * 2.5;
-        sg.lineCap = 'round';
-        sg.strokeStyle = 'rgba(112,152,214,.45)'; sg.lineWidth = 3;
-        sg.beginPath(); for (var a = 0; a < 3; a++) { sg.moveTo(-L * Math.cos(a * 1.0472), -L * Math.sin(a * 1.0472)); sg.lineTo(L * Math.cos(a * 1.0472), L * Math.sin(a * 1.0472)); } sg.stroke();
-        sg.strokeStyle = '#fff'; sg.lineWidth = 1.3;
-        sg.beginPath(); for (var b = 0; b < 3; b++) { sg.moveTo(-L * Math.cos(b * 1.0472), -L * Math.sin(b * 1.0472)); sg.lineTo(L * Math.cos(b * 1.0472), L * Math.sin(b * 1.0472)); } sg.stroke();
+      if (f.cristal) {
+        var sp = sprites[f.tipo], s = f.size / (sp.r * 2);
+        sg.save(); sg.translate(f.x, f.y); sg.rotate(f.rot); sg.scale(s, s);
+        sg.drawImage(sp.c, -sp.r, -sp.r, sp.r * 2, sp.r * 2);
         sg.restore();
+      } else {
+        sg.fillStyle = 'rgba(112,152,214,.34)';
+        sg.beginPath(); sg.arc(f.x, f.y, f.r + 0.9, 0, 6.2832); sg.fill();
+        sg.fillStyle = '#fff';
+        sg.beginPath(); sg.arc(f.x, f.y, f.r, 0, 6.2832); sg.fill();
       }
-      sg.fillStyle = '#fff';
-      sg.beginPath(); sg.arc(f.x, f.y, f.r, 0, 6.2832); sg.fill();
     }
     sg.globalAlpha = 1;
   }
@@ -294,6 +367,7 @@
     layer = el('div', 'nv-layer', document.body);
     if (CFG.gorro) gorro();
     if (CFG.luces) luces();
+    bastones();
     if (reduce) return;                       // sin movimiento: solo gorro, luces fijas y adornos CSS
     prepararNieve();
     if (CFG.trineo) { fcv = el('canvas', 'nv-flycv', layer); fx = fcv.getContext('2d'); fitCanvas(fcv); }
