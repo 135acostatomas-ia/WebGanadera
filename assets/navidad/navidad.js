@@ -362,44 +362,21 @@
     if (!sleigh && !spark.length) fx.clearRect(0, 0, W, H);
   }
 
-  /* ---------- Papá Noel en el carrito: se asoma sobre el borde del encabezado del panel + gorritos en los íconos ---------- */
-  var SANTA_SVG = '<svg viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg">' +
-    '<g class="nv-sway">' +
-    '<path d="M21.5 24C21.5 10 31 3 43 5C51 6.6 56.5 12 60.5 19L55 25Z" fill="#d7262e"/>' +
-    '<path d="M21.5 24C21.5 10 31 3 43 5C36 11 33 18 34 25Z" fill="#b51a23" opacity=".5"/>' +
-    '<ellipse cx="37" cy="37" rx="15" ry="13" fill="#f6cfae"/>' +
-    '<circle cx="27.5" cy="38.5" r="3.2" fill="#f08a8a" opacity=".55"/><circle cx="46.5" cy="38.5" r="3.2" fill="#f08a8a" opacity=".55"/>' +
-    '<path d="M21.5 38C19 49 27 58 37 58C47 58 55 49 52.5 38C48 45.5 44 46 37 46C30 46 26 45.5 21.5 38Z" fill="#fff" stroke="#d7e0ef" stroke-width="1.2" stroke-linejoin="round"/>' +
-    '<ellipse cx="31.5" cy="43.5" rx="6.2" ry="3.8" fill="#fff" stroke="#d7e0ef" stroke-width="1"/><ellipse cx="42.5" cy="43.5" rx="6.2" ry="3.8" fill="#fff" stroke="#d7e0ef" stroke-width="1"/>' +
-    '<circle cx="37" cy="38.5" r="3.3" fill="#ee9a8c"/>' +
-    '<ellipse class="nv-eye" cx="31" cy="34" rx="1.7" ry="2.2" fill="#23233a"/><ellipse class="nv-eye" cx="43" cy="34" rx="1.7" ry="2.2" fill="#23233a"/>' +
-    '<path d="M27.6 30.4Q31 28.4 34 30.2M40 30.2Q43 28.4 46.4 30.4" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>' +
-    '<rect x="19" y="18" width="36" height="9" rx="4.5" fill="#fff" stroke="#d7e0ef" stroke-width="1.2"/>' +
-    '<circle cx="60.5" cy="20.5" r="5.5" fill="#fff" stroke="#d7e0ef" stroke-width="1.2"/>' +
-    '</g>' +
-    // manoplas agarradas del borde
-    '<rect x="4" y="53" width="13" height="5" fill="#d7262e"/><rect x="3" y="44" width="15" height="11" rx="5.5" fill="#fff" stroke="#d7e0ef" stroke-width="1.2"/><path d="M8 45.5V50M12.6 45.5V50" stroke="#d7e0ef" stroke-width="1.1" stroke-linecap="round"/>' +
-    '<rect x="57" y="53" width="13" height="5" fill="#d7262e"/><rect x="56" y="44" width="15" height="11" rx="5.5" fill="#fff" stroke="#d7e0ef" stroke-width="1.2"/><path d="M61.4 45.5V50M66 45.5V50" stroke="#d7e0ef" stroke-width="1.1" stroke-linecap="round"/>' +
-    '</svg>';
+  /* ---------- Carrito: trineo en lugar del carrito + Papá Noel que saluda desde el panel "Tu pedido" ---------- */
+  var SANTA_SVG = "<svg viewBox=\"0 0 110 72\" xmlns=\"http://www.w3.org/2000/svg\"><defs><linearGradient id=\"nvCoat\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#e8434a\"/><stop offset=\"1\" stop-color=\"#b3202a\"/></linearGradient><linearGradient id=\"nvHat\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#ef4a50\"/><stop offset=\".6\" stop-color=\"#d12a33\"/><stop offset=\"1\" stop-color=\"#a81c26\"/></linearGradient><linearGradient id=\"nvSkin\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#ffe3c8\"/><stop offset=\"1\" stop-color=\"#f1b78c\"/></linearGradient><radialGradient id=\"nvCheek\"><stop offset=\"0\" stop-color=\"#ff7f7f\" stop-opacity=\".7\"/><stop offset=\"1\" stop-color=\"#ff7f7f\" stop-opacity=\"0\"/></radialGradient><g id=\"nvBeard\"><path d=\"M32.5 42C26.5 54 30.5 68 41 71C44 73 50 73 53 71C63.5 68 67.5 54 61.5 42C58 48.5 54 52.6 47 52.6C40 52.6 36 48.5 32.5 42Z\"/><circle cx=\"36\" cy=\"60\" r=\"6\"/><circle cx=\"40.5\" cy=\"67\" r=\"6\"/><circle cx=\"47\" cy=\"69.5\" r=\"6\"/><circle cx=\"53.5\" cy=\"67\" r=\"6\"/><circle cx=\"58\" cy=\"60\" r=\"6\"/></g><g id=\"nvStache\"><path d=\"M47 44.4C43 42 36 42.4 34.5 47C33.6 50 36.2 52 39.6 51.4C42.8 50.8 45.4 49 47 47C48.6 49 51.2 50.8 54.4 51.4C57.8 52 60.4 50 59.5 47C58 42.4 51 42 47 44.4Z\"/></g><g id=\"nvBand\"><rect x=\"25\" y=\"21.5\" width=\"44\" height=\"11\" rx=\"5.5\"/><circle cx=\"29.5\" cy=\"27\" r=\"5.5\"/><circle cx=\"64.5\" cy=\"27\" r=\"5.5\"/></g><g id=\"nvHand\"><rect x=\"7.4\" y=\"25\" width=\"11.4\" height=\"12.6\" rx=\"5.2\"/><path d=\"M9.4 27L8.4 20.6M12.4 26L12 19M15.4 26L15.8 19M17.8 27.4L19 21.4M7.6 32L3.6 28.8\" fill=\"none\" stroke-linecap=\"round\"/></g></defs><!-- traje --><path d=\"M20 72C20 59 29 53 46 53H50C65 53 74 59 74 72Z\" fill=\"url(#nvCoat)\"/><path d=\"M21 66C27 61 36 62 39 72H21Z\" fill=\"#a51a24\" opacity=\".35\"/><rect x=\"21\" y=\"66\" width=\"53\" height=\"6\" fill=\"#2a2430\"/><rect x=\"40.5\" y=\"64.6\" width=\"13\" height=\"9\" rx=\"1.8\" fill=\"#e8b93c\"/><rect x=\"43.6\" y=\"66.8\" width=\"6.8\" height=\"4.6\" rx=\"1\" fill=\"#2a2430\"/><g class=\"nv-sway\"><!-- gorro --><path d=\"M31 26C30 11 40 3 52 4C63 5 69 14 66 26Z\" fill=\"url(#nvHat)\"/><path d=\"M58 6C68 4 80 10 83 23C83.6 27 80.4 28 78.4 25C76 17 70 14 61 15Z\" fill=\"url(#nvHat)\"/><path d=\"M32 24C32 13 40 6 50 5.6C42 10 38 17 38 26Z\" fill=\"#fff\" opacity=\".14\"/><circle cx=\"81.6\" cy=\"27\" r=\"6\" fill=\"#fff\" stroke=\"#d2dbed\" stroke-width=\"1.1\"/><!-- cara --><ellipse cx=\"47\" cy=\"39.5\" rx=\"16\" ry=\"14\" fill=\"url(#nvSkin)\"/><circle cx=\"36.5\" cy=\"42.5\" r=\"5.5\" fill=\"url(#nvCheek)\"/><circle cx=\"57.5\" cy=\"42.5\" r=\"5.5\" fill=\"url(#nvCheek)\"/><!-- barba --><use href=\"#nvBeard\" fill=\"#fff\" stroke=\"#d2dbed\" stroke-width=\"2.4\" stroke-linejoin=\"round\"/><use href=\"#nvBeard\" fill=\"#fff\"/><path d=\"M39 58Q41 62 40 66M47 59V67M55 58Q53 62 54 66\" fill=\"none\" stroke=\"#e1e8f4\" stroke-width=\"1.1\" stroke-linecap=\"round\"/><!-- boca --><path d=\"M42.4 52.6Q47 59 51.6 52.6Z\" fill=\"#b02432\"/><path d=\"M44.6 55.4Q47 57 49.4 55.4Q47 54.4 44.6 55.4Z\" fill=\"#e46a74\"/><!-- bigote --><use href=\"#nvStache\" fill=\"#fff\" stroke=\"#d2dbed\" stroke-width=\"2\" stroke-linejoin=\"round\"/><use href=\"#nvStache\" fill=\"#fff\"/><!-- nariz, ojos, cejas --><ellipse cx=\"47\" cy=\"43.6\" rx=\"3.6\" ry=\"3.1\" fill=\"#f0a08e\"/><ellipse cx=\"46\" cy=\"42.7\" rx=\"1.1\" ry=\".8\" fill=\"#fff\" opacity=\".6\"/><path class=\"nv-eye\" d=\"M37.8 40Q41 36.6 44.2 40\" fill=\"none\" stroke=\"#2b2230\" stroke-width=\"1.9\" stroke-linecap=\"round\"/><path class=\"nv-eye\" d=\"M49.8 40Q53 36.6 56.2 40\" fill=\"none\" stroke=\"#2b2230\" stroke-width=\"1.9\" stroke-linecap=\"round\"/><path d=\"M36.4 35.8Q41 32.8 45.2 35.4M48.8 35.4Q53 32.8 57.6 35.8\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\"/><!-- piel del gorro --><use href=\"#nvBand\" fill=\"#fff\" stroke=\"#d2dbed\" stroke-width=\"2.2\" stroke-linejoin=\"round\"/><use href=\"#nvBand\" fill=\"#fff\"/></g><!-- brazo derecho apoyado en el borde --><path d=\"M71 63C77 63 83 66 87 70\" fill=\"none\" stroke=\"#c4262e\" stroke-width=\"9.2\" stroke-linecap=\"round\"/><rect x=\"83\" y=\"63.5\" width=\"14\" height=\"12\" rx=\"6\" fill=\"#fff\" stroke=\"#d2dbed\" stroke-width=\"1.2\"/><path d=\"M87.6 65V70M92.2 65V70\" stroke=\"#d2dbed\" stroke-width=\"1.1\" stroke-linecap=\"round\"/><!-- brazo izquierdo: saluda --><path d=\"M27 63C21 62 16.5 58 15 52\" fill=\"none\" stroke=\"#c4262e\" stroke-width=\"9.2\" stroke-linecap=\"round\"/><g class=\"nv-wave\"><path d=\"M15 52L12.6 37\" fill=\"none\" stroke=\"#c4262e\" stroke-width=\"9.2\" stroke-linecap=\"round\"/><rect x=\"7.2\" y=\"36.6\" width=\"11.2\" height=\"5.4\" rx=\"2.7\" fill=\"#fff\" stroke=\"#d2dbed\" stroke-width=\"1\"/><use href=\"#nvHand\" fill=\"none\" stroke=\"#d2dbed\" stroke-width=\"4.8\"/><use href=\"#nvHand\" fill=\"#fff\" stroke=\"#fff\" stroke-width=\"3.1\"/><rect x=\"7.4\" y=\"25\" width=\"11.4\" height=\"12.6\" rx=\"5.2\" fill=\"#fff\"/></g></svg>";
+  var SLEIGH_SVG = '<path d="M2.5 20H16.5c3 0 4.8-1.8 4.8-4.6"/><path d="M4 7c.2 5 2.4 7.8 6.6 7.8H19.2c1.6 0 2.4-1.3 2.2-3.4"/><path d="M8 15v5M15.6 15v5"/><path d="M9.4 12.6C8.6 9.2 10 7.4 12.4 7.4S16.2 9.2 15.4 12.6z" fill="currentColor" stroke-width="1.4"/><path d="M10.9 6.2h3" stroke-width="1.6"/>';
   function carrito() {
-    // Papá Noel en el panel "Tu pedido"
+    // el ícono del carrito (header en desktop y botón flotante en mobile) pasa a ser el trineo de Papá Noel
+    ['.header-cart-icon svg', '.carrito-float > svg'].forEach(function (sel) {
+      var ic = document.querySelector(sel);
+      if (ic) ic.innerHTML = SLEIGH_SVG;
+    });
+    // Papá Noel asomado sobre el borde del encabezado del panel: saluda al abrirlo
     var cab = document.querySelector('.carrito-header');
     if (cab) {
       var box = el('span', 'nv-santa', cab);
       box.innerHTML = SANTA_SVG;
-      var bub = el('span', 'nv-bubble', cab, '¡Jo, jo, jo!');
     }
-    // gorritos de Papá Noel sobre los íconos del carrito (header en desktop, botón flotante en mobile)
-    [['.header-cart-icon', 'nv-chat'], ['.carrito-float', 'nv-chat nv-chat-float']].forEach(function (c) {
-      var host = document.querySelector(c[0]);
-      if (!host) return;
-      var w = document.createElement('span');
-      w.innerHTML = HAT_SVG;
-      var h = w.firstChild;
-      h.setAttribute('class', c[1]);
-      h.setAttribute('aria-hidden', 'true');
-      host.appendChild(h);
-    });
   }
 
   /* ---------- Montaje + loop único ---------- */
