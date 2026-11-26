@@ -362,12 +362,53 @@
     if (!sleigh && !spark.length) fx.clearRect(0, 0, W, H);
   }
 
+  /* ---------- Papá Noel en el carrito: se asoma sobre el borde del encabezado del panel + gorritos en los íconos ---------- */
+  var SANTA_SVG = '<svg viewBox="0 0 74 58" xmlns="http://www.w3.org/2000/svg">' +
+    '<g class="nv-sway">' +
+    '<path d="M21.5 24C21.5 10 31 3 43 5C51 6.6 56.5 12 60.5 19L55 25Z" fill="#d7262e"/>' +
+    '<path d="M21.5 24C21.5 10 31 3 43 5C36 11 33 18 34 25Z" fill="#b51a23" opacity=".5"/>' +
+    '<ellipse cx="37" cy="37" rx="15" ry="13" fill="#f6cfae"/>' +
+    '<circle cx="27.5" cy="38.5" r="3.2" fill="#f08a8a" opacity=".55"/><circle cx="46.5" cy="38.5" r="3.2" fill="#f08a8a" opacity=".55"/>' +
+    '<path d="M21.5 38C19 49 27 58 37 58C47 58 55 49 52.5 38C48 45.5 44 46 37 46C30 46 26 45.5 21.5 38Z" fill="#fff" stroke="#d7e0ef" stroke-width="1.2" stroke-linejoin="round"/>' +
+    '<ellipse cx="31.5" cy="43.5" rx="6.2" ry="3.8" fill="#fff" stroke="#d7e0ef" stroke-width="1"/><ellipse cx="42.5" cy="43.5" rx="6.2" ry="3.8" fill="#fff" stroke="#d7e0ef" stroke-width="1"/>' +
+    '<circle cx="37" cy="38.5" r="3.3" fill="#ee9a8c"/>' +
+    '<ellipse class="nv-eye" cx="31" cy="34" rx="1.7" ry="2.2" fill="#23233a"/><ellipse class="nv-eye" cx="43" cy="34" rx="1.7" ry="2.2" fill="#23233a"/>' +
+    '<path d="M27.6 30.4Q31 28.4 34 30.2M40 30.2Q43 28.4 46.4 30.4" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>' +
+    '<rect x="19" y="18" width="36" height="9" rx="4.5" fill="#fff" stroke="#d7e0ef" stroke-width="1.2"/>' +
+    '<circle cx="60.5" cy="20.5" r="5.5" fill="#fff" stroke="#d7e0ef" stroke-width="1.2"/>' +
+    '</g>' +
+    // manoplas agarradas del borde
+    '<rect x="4" y="53" width="13" height="5" fill="#d7262e"/><rect x="3" y="44" width="15" height="11" rx="5.5" fill="#fff" stroke="#d7e0ef" stroke-width="1.2"/><path d="M8 45.5V50M12.6 45.5V50" stroke="#d7e0ef" stroke-width="1.1" stroke-linecap="round"/>' +
+    '<rect x="57" y="53" width="13" height="5" fill="#d7262e"/><rect x="56" y="44" width="15" height="11" rx="5.5" fill="#fff" stroke="#d7e0ef" stroke-width="1.2"/><path d="M61.4 45.5V50M66 45.5V50" stroke="#d7e0ef" stroke-width="1.1" stroke-linecap="round"/>' +
+    '</svg>';
+  function carrito() {
+    // Papá Noel en el panel "Tu pedido"
+    var cab = document.querySelector('.carrito-header');
+    if (cab) {
+      var box = el('span', 'nv-santa', cab);
+      box.innerHTML = SANTA_SVG;
+      var bub = el('span', 'nv-bubble', cab, '¡Jo, jo, jo!');
+    }
+    // gorritos de Papá Noel sobre los íconos del carrito (header en desktop, botón flotante en mobile)
+    [['.header-cart-icon', 'nv-chat'], ['.carrito-float', 'nv-chat nv-chat-float']].forEach(function (c) {
+      var host = document.querySelector(c[0]);
+      if (!host) return;
+      var w = document.createElement('span');
+      w.innerHTML = HAT_SVG;
+      var h = w.firstChild;
+      h.setAttribute('class', c[1]);
+      h.setAttribute('aria-hidden', 'true');
+      host.appendChild(h);
+    });
+  }
+
   /* ---------- Montaje + loop único ---------- */
   function montar() {
     layer = el('div', 'nv-layer', document.body);
     if (CFG.gorro) gorro();
     if (CFG.luces) luces();
     bastones();
+    carrito();
     if (reduce) return;                       // sin movimiento: solo gorro, luces fijas y adornos CSS
     prepararNieve();
     if (CFG.trineo) { fcv = el('canvas', 'nv-flycv', layer); fx = fcv.getContext('2d'); fitCanvas(fcv); }

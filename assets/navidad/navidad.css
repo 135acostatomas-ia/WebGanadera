@@ -37,4 +37,28 @@
 .nv-cane-r{transform:scaleX(-1)}
 @media(max-width:700px){.nv-cane{margin:0 .3em}}
 
+
+/* Papá Noel asomándose sobre el borde del encabezado del carrito ("Tu pedido") */
+.nv-on .carrito-header{position:relative}
+.nv-santa{position:absolute;right:66px;bottom:0;width:74px;height:58px;overflow:hidden;pointer-events:none}
+.nv-santa svg{display:block;width:100%;height:100%;transform:translateY(104%)}
+.nv-santa .nv-sway{transform-origin:37px 56px}
+.nv-santa .nv-eye{transform-box:fill-box;transform-origin:center}
+.nv-on .carrito-drawer.open .nv-santa svg{animation:nv-pop .7s .3s cubic-bezier(.2,1.35,.4,1) forwards}
+.nv-on .carrito-drawer.open .nv-santa .nv-sway{animation:nv-sway 4s 1.1s ease-in-out infinite}
+.nv-on .carrito-drawer.open .nv-santa .nv-eye{animation:nv-blink 4.6s 1.4s infinite}
+@keyframes nv-pop{to{transform:translateY(0)}}
+@keyframes nv-sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2.2deg)}}
+@keyframes nv-blink{0%,90%,100%{transform:scaleY(1)}94%{transform:scaleY(.08)}}
+.nv-bubble{position:absolute;right:146px;bottom:15px;opacity:0;pointer-events:none;background:#fff;border:1.5px solid #d92b2f;color:#a8181f;font:700 12px/1 var(--font-body,inherit);padding:6px 9px;border-radius:12px;white-space:nowrap;box-shadow:0 2px 6px rgba(3,19,67,.12)}
+.nv-bubble::after{content:"";position:absolute;right:-6px;bottom:6px;width:9px;height:9px;background:#fff;border-right:1.5px solid #d92b2f;border-top:1.5px solid #d92b2f;transform:rotate(45deg)}
+.nv-on .carrito-drawer.open .nv-bubble{animation:nv-bub 3.4s 1s both}
+@keyframes nv-bub{0%{opacity:0;transform:scale(.7) translateY(4px)}12%,78%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-3px)}}
+@media(max-width:400px){.nv-bubble{display:none}}
+
+/* Gorritos sobre los íconos del carrito */
+.nv-chat{position:absolute;width:19px;height:auto;left:-9px;top:-15px;transform:rotate(-16deg);pointer-events:none;z-index:2;filter:drop-shadow(0 1px 1px rgba(3,19,67,.3))}
+.nv-chat-float{width:27px;left:0;top:-13px}
+
 @media(prefers-reduced-motion:reduce){html:not(.nv-force-motion) .nv-hat,html:not(.nv-force-motion) .nv-lights .nv-glow{animation:none}}
+@media(prefers-reduced-motion:reduce){html:not(.nv-force-motion) .nv-santa svg{transform:none;animation:none!important}html:not(.nv-force-motion) .nv-santa .nv-sway,html:not(.nv-force-motion) .nv-santa .nv-eye{animation:none!important}html:not(.nv-force-motion) .nv-bubble{display:none}}
