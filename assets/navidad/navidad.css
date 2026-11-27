@@ -39,8 +39,8 @@
 
 
 /* El trineo es más ancho que alto: un poco más grande que el carrito original para que se lea igual de bien */
-.nv-on .header-cart-icon svg{width:33px;height:33px}
-.nv-on .carrito-float>svg{width:31px;height:31px}
+.nv-on .header-cart-icon svg{width:46px;height:29px}
+.nv-on .carrito-float>svg{width:38px;height:24px}
 
 /* Papá Noel asomado sobre el borde del encabezado del carrito ("Tu pedido"): saluda al abrirlo */
 .nv-on .carrito-header{position:relative;min-height:88px}
